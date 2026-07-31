@@ -9,7 +9,7 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
         ["net::err_name_not_resolved","URL not resolved to an adress"],
         ["target page, context or browser has been closed","Browser killed during process"],
         ["browsertype.launch","Browser couldn't be launched"],
-        ["err_http_response_code_failure", "Connection closed by server with force"],
+        ["err_http_response_code_failure", "Connection shut down by server"],
     ]
 
     let browser;
