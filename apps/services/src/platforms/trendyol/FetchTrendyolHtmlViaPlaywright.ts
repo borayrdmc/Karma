@@ -64,6 +64,10 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
 
         const trendyolRawHtml=await page.content();
 
+        if(!trendyolRawHtml.includes('window["__envoy__SHARED_PROPS"]=')){
+            throw new Error("HTML fetched successfully but product data is missing. Captcha, WAF or invalid response."); //Sent to a cloudflare security check or captcha check
+        }
+
         return trendyolRawHtml;
     }
 
