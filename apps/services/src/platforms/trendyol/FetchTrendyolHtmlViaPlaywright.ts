@@ -21,21 +21,18 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
             ignoreDefaultArgs: ['--enable-automation'], //Remove automation flag
             args: [
                 '--headless=new', //Hide browser in screen but run it in background like headless
-                '--disable-blink-features=AutomationControlled', //navigator.webdriver=false like
-                '--disable-infobars',
                 '--window-size=1920,1080', //Like normal browser
-                '--no-sandbox',
-                '--disable-setuid-sandbox'
+                '--no-sandbox',//Linux?
+                '--disable-setuid-sandbox'//Linux?
             ]
         });
         
         const context = await browser.newContext({
             viewport:{width:1920,height:1080},
-            userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            locale: 'tr-TR',
-            timezoneId: 'Europe/Istanbul',
+            userAgent:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+            locale:'tr-TR',
+            timezoneId:'Europe/Istanbul',
             extraHTTPHeaders:{ //Additional protection layer, dunno what this does but if it works dont touch it.
-                'Accept-Language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
                 'Upgrade-Insecure-Requests': '1',
                 'Sec-Fetch-Dest': 'document',
                 'Sec-Fetch-Mode': 'navigate',
@@ -45,8 +42,6 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
         });
 
         const page=await context.newPage();
-        
-        await page.waitForTimeout(Math.floor(Math.random() * 1000) + 500);//Jitter
 
         const response = await page.goto(productUrl,{waitUntil:'domcontentloaded',timeout:10000});
 
