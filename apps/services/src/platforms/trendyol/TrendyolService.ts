@@ -1,12 +1,13 @@
 import { extractProductData } from "./ExtractProductData";
 import { getTrendyolHtml } from "./GetTrendyolHtml";
+import { retryWithBackoff } from "./RetryWithBackoff";
 import { TrendyolProductData } from "./TrendyolTypes";
 
 export async function trendyolService(productUrl:string) : Promise<TrendyolProductData>{
 
     try{
         
-        const trendyolRawHtml= await getTrendyolHtml(productUrl)
+        const trendyolRawHtml= await retryWithBackoff({productUrl,getTrendyolHtml});
 
         const productDataJSON=extractProductData(trendyolRawHtml);
 
