@@ -1,34 +1,25 @@
-import { findCheapestListing } from "./FindCheapestListing";
-import { HepsiburadaProductData, ProductData } from "./HepsiburadaTypes";
+import { findCheapestAlternative } from "./FindCheapestListing";
+import { extractProductCode } from "./ExtractProductCode";
+import {HepsiburadaProductData } from "./HepsiburadaTypes";
+import { fetchHepsiburadaProductData } from "./FetchHepsiburadaProductData";
 
 const HEPSIBURADA_API_BASE_URL = "https://www.hepsiburada.com/api/v1/product/listings";
 
-interface HepsiburadaResponse{
+export async function hepsiburadaService(productUrl:string): Promise<HepsiburadaProductData>{
 
-    data:{
-        listings:HepsiburadaProductData[];
+    try{
+        const productCode=extractProductCode(productUrl);
+
+        const responseData=await fetchHepsiburadaProductData(productCode);
+        
+        const cheapestListing=findCheapestAlternative(responseData);
+        
+        const merchantName=cheapestListing.merchantName;
+        const price=cheapestListing.price.value;
+
+        return {merchantName,price}
     }
-}
-
-export async function hepsiburadaService(productCode:string) : Promise<ProductData>{
-
-    const response = await fetch(`${HEPSIBURADA_API_BASE_URL}/${productCode}`);
-    
-    if(!response.ok){
-
-        throw new Error(`API fetch failed: ${response.status}`);
+    catch(productServiceError){
+        throw new Error("Product service failed.",{cause:productServiceError});
     }
-
-    const responseData: HepsiburadaResponse = await response.json();
-    
-    const productListings = responseData.data.listings;
-
-    if(!productListings || productListings.length===0){
-
-        throw new Error("No listings were found for given product.");
-    }
-    
-    const cheapestListing = findCheapestListing({productListings});
-
-    return {merchantName:cheapestListing.merchantName , price:cheapestListing.price.value}
 }
