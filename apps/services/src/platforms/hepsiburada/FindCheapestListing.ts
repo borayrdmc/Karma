@@ -1,17 +1,18 @@
-import { HepsiburadaProductData } from "./HepsiburadaTypes";
+import { HepsiburadaListing, HepsiburadaResponseProductData} from "./HepsiburadaTypes";
 
-interface Listings{
+export function findCheapestAlternative(responseData:HepsiburadaResponseProductData): HepsiburadaListing{
 
-    productListings:HepsiburadaProductData[];
-}
+    const productListings=responseData.data?.listings;
 
-export function findCheapestListing({productListings}:Listings){
+    if(!productListings || productListings.length === 0){
+        throw new Error("No listings were found for given product.");
+    }
 
     const cheapestListing = productListings.reduce(
 
-        (cheapestListing,currentListing)=>{
+        (cheapestListing,currentListing)=>{ 
 
-            if(currentListing.price.value < cheapestListing.price.value){
+            if(currentListing.price.value <= cheapestListing.price.value){
                 return currentListing;
             }
             else{
