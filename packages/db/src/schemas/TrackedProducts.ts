@@ -1,5 +1,6 @@
 import { index, pgTable, text, unique, uuid } from "drizzle-orm/pg-core";
 import { products } from "./Products";
+import { timestamp } from "drizzle-orm/pg-core";
 
 export const trackedProducts=pgTable("tracked_products",{
 
@@ -7,10 +8,10 @@ export const trackedProducts=pgTable("tracked_products",{
     userId: text('user_id').notNull(),
     productId: uuid('product_id').notNull().references(()=>products.productId, {onDelete:"cascade"}),
     customName: text('custom_name'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
     },
     //Schema configs
     (table)=>[
-        unique("user_and_product_id_unique").on(table.userId,table.productId),
-        index("user_id_index").on(table.userId)
+        unique("user_and_product_id_unique").on(table.userId,table.productId)
     ]
 );
