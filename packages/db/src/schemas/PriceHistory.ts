@@ -9,6 +9,6 @@ export const priceHistory = pgTable("price_history",{
     checkedAt: timestamp("checked_at").defaultNow().notNull(),
     },
     (table)=>[
-        index("time_and_id_unique").on(table.productId,table.checkedAt)
+        index("time_and_id_index").on(table.productId,table.checkedAt)
     ]   
 )
