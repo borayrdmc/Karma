@@ -1,16 +1,9 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../client";
 import { products } from "../schemas";
+import { ProductDataType } from "@repo/types";
 
-interface QueryData{
-
-    productUrl:string;
-    productPlatform:"hepsiburada" | "trendyol";
-    productCode:string;
-    productName?:string;
-}
-
-export async function insertOrGetProductData({productUrl,productPlatform,productCode,productName}:QueryData){
+export async function insertOrGetProductData({productUrl,productPlatform,productCode,productName}:ProductDataType){
 
     const existingProducts=await db.select().from(products).where(and(eq(products.productCode,productCode),eq(products.productPlatform,productPlatform)))
 
@@ -22,5 +15,4 @@ export async function insertOrGetProductData({productUrl,productPlatform,product
     const insertedProduct=await db.insert(products).values({productUrl,productPlatform,productCode,productName}).returning()
 
     return insertedProduct[0];
-    
 }
