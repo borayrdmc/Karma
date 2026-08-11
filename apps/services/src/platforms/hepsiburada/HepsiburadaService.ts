@@ -1,23 +1,20 @@
 import { findCheapestAlternative } from "./FindCheapestListing";
-import { extractProductCode } from "./ExtractProductCode";
-import {HepsiburadaProductData } from "./HepsiburadaTypes";
+import { extractHepsiburadaProductCode } from "./ExtractHepsiburadaProductCode";
 import { fetchHepsiburadaProductData } from "./FetchHepsiburadaProductData";
+import { ScraperDataType } from "@repo/types";
 
-const HEPSIBURADA_API_BASE_URL = "https://www.hepsiburada.com/api/v1/product/listings";
-
-export async function hepsiburadaService(productUrl:string): Promise<HepsiburadaProductData>{
+export async function hepsiburadaService(productUrl:string): Promise<ScraperDataType>{
 
     try{
-        const productCode=extractProductCode(productUrl);
+        const productCode=extractHepsiburadaProductCode(productUrl);
 
         const responseData=await fetchHepsiburadaProductData(productCode);
         
         const cheapestListing=findCheapestAlternative(responseData);
-        
-        const merchantName=cheapestListing.merchantName;
-        const price=cheapestListing.price.value;
 
-        return {merchantName,price}
+        const price=cheapestListing.price.value.toString();
+
+        return {productData:{productUrl,productPlatform:"hepsiburada",productCode},price};
     }
     catch(productServiceError){
         throw new Error("Product service failed.",{cause:productServiceError});
