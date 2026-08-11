@@ -12,7 +12,7 @@ export function findCheapestAlternative(responseData:HepsiburadaResponseProductD
 
         (cheapestListing,currentListing)=>{ 
 
-            if(currentListing.price.value <= cheapestListing.price.value){
+            if(currentListing.price.value < cheapestListing.price.value){
                 return currentListing;
             }
             else{
