@@ -1,9 +1,10 @@
+import { ScraperDataType } from "@repo/types";
 import { extractProductData } from "./ExtractProductData";
 import { getTrendyolHtml } from "./GetTrendyolHtml";
 import { retryWithBackoff } from "./RetryWithBackoff";
-import { TrendyolProductData } from "./TrendyolTypes";
+import { extractTrendyolProductCode } from "./ExtractTrendyolProductCode";
 
-export async function trendyolService(productUrl:string) : Promise<TrendyolProductData>{
+export async function trendyolService(productUrl:string) : Promise<ScraperDataType>{
 
     try{
         
@@ -16,11 +17,12 @@ export async function trendyolService(productUrl:string) : Promise<TrendyolProdu
         }
         const winnerVariant=productDataJSON.product.merchantListing.winnerVariant;
 
-        const productTitle= productDataJSON.product.name;
-        const sellingPrice =winnerVariant.price.sellingPrice.value;
-        const inStock=winnerVariant.inStock;
+        const productCode=extractTrendyolProductCode(productUrl);
+        const productName=productDataJSON.product.name;
+        const price=winnerVariant.price.sellingPrice.value.toString();
 
-        return {productTitle,sellingPrice,inStock};
+        return{
+            productData:{productUrl,productPlatform:"trendyol",productCode,productName},price};
     }
     catch(productServiceError){
         throw new Error("Product service failed.",{cause:productServiceError});

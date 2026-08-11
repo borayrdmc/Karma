@@ -18,10 +18,3 @@ export interface TrendyolResponseProductData{
         }
     };
 }
-
-export interface TrendyolProductData{
-    
-    productTitle:string;
-    sellingPrice:number;
-    inStock:boolean;
-}

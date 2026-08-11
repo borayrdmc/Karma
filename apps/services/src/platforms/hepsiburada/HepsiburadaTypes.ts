@@ -11,8 +11,3 @@ export interface HepsiburadaResponseProductData{
         listings:HepsiburadaListing[];  
     }   
 }
-export interface HepsiburadaProductData{
-
-    merchantName:string;
-    price:number;
-}
