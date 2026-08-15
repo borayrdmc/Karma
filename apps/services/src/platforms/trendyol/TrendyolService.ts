@@ -3,6 +3,7 @@ import { extractProductData } from "./ExtractProductData";
 import { getTrendyolHtml } from "./GetTrendyolHtml";
 import { retryWithBackoff } from "./RetryWithBackoff";
 import { extractTrendyolProductCode } from "./ExtractTrendyolProductCode";
+import { ServiceError } from "@repo/errors";
 
 export async function trendyolService(productUrl:string) : Promise<ScraperDataType>{
 
@@ -13,7 +14,7 @@ export async function trendyolService(productUrl:string) : Promise<ScraperDataTy
         const productDataJSON=extractProductData(trendyolRawHtml);
 
         if(!productDataJSON.product.merchantListing){
-            throw new Error("No listings were found.");
+            throw new ServiceError("No listings were found.",404);
         }
         const winnerVariant=productDataJSON.product.merchantListing.winnerVariant;
 
@@ -25,6 +26,6 @@ export async function trendyolService(productUrl:string) : Promise<ScraperDataTy
             productData:{productUrl,productPlatform:"trendyol",productCode,productName},price};
     }
     catch(productServiceError){
-        throw new Error("Product service failed.",{cause:productServiceError});
+        throw productServiceError;
     }
 }

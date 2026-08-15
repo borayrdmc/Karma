@@ -1,12 +1,13 @@
 import { STATUS_CODES } from 'node:http';
+import { ServiceError } from "@repo/errors";
 
 export async function fetchTrendyolHtmlViaFetch(productUrl: string): Promise<string> {
 
-    const TYPE_ERRORS : [string,string][] = [
-        ["ECONNREFUSED","Connection refused by server."],
-        ["ENOTFOUND","DNS lookup failed. IP not resolved."],
-        ["ECONNRESET","Connection reset by server."],
-        ["ETIMEDOUT","Connection timed out."]
+    const TYPE_ERRORS : [string,string,number][] = [
+        ["ECONNREFUSED","Connection refused by server.",503],
+        ["ENOTFOUND","DNS lookup failed. IP not resolved.",500],
+        ["ECONNRESET","Connection reset by server.",503],
+        ["ETIMEDOUT","Connection timed out.",504]
     ];
 
     try{
@@ -33,37 +34,46 @@ export async function fetchTrendyolHtmlViaFetch(productUrl: string): Promise<str
             const responseStatusCode=response.status;
             const responseStatusText=STATUS_CODES[responseStatusCode] ?? 'Unknown status';
 
-            throw new Error(`${responseStatusCode} ${responseStatusText}`);
+            throw new ServiceError(responseStatusText,responseStatusCode);
         }
 
         const trendyolRawHtml = await response.text();
 
         if(!trendyolRawHtml.includes('window["__envoy__SHARED_PROPS"]=')){
-            throw new Error("HTML fetched successfully but product data is missing. Captcha, WAF or invalid response."); //Sent to a cloudflare security check or captcha check
+            throw new ServiceError("Product data missing",502); //Sent to a cloudflare security check or captcha check
         }
 
         return trendyolRawHtml;
     }
-    catch(error){
-   
-        if(error instanceof Error){
-
-            if(error.name==="TimeoutError"||error.name==="AbortError"){
-                throw new Error("Fetch request timed out.");
+    catch(fetchError){  
+        
+        if(fetchError instanceof ServiceError){
+            
+            if(fetchError.statusCode===403 || fetchError.statusCode===429){
+                throw new ServiceError("Couldn't get product data", 502);
             }
-            else if(error.name==="TypeError"){
 
-                const cause=error.cause as NodeJS.ErrnoException | undefined;
+            throw fetchError;
+        }
+
+        if(fetchError instanceof Error){
+
+            if(fetchError.name==="TimeoutError"||fetchError.name==="AbortError"){
+                throw new ServiceError("Request timed out.",503);
+            }
+            else if(fetchError.name==="TypeError"){
+
+                const cause=fetchError.cause as NodeJS.ErrnoException | undefined;
                 const causeCode= cause?.code;
 
-                for(const [errorType,errorMessage] of TYPE_ERRORS){
+                for(const [errorType,errorMessage,errorStatusCode] of TYPE_ERRORS){
                     if(causeCode?.includes(errorType)){
-                        throw new Error(errorMessage);
+                        throw new ServiceError(errorMessage,errorStatusCode);
                     }
                 }
-                throw new Error(`Network error: ${error.message}`);
+                throw new ServiceError(`Network error`,500);
             }
         }
-        throw error;  
+        throw new ServiceError("Unexpected error",500,{cause:fetchError});  
     }
 }

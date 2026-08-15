@@ -1,15 +1,16 @@
 import { chromium } from 'patchright';
 import { STATUS_CODES } from 'node:http';
+import { ServiceError } from "@repo/errors";
 
 export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promise<string>{
 
-    const PLAYWRIGHT_ERRORS : [string,string][] = [
+    const PLAYWRIGHT_ERRORS : [string,string,number][] = [
 
-        ["timeout","Request timed out."],
-        ["net::err_name_not_resolved","URL not resolved to an adress"],
-        ["target page, context or browser has been closed","Browser killed during process"],
-        ["browsertype.launch","Browser couldn't be launched"],
-        ["err_http_response_code_failure", "Connection shut down by server"],
+        ["timeout","Request timed out.",504],
+        ["net::err_name_not_resolved","URL not resolved to an adress",500],
+        ["target page, context or browser has been closed","Browser killed during process",500],
+        ["browsertype.launch","Browser couldn't be launched",500],
+        ["err_http_response_code_failure", "Connection shut down by server",502],
     ]
 
     let browser;
@@ -46,7 +47,7 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
         const response = await page.goto(productUrl,{waitUntil:'domcontentloaded',timeout:10000});
 
         if(!response){
-            throw new Error("Response is null.");
+            throw new ServiceError("Response is null.",500);
         }
 
         if(!response.ok()){
@@ -54,13 +55,13 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
             const responseStatusCode=response.status();
             const responseStatusText=STATUS_CODES[responseStatusCode] ?? 'Unknown status';
 
-            throw new Error(`${responseStatusCode} ${responseStatusText}`);
+            throw new ServiceError(responseStatusText,responseStatusCode);
         }
 
         const trendyolRawHtml=await page.content();
 
         if(!trendyolRawHtml.includes('window["__envoy__SHARED_PROPS"]=')){
-            throw new Error("HTML fetched successfully but product data is missing. Captcha, WAF or invalid response."); //Sent to a cloudflare security check or captcha check
+            throw new ServiceError("Product data missing.",502); //Sent to a cloudflare security check or captcha check
         }
 
         return trendyolRawHtml;
@@ -68,18 +69,20 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
 
     catch(error){
 
-        if(error instanceof Error){
+        if(error instanceof ServiceError){
 
             const lowerErrorMessage=error.message.toLowerCase();
 
-            for( const [errorType,errorMessage] of PLAYWRIGHT_ERRORS){
+            for( const [errorType,errorMessage,errorStatusCode] of PLAYWRIGHT_ERRORS){
 
                 if(lowerErrorMessage.includes(errorType)){
-                    throw new Error(errorMessage);
+                    throw new ServiceError(errorMessage,errorStatusCode);
                 }
             }
+
+            throw new ServiceError("Couldn't get product data",502);
         }
-        throw error;
+        throw new ServiceError("Unexpected error",500,{cause:error});
     }
 
     finally{

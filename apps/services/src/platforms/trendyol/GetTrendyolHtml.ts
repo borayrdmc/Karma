@@ -9,10 +9,7 @@ export async function getTrendyolHtml(productUrl:string): Promise<string>{
         return trendyolRawHtml;
     }
     catch(fetchError){
-
-        console.log(`Fetch failed due to: ${fetchError}`);
-        console.log("Trying playwright to fetch.");
-
+        
         try{
             const trendyolRawHtml=await fetchTrendyolHtmlViaPlaywright(productUrl);
             return trendyolRawHtml;

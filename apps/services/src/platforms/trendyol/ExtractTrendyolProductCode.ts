@@ -1,9 +1,11 @@
+import { ServiceError } from "@repo/errors";
+
 export function extractTrendyolProductCode(productUrl:string){
 
     const match = productUrl.match(/-p-(\d+)/);
     
 	if(!match || !match[1]){
-        throw new Error(`Couldn't extract product code from given link`);
+        throw new ServiceError(`Product code not found`,400);
     }
     const productCode = match[1];
 
