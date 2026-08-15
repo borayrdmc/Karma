@@ -1,6 +1,7 @@
 import { ScraperDataType } from "@repo/types";
 import { hepsiburadaService } from "./platforms/hepsiburada/HepsiburadaService";
 import { trendyolService } from "./platforms/trendyol/TrendyolService";
+import { ServiceError } from "@repo/errors";
 
 export async function getProductData(productUrl:string): Promise<ScraperDataType>{
 
@@ -14,5 +15,5 @@ export async function getProductData(productUrl:string): Promise<ScraperDataType
         const productData=await trendyolService(productUrl);
         return productData;
     }
-    throw new Error("Unsupported product platform.");
+    throw new ServiceError("Unsupported product platform.",400);
 }
