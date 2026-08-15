@@ -1,11 +1,12 @@
+import { ServiceError } from "@repo/errors";
 import { HepsiburadaListing, HepsiburadaResponseProductData} from "./HepsiburadaTypes";
 
-export function findCheapestAlternative(responseData:HepsiburadaResponseProductData): HepsiburadaListing{
+export function findCheapestListing(responseData:HepsiburadaResponseProductData): HepsiburadaListing{
 
     const productListings=responseData.data?.listings;
 
     if(!productListings || productListings.length === 0){
-        throw new Error("No listings were found for given product.");
+        throw new ServiceError("No listings were found.",404);
     }
 
     const cheapestListing = productListings.reduce(
