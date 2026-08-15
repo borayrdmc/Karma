@@ -1,4 +1,4 @@
-import { index, pgTable, text, unique, uuid } from "drizzle-orm/pg-core";
+import { pgTable, text, unique, uuid } from "drizzle-orm/pg-core";
 import { products } from "./Products";
 import { timestamp } from "drizzle-orm/pg-core";
 
