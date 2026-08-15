@@ -1,9 +1,11 @@
+import { ServiceError } from "@repo/errors";
+
 export function extractHepsiburadaProductCode(url:string){
 
     const match = url.match(/-p-([A-Za-z0-9]+)(?:[/?#].*)?$/); //2nd part is for search params
 
     if(!match || !match[1]){
-        throw new Error(`Couldn't extract product code from given link`);
+        throw new ServiceError("Product code not found.",400);
     }
     const productCode = match[1];
 
