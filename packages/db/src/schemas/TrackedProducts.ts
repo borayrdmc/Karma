@@ -8,7 +8,7 @@ export const trackedProducts=pgTable("tracked_products",{
     userId: text('user_id').notNull(),
     productId: uuid('product_id').notNull().references(()=>products.productId, {onDelete:"cascade"}),
     customName: text('custom_name'),
-    createdAt: timestamp('created_at').defaultNow().notNull(),
+    trackedAt: timestamp('tracked_at').defaultNow().notNull(),
     },
     //Schema configs
     (table)=>[
