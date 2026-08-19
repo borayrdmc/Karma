@@ -1,6 +1,6 @@
 import { TrackedProductDataType } from "@repo/types";
-import { db } from "../client";
-import { trackedProducts } from "../schemas";
+import { db } from "../../client";
+import { trackedProducts } from "../../schemas";
 import { ServiceError } from "@repo/errors";
 
 export async function trackProduct({userId,productId}:TrackedProductDataType){

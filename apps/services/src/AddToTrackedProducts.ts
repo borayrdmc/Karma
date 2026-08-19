@@ -2,7 +2,7 @@ import { ScraperDataType } from "@repo/types";
 import { insertOrGetProductData, insertPriceData, trackProduct } from "@repo/db";
 import { ServiceError } from "@repo/errors";
 
-export async function databaseService(scraperProductData:ScraperDataType){
+export async function addTrackedProduct(scraperProductData:ScraperDataType){
 
     try{
 

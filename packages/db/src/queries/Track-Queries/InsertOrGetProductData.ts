@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import { ServiceError } from "@repo/errors";
-import { db } from "../client";
-import { products } from "../schemas";
+import { db } from "../../client";
+import { products } from "../../schemas";
 import { ProductDataType } from "@repo/types";
 
 export async function insertOrGetProductData({productUrl,productPlatform,productCode,productName}:ProductDataType){

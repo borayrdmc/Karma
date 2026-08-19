@@ -1,22 +1,79 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
+import Fastify from "fastify";
+import { getProductData } from "./GetProductData";
+import { ServiceError } from "@repo/errors";
+import { listTrackedProducts } from "./ListTrackedProducts";
+import { addTrackedProduct } from "./AddToTrackedProducts";
+import { removeFromTrackedProducts } from "@repo/db";
 
-dotenv.config();
+const app = Fastify({ logger: true });
 
-const app = express();
-const port = process.env.PORT || 3001;
+app.setErrorHandler((error,request,reply)=>{
 
-app.use(cors());
-app.use(express.json());
+    if(error instanceof ServiceError){
 
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Service is running' });
+        app.log.error(error);
+        
+        reply.status(error.statusCode).send({
+            success:false,
+            error:error.message
+        });
+        return;
+    }
+
+    app.log.error(error);
+
+    const errorMessage = error instanceof Error ? error.message : "Unknown error type";
+
+    reply.status(500).send({
+        success: false,
+        error: errorMessage
+    });  
 });
 
-// Example route structure, you can drop your services and utils here
-// app.use('/api/hepsiburada', hepsiburadaRouter);
+app.get("/health",async()=>{
+    return {status:"ok"};
+});
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.post<{Body:{productUrl:string}}>("/api/products", async(request,reply)=>{
+
+    const productUrl=request.body.productUrl;
+
+    const scraperData = await getProductData(productUrl);
+    await addTrackedProduct(scraperData);
+
+    return reply.status(201).send({
+        success: true,
+        data: scraperData,
+    }); 
+});
+
+app.get("/api/products", async(request,reply)=>{
+
+    const productList = await listTrackedProducts("test_user");
+
+    return reply.status(200).send({
+        success: true,
+        data: productList,
+    });
+});
+
+app.delete<{Params:{productId:string}}>("/api/products/:productId", async(request,reply)=>{
+
+    const productId=request.params.productId;
+
+    await removeFromTrackedProducts({userId:"test_user",productId});
+
+    return reply.status(200).send({
+        success: true,
+    });
+});
+
+app.listen({port:3001},(err,address)=>{
+
+    if(err){
+        console.error(err);
+        process.exit(1);
+    }
+
+  console.log(`Server listening at ${address}`);
 });

@@ -1,6 +1,6 @@
 import { PriceDataType } from "@repo/types";
-import { db } from "../client";
-import { priceHistory } from "../schemas";
+import { db } from "../../client";
+import { priceHistory } from "../../schemas";
 
 export async function insertPriceData({price,productId}:PriceDataType){
 
