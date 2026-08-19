@@ -1,0 +1,1 @@
+ALTER TABLE "tracked_products" RENAME COLUMN "created_at" TO "tracked_at";
