@@ -4,8 +4,10 @@ import { ServiceError } from "@repo/errors";
 import { listTrackedProducts } from "./ListTrackedProducts";
 import { addTrackedProduct } from "./AddToTrackedProducts";
 import { removeFromTrackedProducts } from "@repo/db";
-import { priceUpdateQueueSettings } from "./queues/PriceUpdateQueue";
-import "./queues/PriceUpdateWorker";
+import "./queues/Price Update/PriceUpdateWorker";
+import { priceUpdateQueueScheduler } from "./queues/Price Update/PriceUpdateQueueScheduler";
+import { cleanupJobScheduler } from "./queues/Clear Untracked/ClearUntrackedQueue";
+
 
 const app = Fastify({ logger: true });
 
@@ -79,10 +81,6 @@ app.listen({port:3001},async(err,address)=>{
 
   console.log(`Server listening at ${address}`);
 
-    try{
-        await priceUpdateQueueSettings();
-    } 
-    catch(queueError){
-        console.error("Job scheduler failed.");
-    }
+    await priceUpdateQueueScheduler();
+    await cleanupJobScheduler();
 });
