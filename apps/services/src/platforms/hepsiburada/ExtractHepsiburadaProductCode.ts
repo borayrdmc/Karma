@@ -5,7 +5,7 @@ export function extractHepsiburadaProductCode(url:string){
     const match = url.match(/-p-([A-Za-z0-9]+)(?:[/?#].*)?$/); //2nd part is for search params
 
     if(!match || !match[1]){
-        throw new ServiceError("Product code not found.",400);
+        throw new ServiceError("Product code not found in given URL.",400);
     }
     const productCode = match[1];
 

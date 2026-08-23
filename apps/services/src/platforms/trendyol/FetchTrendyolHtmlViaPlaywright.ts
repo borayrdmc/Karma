@@ -7,9 +7,9 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
     const PLAYWRIGHT_ERRORS : [string,string,number][] = [
 
         ["timeout","Request timed out.",504],
-        ["net::err_name_not_resolved","URL not resolved to an adress",500],
+        ["net::err_name_not_resolved","URL not resolved to an adress",400],
         ["target page, context or browser has been closed","Browser killed during process",500],
-        ["browsertype.launch","Browser couldn't be launched",500],
+        ["browsertype.launch","Couldn't launch browser",500],
         ["err_http_response_code_failure", "Connection shut down by server",502],
     ]
 
@@ -55,6 +55,10 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
             const responseStatusCode=response.status();
             const responseStatusText=STATUS_CODES[responseStatusCode] ?? 'Unknown status';
 
+            if(responseStatusCode===403 || responseStatusCode===429){
+                throw new ServiceError("Request denied by upstream service.",502);
+            }
+            
             throw new ServiceError(responseStatusText,responseStatusCode);
         }
 

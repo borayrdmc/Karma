@@ -1,7 +1,6 @@
 import { ScraperDataType } from "@repo/types";
 import { extractProductData } from "./ExtractProductData";
 import { getTrendyolHtml } from "./GetTrendyolHtml";
-import { retryWithBackoff } from "./RetryWithBackoff";
 import { extractTrendyolProductCode } from "./ExtractTrendyolProductCode";
 import { ServiceError } from "@repo/errors";
 
@@ -9,7 +8,7 @@ export async function trendyolService(productUrl:string) : Promise<ScraperDataTy
 
     try{
         
-        const trendyolRawHtml= await retryWithBackoff({productUrl,getTrendyolHtml});
+        const trendyolRawHtml= await getTrendyolHtml(productUrl);
 
         const productDataJSON=extractProductData(trendyolRawHtml);
 

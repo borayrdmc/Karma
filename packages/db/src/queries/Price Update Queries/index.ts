@@ -1,2 +1,2 @@
-export * from "./GetAllProducts";
-export * from "./GetLatestPricesOfAllProducts";
+export * from "./GetTrackedProductDetails"
+export * from "./GetLatestPricesOfGivenProducts";
