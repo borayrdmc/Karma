@@ -15,7 +15,7 @@ export async function getTrendyolHtml(productUrl:string): Promise<string>{
             return trendyolRawHtml;
         }
         catch(playwrightError){
-            throw new AggregateError([fetchError, playwrightError],"Both fetching methods failed.");
+            throw playwrightError;
         }
     }
 }
