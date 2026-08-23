@@ -6,7 +6,7 @@ export function findCheapestListing(responseData:HepsiburadaResponseProductData)
     const productListings=responseData.data?.listings;
 
     if(!productListings || productListings.length === 0){
-        throw new ServiceError("No listings were found.",404);
+        throw new ServiceError("Product listings not found.",404);
     }
 
     const cheapestListing = productListings.reduce(
