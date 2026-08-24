@@ -4,5 +4,7 @@ import { getAllTrackedProductIds } from "./GetAllTrackedProductIds";
 export async function clearUntrackedProducts(){
     
     const trackedProductIdList=await getAllTrackedProductIds()
-    await deleteUntrackedProducts(trackedProductIdList);
+    const deletedProducts= await deleteUntrackedProducts(trackedProductIdList);
+
+    return deletedProducts;
 }

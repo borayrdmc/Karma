@@ -8,5 +8,7 @@ export async function deleteUntrackedProducts(trackedProductsIdList:string[]){
         return;
     }
 
-    await db.delete(products).where(notInArray(products.productId,trackedProductsIdList))
+    const deletedProducts= await db.delete(products).where(notInArray(products.productId,trackedProductsIdList)).returning()
+
+    return deletedProducts
 }

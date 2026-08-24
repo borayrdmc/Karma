@@ -12,7 +12,15 @@ const cleanupWorker = new Worker(
     "cleanup-queue",
     
     async()=>{
-        await clearUntrackedProducts();
+        console.log("Untracked product removal queue started");
+        const deletedProducts=await clearUntrackedProducts();
+
+        if(!deletedProducts || deletedProducts.length===0){
+            console.log("Untracked product removal queue finished. No products were deleted.");
+        }
+        else{
+            console.log(`Untracked product removal queue finished. Deleted products: ${JSON.stringify(deletedProducts)}`);
+        }
     },
 
     {
@@ -28,7 +36,7 @@ export async function cleanupJobScheduler(){
 
         "cleanup-job-scheduler",
 
-        { pattern: "0 3 * * 0" }, //Every sunday 03:00 AM
+        { pattern: "0 */2 * * *" }, // Every 2 hours
         { 
             name: "cleanup-job",
             data: {},

@@ -11,7 +11,9 @@ export const schedulerWorker = new Worker(
     "price-update-scheduler-queue", 
     
     async()=>{
+        console.log("Price update queue started. Creating jobs...");
         await createPriceUpdateJobs();
+        console.log("Jobs created for price update queue.");
     }, 
 
     { 

@@ -13,16 +13,25 @@ export const priceUpdateWorker = new Worker(
         const {productId,productUrl,latestPrice}=job.data;
 
         try{
+
+            console.log(`Started processing product Id: ${productId}`);
+
             const currentPrice=(await getProductData(productUrl)).price;
 
-            if(currentPrice!==latestPrice){
+            if(Number(currentPrice)!==Number(latestPrice)){
                 await insertPriceData({price:currentPrice,productId});
+                console.log(`Price of Product ID:${productId} has been changed. Latest price: ${latestPrice} Current Price: ${currentPrice}`);
+            }
+            else{
+                console.log(`Price of ${productId} not changed.`);
             }
         }
         catch(error){
             if(error instanceof ServiceError && isFatalError(error)){
+                console.error(`Error occured on Product ID: ${productId}. Details: ${error.message} ${error.statusCode}`);
                 throw new UnrecoverableError(error.message);
             }
+            console.error(`Unknown error occured on Product ID: ${productId} Details: ${error}`);
             throw error;
         }
         
