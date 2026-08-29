@@ -5,22 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1786372648161,
-      "tag": "0000_tan_weapon_omega",
+      "when": 1788012134743,
+      "tag": "0000_real_freak",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1786824863618,
-      "tag": "0001_flat_wiccan",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1786978301860,
-      "tag": "0002_absurd_marvex",
+      "when": 1788023242647,
+      "tag": "0001_peaceful_luminals",
       "breakpoints": true
     }
   ]

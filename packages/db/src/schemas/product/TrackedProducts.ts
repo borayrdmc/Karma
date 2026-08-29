@@ -1,11 +1,12 @@
 import { pgTable, text, unique, uuid } from "drizzle-orm/pg-core";
 import { products } from "./Products";
 import { timestamp } from "drizzle-orm/pg-core";
+import { user } from "../auth";
 
 export const trackedProducts=pgTable("tracked_products",{
 
     id: uuid('id').primaryKey().defaultRandom(),
-    userId: text('user_id').notNull(),
+    userId: text('user_id').notNull().references(()=>user.id,{onDelete:"cascade"}),
     productId: uuid('product_id').notNull().references(()=>products.productId, {onDelete:"cascade"}),
     customName: text('custom_name'),
     trackedAt: timestamp('tracked_at').defaultNow().notNull(),
