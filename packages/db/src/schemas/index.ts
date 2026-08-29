@@ -1,3 +1,2 @@
-export * from "./Products";
-export * from "./PriceHistory";
-export * from "./TrackedProducts";
+export * from "./product";
+export * from "./auth";
