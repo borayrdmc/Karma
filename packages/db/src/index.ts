@@ -1,3 +1,4 @@
 export * from './client';
 export * from './schemas';
 export * from "./queries";
+export * from "./client";
