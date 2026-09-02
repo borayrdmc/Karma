@@ -1,6 +1,7 @@
+import { ProductType } from "@repo/db";
 import { ServiceError } from "@repo/errors";
 
-export function extractTrendyolProductCode(productUrl:string){
+export function extractTrendyolProductCodeAndPlatform(productUrl:string):{productPlatform:ProductType["productPlatform"],productCode:ProductType["productCode"]}{
 
     const match = productUrl.match(/-p-(\d+)/);
     
@@ -9,5 +10,5 @@ export function extractTrendyolProductCode(productUrl:string){
     }
     const productCode = match[1];
 
-    return productCode; //Ignore first (all of the regex) match and 3rd match (search params)
+    return {productPlatform:"trendyol",productCode}; //Ignore first (all of the regex) match and 3rd match (search params)
 }
