@@ -15,6 +15,20 @@
       "when": 1788023242647,
       "tag": "0001_peaceful_luminals",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1788031790271,
+      "tag": "0002_far_wilson_fisk",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1788032580207,
+      "tag": "0003_foamy_surge",
+      "breakpoints": true
     }
   ]
 }
