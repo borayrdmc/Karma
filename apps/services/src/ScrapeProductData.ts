@@ -3,7 +3,7 @@ import { hepsiburadaService } from "./platforms/hepsiburada/HepsiburadaService";
 import { trendyolService } from "./platforms/trendyol/TrendyolService";
 import { ServiceError } from "@repo/errors";
 
-export async function getProductData(productUrl:string): Promise<ScraperDataType>{
+export async function scrapeProductData(productUrl:string): Promise<ScraperDataType>{
 
     if(productUrl.includes("hepsiburada")){
 

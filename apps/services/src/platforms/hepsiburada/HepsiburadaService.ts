@@ -1,5 +1,5 @@
 import { findCheapestListing } from "./FindCheapestListing";
-import { extractHepsiburadaProductCode } from "./ExtractHepsiburadaProductCode";
+import { extractHepsiburadaProductCodeAndPlatform } from "./ExtractHepsiburadaProductCodeAndPlatform";
 import { fetchHepsiburadaProductData } from "./FetchHepsiburadaProductData";
 import { ScraperDataType } from "@repo/types";
 import { ServiceError } from "@repo/errors";
@@ -7,7 +7,7 @@ import { ServiceError } from "@repo/errors";
 export async function hepsiburadaService(productUrl:string): Promise<ScraperDataType>{
 
     try{
-        const productCode=extractHepsiburadaProductCode(productUrl);
+        const {productCode}=extractHepsiburadaProductCodeAndPlatform(productUrl);
 
         const responseData=await fetchHepsiburadaProductData(productCode);
         

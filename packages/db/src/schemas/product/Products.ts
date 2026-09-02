@@ -15,6 +15,6 @@ export const products = pgTable("products",{
 	},
 	//Schema Configs
 	(table)=>[
-		unique('product_code_unique').on(table.productPlatform,table.productCode),
+		unique('product_code_and_platform_unique').on(table.productPlatform,table.productCode),
 	]
 )

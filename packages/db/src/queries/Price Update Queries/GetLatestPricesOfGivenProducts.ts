@@ -1,6 +1,6 @@
 import { desc, inArray } from "drizzle-orm";
 import { db } from "../../client";
-import { priceHistory, products, trackedProducts } from "../../schemas";
+import { priceHistory } from "../../schemas";
 
 export async function getLatestPricesOfGivenProducts(trackedProductsIds:string[]){
 

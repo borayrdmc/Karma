@@ -1,26 +1,29 @@
 import { ScraperDataType } from "@repo/types";
-import { insertOrGetProductData, insertPriceData, trackProduct } from "@repo/db";
-import { ServiceError } from "@repo/errors";
+import { createNewProduct, findProductWithGivenPlatformAndCode, insertPriceData, trackProduct } from "@repo/db";
+import { extractProductCodeAndPlatformFromGivenUrl } from "./platforms/ExtractProductCodeAndPlatformFromGivenUrl";
+import { scrapeProductData } from "./ScrapeProductData";
 
-export async function addTrackedProduct(scraperProductData:ScraperDataType){
+export async function addToTrackedProducts(productUrl:string,userId:string){
 
-    try{
+    const {productPlatform,productCode}=extractProductCodeAndPlatformFromGivenUrl(productUrl);
+    
+    const matchedProduct=await findProductWithGivenPlatformAndCode(productPlatform,productCode);
 
-        const databaseProductData=await insertOrGetProductData(scraperProductData.productData);
+    if(matchedProduct!==undefined){
 
-        if(!databaseProductData){
-            throw new ServiceError("Couldn't save or get product data.",500);
-        }
-        
-        await trackProduct({userId:"test_user",productId:databaseProductData.productId});
-        await insertPriceData({price:scraperProductData.price,productId:databaseProductData.productId});
+        await trackProduct({userId,productId:matchedProduct.productId});
 
-        return databaseProductData;
+        return matchedProduct;
     }
-    catch(databaseError){
 
-        if(databaseError instanceof ServiceError){
-            throw databaseError;
-        }
-    }   
+    else{
+
+        const scraperData:ScraperDataType=await scrapeProductData(productUrl);
+
+        const createdProduct=await createNewProduct(scraperData.productData)
+        await trackProduct({userId,productId:createdProduct.productId});
+        await insertPriceData({price:scraperData.price,productId:createdProduct.productId});
+
+        return createdProduct;
+    }
 }

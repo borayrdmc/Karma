@@ -1,15 +1,16 @@
 import Fastify from "fastify";
-import { getProductData } from "./GetProductData";
 import { ServiceError } from "@repo/errors";
 import { listTrackedProducts } from "./ListTrackedProducts";
-import { addTrackedProduct } from "./AddToTrackedProducts";
+import { addToTrackedProducts } from "./AddToTrackedProducts";
 import { removeFromTrackedProducts } from "@repo/db";
 import "./queues/Price Update/PriceUpdateWorker";
 import { priceUpdateQueueScheduler } from "./queues/Price Update/PriceUpdateQueueScheduler";
 import { cleanupJobScheduler } from "./queues/Clear Untracked/ClearUntrackedQueue";
-
+import { internalAuth } from "./plugins/InternalAuth";
 
 const app = Fastify({ logger: true });
+
+app.register(internalAuth);
 
 app.setErrorHandler((error,request,reply)=>{
 
@@ -26,11 +27,9 @@ app.setErrorHandler((error,request,reply)=>{
 
     app.log.error(error);
 
-    const errorMessage = error instanceof Error ? error.message : "Unknown error type";
-
     reply.status(500).send({
         success: false,
-        error: errorMessage
+        error: "Unknown error occured"
     });  
 });
 
@@ -41,19 +40,21 @@ app.get("/health",async()=>{
 app.post<{Body:{productUrl:string}}>("/api/products", async(request,reply)=>{
 
     const productUrl=request.body.productUrl;
+    const userId=request.headers["x-user-id"] as string;
 
-    const scraperData = await getProductData(productUrl);
-    await addTrackedProduct(scraperData);
+    const productData=await addToTrackedProducts(productUrl,userId);
 
     return reply.status(201).send({
         success: true,
-        data: scraperData,
-    }); 
+        data: productData
+    });
 });
 
 app.get("/api/products", async(request,reply)=>{
 
-    const productList = await listTrackedProducts("test_user");
+    const userId=request.headers["x-user-id"] as string; //Zod already validated it 
+
+    const productList = await listTrackedProducts(userId);
 
     return reply.status(200).send({
         success: true,
@@ -64,8 +65,9 @@ app.get("/api/products", async(request,reply)=>{
 app.delete<{Params:{productId:string}}>("/api/products/:productId", async(request,reply)=>{
 
     const productId=request.params.productId;
+    const userId=request.headers["x-user-id"] as string; //Zod already validated it 
 
-    await removeFromTrackedProducts({userId:"test_user",productId});
+    await removeFromTrackedProducts({userId,productId});
 
     return reply.status(200).send({
         success: true,
