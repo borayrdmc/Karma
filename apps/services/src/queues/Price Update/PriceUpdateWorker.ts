@@ -1,6 +1,6 @@
 import { insertPriceData } from "@repo/db";
 import { Job, UnrecoverableError, Worker } from "bullmq";
-import { getProductData } from "../../GetProductData";
+import { scrapeProductData } from "../../ScrapeProductData";
 import { redisConnection } from "../connection";
 import { isFatalError, ServiceError } from "@repo/errors";
 
@@ -16,7 +16,7 @@ export const priceUpdateWorker = new Worker(
 
             console.log(`Started processing product Id: ${productId}`);
 
-            const currentPrice=(await getProductData(productUrl)).price;
+            const currentPrice=(await scrapeProductData(productUrl)).price;
 
             if(Number(currentPrice)!==Number(latestPrice)){
                 await insertPriceData({price:currentPrice,productId});
