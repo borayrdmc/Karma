@@ -1,9 +1,9 @@
-import { TrackedProductDataType } from "@repo/types";
+import { TrackedProductInputType } from "@repo/types";
 import { db } from "../../client";
 import { trackedProducts } from "../../schemas";
 import { ServiceError } from "@repo/errors";
 
-export async function trackProduct({userId,productId}:TrackedProductDataType){
+export async function trackProduct({userId,productId}:TrackedProductInputType){
     
     const trackedProduct=await db.insert(trackedProducts)
         .values({userId,productId})

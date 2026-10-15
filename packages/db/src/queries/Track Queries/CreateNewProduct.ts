@@ -1,9 +1,9 @@
-import { ProductDataType } from "@repo/types";
 import { products } from "../../schemas";
 import { db } from "../../client";
 import { ServiceError } from "@repo/errors";
+import { ProductInputType } from "@repo/types";
 
-export async function createNewProduct({productUrl,productPlatform,productCode,productName}:ProductDataType){
+export async function createNewProduct({productUrl,productPlatform,productCode,productName}:ProductInputType){
 
     const [createdProduct]=await db.insert(products)
             .values({productUrl,productPlatform,productCode,productName})
