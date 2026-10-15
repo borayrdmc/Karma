@@ -1,4 +1,4 @@
-import { getAllTrackedProductIds, getLatestPricesOfGivenProducts, getTrackedProductDetails } from "@repo/db";
+import { getLatestPricesOfGivenProducts, getTrackedProductDetails } from "@repo/db";
 import { priceUpdateQueue } from "./PriceUpdateQueue";
 
 export async function createPriceUpdateJobs(){

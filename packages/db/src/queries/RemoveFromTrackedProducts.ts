@@ -1,10 +1,10 @@
 import { ServiceError } from "@repo/errors";
-import { TrackedProductDataType } from "@repo/types";
+import { TrackedProductInputType } from "@repo/types";
 import { and, eq } from "drizzle-orm";
 import { trackedProducts } from "../schemas";
 import { db } from "../client";
 
-export async function removeFromTrackedProducts({userId,productId}:TrackedProductDataType){
+export async function removeFromTrackedProducts({userId,productId}:TrackedProductInputType){
     
     const untrackedProduct=await db.delete(trackedProducts)
         .where(

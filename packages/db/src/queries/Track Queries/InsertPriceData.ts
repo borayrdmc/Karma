@@ -1,9 +1,9 @@
-import { PriceDataType } from "@repo/types";
+import { PriceHistoryInputType } from "@repo/types";
 import { db } from "../../client";
 import { priceHistory } from "../../schemas";
 import { asc, eq } from "drizzle-orm";
 
-export async function insertPriceData({price,productId}:PriceDataType){
+export async function insertPriceData({price,productId}:PriceHistoryInputType){
 
     const productPriceHistory=await db
         .select({id:priceHistory.id})

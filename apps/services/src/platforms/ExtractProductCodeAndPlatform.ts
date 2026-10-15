@@ -2,7 +2,7 @@ import { ServiceError } from "@repo/errors";
 import { extractHepsiburadaProductCodeAndPlatform } from "./hepsiburada/ExtractHepsiburadaProductCodeAndPlatform";
 import { extractTrendyolProductCodeAndPlatform } from "./trendyol/ExtractTrendyolProductCode";
 
-export function extractProductCodeAndPlatformFromGivenUrl(productUrl:string): {productPlatform:"hepsiburada"|"trendyol",productCode:string}{
+export function extractProductCodeAndPlatform(productUrl:string): {productPlatform:"hepsiburada"|"trendyol",productCode:string}{
 
     if(productUrl.includes("hepsiburada")){
 

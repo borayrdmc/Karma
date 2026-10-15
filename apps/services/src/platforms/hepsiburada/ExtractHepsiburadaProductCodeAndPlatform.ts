@@ -1,7 +1,7 @@
-import { ProductType } from "@repo/db";
 import { ServiceError } from "@repo/errors";
+import { ProductInputType } from "@repo/types";
 
-export function extractHepsiburadaProductCodeAndPlatform(url:string):{productPlatform:ProductType["productPlatform"],productCode:ProductType["productCode"]}{
+export function extractHepsiburadaProductCodeAndPlatform(url:string):{productPlatform:ProductInputType["productPlatform"],productCode:ProductInputType["productCode"]}{
 
     const match = url.match(/-p-([A-Za-z0-9]+)(?:[/?#].*)?$/); //2nd part is for search params
 

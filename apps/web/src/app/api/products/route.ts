@@ -1,4 +1,5 @@
-import { auth, trackProductValidationSchema, untrackProductValidationSchema } from "@/lib";
+import { trackProductValidationSchema, untrackProductValidationSchema } from "@/lib";
+import { auth } from "@/lib/AuthConfig";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import z from "zod";
@@ -93,21 +94,32 @@ export async function DELETE(request:Request){
 
 export async function GET(request:Request){
 
-    const session=await auth.api.getSession({headers:await headers()});
+    try{
+        const session=await auth.api.getSession({headers:await headers()});
 
-    if(!session){
-        return NextResponse.json({success:false,error:"Unauthorized"},{status:401});
-    }
-    
-    const response = await fetch("http://localhost:3001/api/products",{
-
-        method:"GET",
-        headers:{
-            "x-internal-api-key":process.env.INTERNAL_API_KEY!,
-            "x-user-id":session.user.id
+        if(!session){
+            return NextResponse.json({success:false,error:"Unauthorized"},{status:401});
         }
-    })
+        
+        const response = await fetch("http://localhost:3001/api/products",{
 
-    const data=await response.json();
-    return NextResponse.json(data,{status:response.status});
+            method:"GET",
+            headers:{
+                "x-internal-api-key":process.env.INTERNAL_API_KEY!,
+                "x-user-id":session.user.id
+            }
+        })
+
+        const data=await response.json();
+        return NextResponse.json(data,{status:response.status});
+    }
+    catch(routeError){
+        
+        if(routeError instanceof SyntaxError){
+            return NextResponse.json({success:false,error:"Invalid JSON body format."},{status:400})
+        }
+        else{
+            return NextResponse.json({success:false,error:"Route unable to answer. Please try again"},{status:500})
+        }
+    }
 }

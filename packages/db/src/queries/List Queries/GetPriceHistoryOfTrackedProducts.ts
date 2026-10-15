@@ -1,27 +1,25 @@
-import { inArray } from "drizzle-orm";
+import { asc, inArray } from "drizzle-orm";
 import { db } from "../../client";
-import { priceHistory, trackedProducts } from "../../schemas";
-
-export type TrackedProduct = typeof trackedProducts.$inferSelect;
-export type PriceData = typeof priceHistory.$inferSelect;
+import { priceHistory } from "../../schemas";
+import { PriceHistoryOutputType, TrackedProductOutputType } from "@repo/types";
 
 interface ProductPriceHistory{
 
-    trackedProduct: TrackedProduct;
-    productPriceHistory: PriceData[];
+    trackedProduct: TrackedProductOutputType;
+    productPriceHistory: PriceHistoryOutputType[];
 }
 
-export async function getPriceHistoryOfTrackedProducts(trackedProductList:TrackedProduct[]): Promise<ProductPriceHistory[]>{
+export async function getPriceHistoryOfTrackedProducts(trackedProductList:TrackedProductOutputType[]): Promise<ProductPriceHistory[]>{
 
     const productIds=trackedProductList.map(trackedProduct => trackedProduct.productId);
 
-    const rawPriceHistory = await db.select().from(priceHistory).where(inArray(priceHistory.productId, productIds));
+    const rawPriceHistory = await db.select().from(priceHistory).where(inArray(priceHistory.productId, productIds)).orderBy(asc(priceHistory.checkedAt));;
 
     const priceHistoryList:ProductPriceHistory[]=[];
 
     for(const trackedProduct of trackedProductList){
 
-        const productPriceHistory:PriceData[]=[];
+        const productPriceHistory:PriceHistoryOutputType[]=[];
 
         for(const priceHistoryData of rawPriceHistory){
 
