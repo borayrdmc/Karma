@@ -1,7 +1,7 @@
-import { ProductType } from "@repo/db";
 import { ServiceError } from "@repo/errors";
+import { ProductInputType } from "@repo/types";
 
-export function extractTrendyolProductCodeAndPlatform(productUrl:string):{productPlatform:ProductType["productPlatform"],productCode:ProductType["productCode"]}{
+export function extractTrendyolProductCodeAndPlatform(productUrl:string):{productPlatform:ProductInputType["productPlatform"],productCode:ProductInputType["productCode"]}{
 
     const match = productUrl.match(/-p-(\d+)/);
     
