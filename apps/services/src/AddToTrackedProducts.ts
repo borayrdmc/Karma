@@ -1,13 +1,13 @@
 import { ScraperDataType } from "@repo/types";
-import { createNewProduct, findProductWithGivenPlatformAndCode, insertPriceData, trackProduct } from "@repo/db";
-import { extractProductCodeAndPlatformFromGivenUrl } from "./platforms/ExtractProductCodeAndPlatformFromGivenUrl";
+import { createNewProduct, findProductInProductsTable, insertPriceData, trackProduct } from "@repo/db";
+import { extractProductCodeAndPlatform } from "./platforms/ExtractProductCodeAndPlatform";
 import { scrapeProductData } from "./ScrapeProductData";
 
 export async function addToTrackedProducts(productUrl:string,userId:string){
 
-    const {productPlatform,productCode}=extractProductCodeAndPlatformFromGivenUrl(productUrl);
+    const {productPlatform,productCode}=extractProductCodeAndPlatform(productUrl);
     
-    const matchedProduct=await findProductWithGivenPlatformAndCode(productPlatform,productCode);
+    const matchedProduct=await findProductInProductsTable(productPlatform,productCode);
 
     if(matchedProduct!==undefined){
 
