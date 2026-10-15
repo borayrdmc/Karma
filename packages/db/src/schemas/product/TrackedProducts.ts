@@ -1,7 +1,7 @@
 import { pgTable, text, unique, uuid } from "drizzle-orm/pg-core";
 import { products } from "./Products";
 import { timestamp } from "drizzle-orm/pg-core";
-import { user } from "../auth";
+import { user } from "../auth/user";
 
 export const trackedProducts=pgTable("tracked_products",{
 
