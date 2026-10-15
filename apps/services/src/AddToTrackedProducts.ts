@@ -1,9 +1,9 @@
-import { ScraperDataType } from "@repo/types";
+import { ProductOutputType, ScraperDataType } from "@repo/types";
 import { createNewProduct, findProductInProductsTable, insertPriceData, trackProduct } from "@repo/db";
 import { extractProductCodeAndPlatform } from "./platforms/ExtractProductCodeAndPlatform";
 import { scrapeProductData } from "./ScrapeProductData";
 
-export async function addToTrackedProducts(productUrl:string,userId:string){
+export async function addToTrackedProducts(productUrl:string,userId:string): Promise<ProductOutputType>{
 
     const {productPlatform,productCode}=extractProductCodeAndPlatform(productUrl);
     
