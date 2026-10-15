@@ -1,8 +1,9 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../../client";
-import { products, ProductType } from "../../schemas";
+import { products } from "../../schemas";
+import { ProductInputType } from "@repo/types";
 
-export async function findProductWithGivenPlatformAndCode(productPlatform:ProductType["productPlatform"],productCode:ProductType["productCode"]){
+export async function findProductInProductsTable(productPlatform:ProductInputType["productPlatform"],productCode:ProductInputType["productCode"]){
 
     const [foundProduct]= await db.select().from(products).where(and(eq(products.productCode,productCode),eq(products.productPlatform,productPlatform))).limit(1);
 
