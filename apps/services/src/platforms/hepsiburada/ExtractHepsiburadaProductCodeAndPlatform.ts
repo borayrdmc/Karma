@@ -3,7 +3,7 @@ import { ProductInputType } from "@repo/types";
 
 export function extractHepsiburadaProductCodeAndPlatform(url:string):{productPlatform:ProductInputType["productPlatform"],productCode:ProductInputType["productCode"]}{
 
-    const match = url.match(/-p-([A-Za-z0-9]+)(?:[/?#].*)?$/); //2nd part is for search params
+    const match = url.match(/-p[m]?-([A-Za-z0-9]+)(?:[/?#].*)?$/); //2nd part is for search params
 
     if(!match || !match[1]){
         throw new ServiceError("Product code not found in given URL.",400);
