@@ -9,7 +9,7 @@ export const products = pgTable("products",{
 
     productId: uuid("product_id").primaryKey().defaultRandom(),
     productUrl: text("product_url").notNull(),
-	productName: text("product_name"),
+	productName: text("product_name").notNull(),
     productPlatform: platformEnum("product_platform").notNull(),
     productCode: text("product_code").notNull(),
 	},
