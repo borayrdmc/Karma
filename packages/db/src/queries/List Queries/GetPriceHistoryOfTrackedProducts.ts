@@ -11,5 +11,3 @@ export async function getPriceHistoryOfTrackedProducts(trackedProductList:Tracke
 
     return priceHistoryList
 }
-
-//Find eklemek?
