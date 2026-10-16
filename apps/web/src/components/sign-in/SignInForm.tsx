@@ -47,7 +47,7 @@ export function SignInForm(){
             } 
             else{
                 console.log("Giriş Başarılı! Kullanıcı Verisi:", res.data);
-                router.push("/");
+                router.push("/dashboard");
             }
         } 
         catch{
