@@ -6,21 +6,27 @@ export async function listTrackedProducts(userId: string): Promise<TrackedProduc
 
     const trackedProductList = await getTrackedProducts(userId);
 
+    if(trackedProductList.length===0){
+        return [];
+    }
+
     const [productInfoList, priceHistoryList] = await Promise.all([
         getProductInfoOfTrackedProducts(trackedProductList),
         getPriceHistoryOfTrackedProducts(trackedProductList),
     ]);
 
-    const productList= priceHistoryList.map(({trackedProduct, productPriceHistory})=>{
+    const trackedProductItemList=trackedProductList.map((trackedProduct)=>{
 
-        const product = productInfoList.find(product => product.productId===trackedProduct.productId);
+        const matchedProduct=productInfoList.find(productItem=>productItem.productId===trackedProduct.productId);
 
-        if(!product){
-            throw new ServiceError(`Product data not found for id: ${trackedProduct.productId}`,404);
+        const productPriceHistory = priceHistoryList.filter(priceHistoryItem => priceHistoryItem.productId === trackedProduct.productId);
+
+        if(!matchedProduct){
+            throw new ServiceError(`Product data not found for id: ${trackedProduct.productId}`, 404);
         }
 
-        return {trackedProduct, product, productPriceHistory};
+        return {trackedProduct,product:matchedProduct,productPriceHistory};
     });
 
-    return productList;
+    return trackedProductItemList;
 }
