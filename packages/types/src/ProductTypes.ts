@@ -2,7 +2,7 @@ export interface ProductInputType{
     productUrl:string;
     productPlatform:"trendyol" | "hepsiburada"
     productCode:string;
-    productName?:string|null;
+    productName:string;
 }
 export interface ProductOutputType{
     productUrl:string;

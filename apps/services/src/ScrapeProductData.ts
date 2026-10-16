@@ -1,7 +1,8 @@
 import { ScraperDataType } from "@repo/types";
-import { hepsiburadaService } from "./platforms/hepsiburada/HepsiburadaService";
-import { trendyolService } from "./platforms/trendyol/TrendyolService";
+
 import { ServiceError } from "@repo/errors";
+import { hepsiburadaService } from "./platforms/HepsiburadaService";
+import { trendyolService } from "./platforms/TrendyolService";
 
 export async function scrapeProductData(productUrl:string): Promise<ScraperDataType>{
 
