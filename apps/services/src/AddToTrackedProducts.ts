@@ -1,9 +1,9 @@
-import { ProductOutputType, ScraperDataType } from "@repo/types";
-import { createNewProduct, findProductInProductsTable, insertPriceData, trackProduct } from "@repo/db";
+import { ScraperDataType, TrackedProductItemType } from "@repo/types";
+import { createNewProduct, findProductInProductsTable, getPriceHistoryOfProduct, insertPriceData, trackProduct } from "@repo/db";
 import { extractProductCodeAndPlatform } from "./platforms/ExtractProductCodeAndPlatform";
 import { scrapeProductData } from "./ScrapeProductData";
 
-export async function addToTrackedProducts(productUrl:string,userId:string): Promise<ProductOutputType>{
+export async function addToTrackedProducts(productUrl:string,userId:string): Promise<TrackedProductItemType>{
 
     const {productPlatform,productCode}=extractProductCodeAndPlatform(productUrl);
     
@@ -11,9 +11,13 @@ export async function addToTrackedProducts(productUrl:string,userId:string): Pro
 
     if(matchedProduct!==undefined){
 
-        await trackProduct({userId,productId:matchedProduct.productId});
+        const trackedProduct=await trackProduct({userId,productId:matchedProduct.productId});
 
-        return matchedProduct;
+        const productPriceHistory=await getPriceHistoryOfProduct(matchedProduct.productId);
+
+        const trackedProductItem:TrackedProductItemType={trackedProduct,product:matchedProduct,productPriceHistory}
+
+        return trackedProductItem;
     }
 
     else{
@@ -21,9 +25,11 @@ export async function addToTrackedProducts(productUrl:string,userId:string): Pro
         const scraperData:ScraperDataType=await scrapeProductData(productUrl);
 
         const createdProduct=await createNewProduct(scraperData.productData)
-        await trackProduct({userId,productId:createdProduct.productId});
-        await insertPriceData({price:scraperData.price,productId:createdProduct.productId});
+        const trackedProduct=await trackProduct({userId,productId:createdProduct.productId});
+        const currentProductPrice=await insertPriceData({price:scraperData.price,productId:createdProduct.productId});
 
-        return createdProduct;
+        const trackedProductItem:TrackedProductItemType={trackedProduct,product:createdProduct,productPriceHistory:[currentProductPrice]}
+
+        return trackedProductItem;
     }
 }
