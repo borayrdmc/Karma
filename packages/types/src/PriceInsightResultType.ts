@@ -5,4 +5,6 @@ export interface PriceInsightResultType{
     status:PriceStatus;
     priceChangeAmount?:number;
     priceChangePercent?:number; 
+    recentDropPercent?:number; 
+    recentDropAmount?:number;
 }
