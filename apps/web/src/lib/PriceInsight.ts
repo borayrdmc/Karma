@@ -136,7 +136,10 @@ export function PriceInsight(productPriceHistory: PriceHistoryOutputType[]):Pric
                 const priceChangeAmount=latestPrice-lowestPriceBeforePeak;
                 const fakeIncreasePercentageRounded=Math.round(rawFakeIncreasePercentage);
                
-                return{status:"fake_discount",priceChangePercent:fakeIncreasePercentageRounded,priceChangeAmount};
+                const discountPercentageRounded=Math.round(rawDiscountPercentage);
+                const recentDropAmount=peakPrice-latestPrice;
+
+                return{status:"fake_discount",priceChangePercent:fakeIncreasePercentageRounded,priceChangeAmount,recentDropPercent:discountPercentageRounded,recentDropAmount};
             }
         }
     }
