@@ -9,5 +9,5 @@ export interface ProductOutputType{
     productId:string;
     productPlatform:"trendyol" | "hepsiburada"
     productCode:string;
-    productName?:string|null;
+    productName:string|null;
 }
