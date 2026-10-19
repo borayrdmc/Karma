@@ -2,6 +2,7 @@
 
 import { TrackedProductItemType } from "@repo/types";
 import { useState } from "react"
+import { ProductCard } from "./ProductCard";
 
 interface dashboardProps{
 
@@ -15,12 +16,21 @@ export function Dashboard({trackedProductsList,userName}:dashboardProps){
     const [selectedProduct,setSelectedProduct]=useState<TrackedProductItemType|null>(null);
 
     return(
+
         <div className="min-h-screen p-6">
             <h1 className="text-2xl font-bold mb-4">Hoş geldin, {userName}!</h1>
             <p className="mb-4 text-gray-600">Takip edilen ürün sayısı: {clientTrackedProductsList.length}</p>
-            <pre className="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm">
-                {JSON.stringify(clientTrackedProductsList,null,2)}
-            </pre>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-6">
+            {clientTrackedProductsList.map((item) => (
+                <ProductCard
+                    key={item.product.productId}
+                    productItem={item}
+                    setModal={(selected) => setSelectedProduct(selected)}
+                    deleteProduct={(id) => console.log("Silinecek ID:", id)}
+                />
+            ))}
+        </div>
         </div>
     );
 }
