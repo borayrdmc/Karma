@@ -8,8 +8,9 @@ interface ProductCardProps{
 
     productItem:TrackedProductItemType;
     setModal:(productItem:TrackedProductItemType)=>void;
-    deleteProduct:(trackedProductId:string)=>void;
+    deleteProduct:()=>void;
 }
+
 export function ProductCard({productItem,setModal,deleteProduct}:ProductCardProps){
 
     const {product,trackedProduct,productPriceHistory}=productItem
@@ -53,7 +54,7 @@ export function ProductCard({productItem,setModal,deleteProduct}:ProductCardProp
 
             <div className="flex flex-row items-center justify-between gap-2 mt-auto">
                 <RedirectToProductPageButton productUrl={productItem.product.productUrl} productPlatform={productItem.product.productPlatform}/>                
-                <DeleteProductButton productId={productItem.product.productId} deleteProduct={()=>deleteProduct(productItem.product.productId)}/>
+                <DeleteProductButton productId={productItem.product.productId} deleteProduct={deleteProduct}/>
             </div>
         </div>
     )
