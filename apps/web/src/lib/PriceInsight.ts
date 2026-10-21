@@ -1,7 +1,6 @@
 import { PriceHistoryOutputType, PriceInsightResultType } from "@repo/types";
 
 const TIME_WINDOW=30;
-const MINIMUM_PRICE_CHANGE_THRESHOLD_PERCENT=1;
 
 export function PriceInsight(productPriceHistory: PriceHistoryOutputType[]):PriceInsightResultType{
 
@@ -35,9 +34,11 @@ export function PriceInsight(productPriceHistory: PriceHistoryOutputType[]):Pric
     if(!latestPriceItem || !previousPriceItem){
         return {status:"insufficient_data"};
     }
+
     else if(latestPrice===previousPrice){
         return {status:"no_change"}
     }
+
     else if(latestPrice>previousPrice){
         
         let basePrice=latestPrice;
@@ -54,18 +55,13 @@ export function PriceInsight(productPriceHistory: PriceHistoryOutputType[]):Pric
             }
         }
 
-        const rawIncreasePercentage=((latestPrice-basePrice)/basePrice)*100;
+        const increasePercentage=((latestPrice-basePrice)/basePrice)*100;
+ 
+        const priceChangeAmount=latestPrice-basePrice;
 
-        if(rawIncreasePercentage<MINIMUM_PRICE_CHANGE_THRESHOLD_PERCENT){
-            return {status:"no_change"};
-        } 
-        else{
-            const priceChangeAmount=latestPrice-basePrice;
-            const increasePercentageRounded=Math.round(rawIncreasePercentage);
-
-            return {status:"price_increase",priceChangePercent:increasePercentageRounded,priceChangeAmount};
-        }
+        return {status:"price_increase",priceChangePercent:increasePercentage,priceChangeAmount};
     }
+
     else{
         
         let peakIndex=pricesInsideTimeWindow.length-1;
@@ -84,19 +80,15 @@ export function PriceInsight(productPriceHistory: PriceHistoryOutputType[]):Pric
             }
         }
 
-        const rawDiscountPercentage=((peakPrice-latestPrice)/peakPrice*100);
+        const discountPercentage=((peakPrice-latestPrice)/peakPrice*100);
 
         if(peakIndex===0){
 
-            if(rawDiscountPercentage<MINIMUM_PRICE_CHANGE_THRESHOLD_PERCENT){
-                return{status:"no_change"};
-            }
-
             const priceChangeAmount=peakPrice-latestPrice;
-            const discountPercentageRounded=Math.round(rawDiscountPercentage);
 
-            return {status:"real_discount",priceChangePercent:discountPercentageRounded,priceChangeAmount};
+            return {status:"real_discount",priceChangePercent:discountPercentage,priceChangeAmount};
         }
+
         else{
             
             let lowestPriceBeforePeak=Infinity;
@@ -111,35 +103,24 @@ export function PriceInsight(productPriceHistory: PriceHistoryOutputType[]):Pric
                 }
             }
             
-            if(latestPrice<lowestPriceBeforePeak){
+            if(latestPrice<=lowestPriceBeforePeak){
 
-                const rawRealDiscountPercentage=((lowestPriceBeforePeak-latestPrice)/lowestPriceBeforePeak)*100;
-
-                if(rawRealDiscountPercentage<MINIMUM_PRICE_CHANGE_THRESHOLD_PERCENT){
-                    return{status: "no_change"};
-                }
+                const realDiscountPercentage=((lowestPriceBeforePeak-latestPrice)/lowestPriceBeforePeak)*100;
 
                 const priceChangeAmount=lowestPriceBeforePeak-latestPrice;
-                const realDiscountPercentageRounded=Math.round(rawRealDiscountPercentage);
 
-                return{status:"real_discount",priceChangePercent:realDiscountPercentageRounded,priceChangeAmount};
+                return{status:"real_discount",priceChangePercent:realDiscountPercentage,priceChangeAmount};
             }
 
             else{
 
-                const rawFakeIncreasePercentage=((latestPrice-lowestPriceBeforePeak)/lowestPriceBeforePeak)*100;
-
-                if(rawFakeIncreasePercentage<MINIMUM_PRICE_CHANGE_THRESHOLD_PERCENT){
-                    return {status:"no_change"};
-                }
+                const realIncreasePercentage=((latestPrice-lowestPriceBeforePeak)/lowestPriceBeforePeak)*100;
 
                 const priceChangeAmount=latestPrice-lowestPriceBeforePeak;
-                const fakeIncreasePercentageRounded=Math.round(rawFakeIncreasePercentage);
                
-                const discountPercentageRounded=Math.round(rawDiscountPercentage);
                 const recentDropAmount=peakPrice-latestPrice;
 
-                return{status:"fake_discount",priceChangePercent:fakeIncreasePercentageRounded,priceChangeAmount,recentDropPercent:discountPercentageRounded,recentDropAmount};
+                return{status:"fake_discount",priceChangePercent:realIncreasePercentage,priceChangeAmount,recentDropPercent:discountPercentage,recentDropAmount};
             }
         }
     }
