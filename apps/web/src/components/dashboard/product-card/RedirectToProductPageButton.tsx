@@ -11,6 +11,8 @@ export function RedirectToProductPageButton({productUrl,productPlatform}:Redirec
     
     return(
         <a
+            aria-label="Ürün sayfasına git"
+            title="Ürün sayfasına git"
             href={productUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -19,7 +21,4 @@ export function RedirectToProductPageButton({productUrl,productPlatform}:Redirec
             Siteye Git <ShoppingCart className='size-3'/> - {productPlatformUppercase}
         </a>
     )
-
-
-
 }
