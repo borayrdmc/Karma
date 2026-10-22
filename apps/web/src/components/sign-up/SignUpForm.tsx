@@ -23,6 +23,8 @@ export function SignUpForm(){
     async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>){
 
         e.preventDefault();
+        setFieldErrors({});
+        setServerError("");
 
         const rawFormData=new FormData(e.currentTarget);
         const formDataObject=Object.fromEntries(rawFormData);
@@ -67,45 +69,45 @@ export function SignUpForm(){
             }
 
             <div className="flex flex-col gap-1">
-                <label>İsim</label>
+                <label className="text-xs font-medium text-zinc-300 ml-0.5">İsim</label>
                 <input 
                     name="name"
                     type="text"
                     placeholder="İsim Soyisim"
-                    className="rounded-md border-2 px-1 py-1"
+                    className="rounded-xl border border-zinc-800 bg-zinc-950/70 px-3.5 py-2 text-sm text-[#F4F4F4] placeholder:text-zinc-600 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/40 transition-all duration-150"
                 />
-                {fieldErrors.name && <div className="text-sm text-red-500">{fieldErrors.name[0]}</div>}
+                {fieldErrors.name && <div className="text-xs text-rose-400 mt-0.5 ml-0.5">{fieldErrors.name[0]}</div>}
             </div>
             
             <div className="flex flex-col gap-1">
-                <label>E-Mail</label>
+                <label className="text-xs font-medium text-zinc-300 ml-0.5">E-Mail</label>
                 <input
                     name="email"
                     type="email"
                     placeholder="ornek@mail.com"
-                    className="rounded-md border-2 px-1 py-1"
+                    className="rounded-xl border border-zinc-800 bg-zinc-950/70 px-3.5 py-2 text-sm text-[#F4F4F4] placeholder:text-zinc-600 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/40 transition-all duration-150"
                 />
-                {fieldErrors.email && <div className="text-sm text-red-500">{fieldErrors.email[0]}</div>}
+                {fieldErrors.email && <div className="text-xs text-rose-400 mt-0.5 ml-0.5">{fieldErrors.email[0]}</div>}
             </div>
 
             <div className="flex flex-col gap-1">
-                <label>Şifre</label>
+                <label className="text-xs font-medium text-zinc-300 ml-0.5">Şifre</label>
                 <input 
                     name="password"
                     type="password"
                     placeholder="********"
-                    className="rounded-md border-2 px-1 py-1"
+                    className="rounded-xl border border-zinc-800 bg-zinc-950/70 px-3.5 py-2 text-sm text-[#F4F4F4] placeholder:text-zinc-600 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/40 transition-all duration-150"
                 />
-                {fieldErrors.password && <div className="text-sm text-red-500">{fieldErrors.password[0]}</div>}
+                {fieldErrors.password && <div className="text-xs text-rose-400 mt-0.5 ml-0.5">{fieldErrors.password[0]}</div>}
             </div>
 
             <div className="flex flex-col gap-1">
                 <SignUpButton isLoading={isLoading} />
-                <div className="text-center">Hesabın var mı? <span><Link href="/signin" className="cursor-pointer text-blue-700">Giriş Yap!</Link></span></div>
+                <div className="text-center text-xs text-zinc-400 mt-1">Hesabın var mı? <span><Link href="/signin" className="cursor-pointer text-emerald-400 hover:text-emerald-300 font-medium hover:underline transition-colors ml-0.5">Giriş Yap!</Link></span></div>
             </div>
 
             {serverError && 
-                <div className="rounded-md bg-red-50 p-2.5 text-sm text-red-600 border border-red-200">
+                <div className="rounded-xl bg-rose-950/30 p-2.5 text-xs text-rose-300 border border-rose-900/50">
                     {serverError}
                 </div>
             }
