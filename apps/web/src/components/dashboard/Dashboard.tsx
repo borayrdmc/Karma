@@ -6,6 +6,7 @@ import { ProductCard } from "./product-card/ProductCard";
 import { AddProductButton } from "./product-card/AddProductButton";
 import { AddProductModal } from "./modals/AddProductModal";
 import { DeleteProductModal } from "./modals/DeleteProductModal";
+import { ProductDetailsModal } from "./modals/ProductDetailsModal";
 
 interface dashboardProps{
     trackedProductsList:TrackedProductItemType[];
@@ -56,6 +57,10 @@ export function Dashboard({trackedProductsList,userName}:dashboardProps){
                 productToBeDeleted={productToBeDeleted}
                 onClose={() => setProductToBeDeleted(null)}
                 onDelete={handleProductDeleted}
+            />
+            <ProductDetailsModal
+                productData={selectedProduct}
+                onClose={()=>setSelectedProduct(null)}
             />
         </>
     );
