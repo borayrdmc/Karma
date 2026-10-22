@@ -31,9 +31,9 @@ function CustomTooltip({ hoveredPoint }: { hoveredPoint: ChartDataItem | null })
     if (!hoveredPoint) return null;
 
     return (
-        <div className="rounded-lg border border-gray-200 bg-white p-2.5 shadow-xl">
-            <p className="text-[11px] font-medium text-gray-400">{hoveredPoint.fullDate}</p>
-            <p className="text-sm font-bold text-gray-900 mt-0.5">
+        <div className="rounded-xl border border-zinc-800 bg-[#16171a]/95 p-2.5 shadow-2xl backdrop-blur-md">
+            <p className="text-[11px] font-medium text-zinc-400">{hoveredPoint.fullDate}</p>
+            <p className="text-sm font-bold text-[#F4F4F4] mt-0.5">
                 {formatPrice(hoveredPoint.price)}
             </p>
         </div>
@@ -142,13 +142,13 @@ export function PriceChart({ priceHistory }: PriceChartProps) {
                     {/* Degrade (Gradient) Mavi Gölge Tanımı */}
                     <defs>
                         <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#2563eb" stopOpacity={0.22} />
-                            <stop offset="95%" stopColor="#2563eb" stopOpacity={0.0} />
+                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.20} />
+                            <stop offset="95%" stopColor="#10b981" stopOpacity={0.0} />
                         </linearGradient>
                     </defs>
 
-                    {/* Arka Plandaki Yatay Kesik Çizgiler */}
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+
+
 
                     {/* X Ekseni */}
                     <XAxis
@@ -157,9 +157,9 @@ export function PriceChart({ priceHistory }: PriceChartProps) {
                         domain={[0, chartData.length - 1]}
                         ticks={chartData.map((d) => d.index)}
                         tickFormatter={(idx) => chartData[idx]?.date ?? ""}
-                        axisLine={{ stroke: "#cbd5e1", strokeWidth: 1.5 }}
-                        tickLine={{ stroke: "#cbd5e1" }}
-                        tick={{ fontSize: 11, fill: "#64748b" }}
+                        axisLine={{ stroke: "#27272a", strokeWidth: 1.5 }}
+                        tickLine={{ stroke: "#27272a" }}
+                        tick={{ fontSize: 11, fill: "#a1a1aa" }}
                         dy={6}
                     />
 
@@ -172,9 +172,9 @@ export function PriceChart({ priceHistory }: PriceChartProps) {
                         ticks={yAxisTicks}
                         interval={0}
                         width="auto"
-                        axisLine={{ stroke: "#cbd5e1", strokeWidth: 1.5 }}
-                        tickLine={{ stroke: "#cbd5e1" }}
-                        tick={{ fontSize: 11, fill: "#64748b" }}
+                        axisLine={{ stroke: "#27272a", strokeWidth: 1.5 }}
+                        tickLine={{ stroke: "#27272a" }}
+                        tick={{ fontSize: 11, fill: "#a1a1aa" }}
                         tickFormatter={(val) => `${Number(val).toLocaleString("tr-TR")} ₺`}
                     />
 
@@ -186,7 +186,7 @@ export function PriceChart({ priceHistory }: PriceChartProps) {
                                     { x: hoveredPoint.index, y: minDomain },
                                     { x: hoveredPoint.index, y: hoveredPoint.price },
                                 ]}
-                                stroke="#64748b"
+                                stroke="#3f3f46"
                                 strokeDasharray="4 4"
                                 strokeWidth={1.5}
                                 style={{ pointerEvents: "none" }}
@@ -196,7 +196,7 @@ export function PriceChart({ priceHistory }: PriceChartProps) {
                                     { x: 0, y: hoveredPoint.price },
                                     { x: hoveredPoint.index, y: hoveredPoint.price },
                                 ]}
-                                stroke="#64748b"
+                                stroke="#3f3f46"
                                 strokeDasharray="4 4"
                                 strokeWidth={1.5}
                                 style={{ pointerEvents: "none" }}
@@ -216,7 +216,7 @@ export function PriceChart({ priceHistory }: PriceChartProps) {
                     <Area
                         type="linear"
                         dataKey="price"
-                        stroke="#2563eb"
+                        stroke="#10b981"
                         strokeWidth={2.5}
                         fill="url(#priceGradient)"
                         isAnimationActive={false}
@@ -232,8 +232,8 @@ export function PriceChart({ priceHistory }: PriceChartProps) {
                                         cx={cx}
                                         cy={cy}
                                         r={isHovered ? 6 : 4}
-                                        fill={isHovered ? "#1d4ed8" : "#2563eb"}
-                                        stroke="#ffffff"
+                                        fill={isHovered ? "#34d399" : "#10b981"}
+                                        stroke="#16171a"
                                         strokeWidth={2}
                                         style={{ pointerEvents: "none" }}
                                     />
