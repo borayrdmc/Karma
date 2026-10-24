@@ -16,9 +16,9 @@ export function RedirectToProductPageButton({productUrl,productPlatform}:Redirec
             href={productUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-md bg-orange-50 px-2.5 h-8 text-xs font-semibold text-orange-600 border border-orange-200 hover:bg-orange-100 transition-colors"
+            className="flex-1 min-w-0 inline-flex items-center justify-center gap-1 overflow-hidden whitespace-nowrap rounded-lg bg-[#f75d00] hover:bg-[#ff7214] px-1.5 h-8 text-xs font-semibold text-[#F4F4F4] transition-all cursor-pointer shadow-sm"
         >   
-            Siteye Git <ShoppingCart className='size-3'/> - {productPlatformUppercase}
+            Siteye Git <ShoppingCart className='size-3.5 text-[#F4F4F4]'/> - {productPlatformUppercase}
         </a>
     )
 }
