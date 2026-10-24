@@ -1,93 +1,102 @@
 import { formatPrice } from "@/lib";
 import { PriceInsightResultType } from "@repo/types";
 import { MoveUp, MoveDown } from 'lucide-react';
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 
 interface PriceSectionProps{
 
     priceInsightResult:PriceInsightResultType;
     formattedPrice:string;
     formattedLastChangeTime:string;
+    priceHistoryLength:number;
 }
 
-export function PriceSection({priceInsightResult,formattedPrice,formattedLastChangeTime}:PriceSectionProps){
+function formatTooltipText(percent:number|undefined, amount:number|undefined, label:"İndirim" | "Zam"){
+
+    const formattedAmount=formatPrice(Math.round(amount ?? 0));
+    
+    if(percent!=null && percent>=5){
+        return `%${Math.round(percent)} - ${formattedAmount} ${label}`;
+    }
+    return `${formattedAmount} ${label}`;
+}
+
+export function PriceSection({priceInsightResult,formattedPrice,formattedLastChangeTime,priceHistoryLength}:PriceSectionProps){
     
     return(
         
         <div className="flex flex-col gap-1">
 
-            <div className="flex flex-row items-center gap-2">
+            <div className="flex flex-row flex-wrap items-center gap-x-2 gap-y-1">
             
-                <span className="text-xl font-bold tracking-tight text-gray-900">
+                <span className="text-xl font-bold tracking-tight text-[#F4F4F4]">
                     {formattedPrice}
                 </span>
 
                 {priceInsightResult.status==="real_discount" && (
-
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        <MoveDown className="size-3"/>
-                        
-                        {(priceInsightResult.priceChangePercent ?? 0) >=5 && (
-                            <span> %{Math.round(priceInsightResult.priceChangePercent ?? 0)} - </span>
-                        )}
-                    
-                        {formatPrice(priceInsightResult.priceChangeAmount ?? 0)}
-                    </span>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span className="inline-flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 cursor-help">
+                                <MoveDown className="size-3"/>
+                                {formatPrice(Math.round(priceInsightResult.priceChangeAmount ?? 0))}
+                            </span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            {formatTooltipText(priceInsightResult.priceChangePercent, priceInsightResult.priceChangeAmount, "İndirim")}
+                        </TooltipContent>
+                    </Tooltip>
                 )}
 
                 {priceInsightResult.status==="price_increase" && (
-                    
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-md bg-rose-50 text-rose-700 border border-rose-200">
-
-                        <MoveUp className="size-3"/>
-
-                        {(priceInsightResult.priceChangePercent ?? 0) >=5 && (
-                            <span>%{Math.round(priceInsightResult.priceChangePercent ?? 0)} - </span>
-                        )}
-
-                        {formatPrice(priceInsightResult.priceChangeAmount ?? 0)}
-                    </span>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span className="inline-flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded-md bg-rose-500/10 text-rose-400 border border-rose-500/25 cursor-help">
+                                <MoveUp className="size-3"/>
+                                {formatPrice(Math.round(priceInsightResult.priceChangeAmount ?? 0))}
+                            </span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            {formatTooltipText(priceInsightResult.priceChangePercent, priceInsightResult.priceChangeAmount, "Zam")}
+                        </TooltipContent>
+                    </Tooltip>
                 )}
 
                 {priceInsightResult.status==="fake_discount" && (
-
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold bg-gray-100 px-2 py-1 rounded-md ">
-
-                        <MoveDown className="size-3"/>
-
-                        {(priceInsightResult.recentDropPercent ?? 0) >= 5 && (
-                            <span>%{Math.round(priceInsightResult.recentDropPercent ?? 0)} - </span>
-                        )}
-
-                        {formatPrice(priceInsightResult.recentDropAmount ?? 0)}
-                    </span>
-                )}
-
-                {(priceInsightResult.status==="no_change" || priceInsightResult.status==="insufficient_data") && (
-                    <span className="inline-flex items-center text-xs font-semibold px-2 py-1 rounded-md bg-gray-100 text-gray-600">
-                        Fiyat Değişimi Yok
-                    </span> 
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span className="inline-flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded-md bg-zinc-800/80 text-zinc-300 border border-zinc-700/60 cursor-help">
+                                <MoveDown className="size-3"/>
+                                {formatPrice(Math.round(priceInsightResult.recentDropAmount ?? 0))}
+                            </span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            {formatTooltipText(priceInsightResult.recentDropPercent, priceInsightResult.recentDropAmount, "İndirim")}
+                        </TooltipContent>
+                    </Tooltip>
                 )}
 
             </div> 
 
             {priceInsightResult.status==="fake_discount" && (
                 
-                <span className="inline-flex justify-center  gap-1 rounded-md bg-amber-50 px-2 py-1 text-xs font-semibold text-amber-800 border border-amber-300">
-
+                <span className="inline-flex items-center justify-center gap-1 rounded-md bg-amber-500/10 px-1.5 py-0.5 text-xs font-semibold text-amber-400 border border-amber-500/25">
                         Sahte İndirim Şüphesi
-                        <MoveUp className="size-3 translate-y-0.5"/>
-
-                        {(priceInsightResult.priceChangePercent ?? 0) >=5 && (
-                            <span> %{Math.round(priceInsightResult.priceChangePercent ?? 0)} - </span>
-                        )}
-                        
-                        {formatPrice(priceInsightResult.priceChangeAmount ?? 0)}
+                        <MoveUp className="size-3"/>
+                        {formatPrice(Math.round(priceInsightResult.priceChangeAmount ?? 0))}
                 </span>
             )}
 
-            <p className="text-xs text-gray-400">
-                Son fiyat değişimi: <span className="font-medium text-gray-500" suppressHydrationWarning>{formattedLastChangeTime}</span>
-            </p>
+            {priceHistoryLength>1 ? (
+                <p className="text-xs text-zinc-500">
+                    Son fiyat değişimi: <span className="font-medium text-zinc-400" suppressHydrationWarning>{formattedLastChangeTime}</span>
+                </p>
+                ) : (
+                <p className="text-xs text-zinc-500">
+                    Takibe başlandı: <span className="font-medium text-zinc-400">{formattedLastChangeTime}</span>
+                </p>
+            )}
+                
+            
 
         </div>
     )
