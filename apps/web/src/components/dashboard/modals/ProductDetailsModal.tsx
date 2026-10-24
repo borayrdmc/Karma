@@ -16,8 +16,10 @@ export function ProductDetailsModal({productData,onClose}:ProductDetailsModalPro
 
     const priceAndDateList=productData?.productPriceHistory.map((item)=>({price: Number(item.price),date: item.checkedAt,})) ?? [];
 
-    const peakRecord=priceAndDateList.reduce((min, curr) => (curr.price > min.price ? curr : min), priceAndDateList[0]);
-    const baseRecord=priceAndDateList.reduce((max, curr) => (curr.price < max.price ? curr : max),priceAndDateList[0]);
+    const hasMultipleRecords=priceAndDateList.length>1;
+    const peakRecord=hasMultipleRecords ? priceAndDateList.reduce((peak, curr) => (curr.price > peak.price ? curr : peak)) : null;
+    const baseRecord=hasMultipleRecords ? priceAndDateList.reduce((base, curr) => (curr.price < base.price ? curr : base)) : null;
+    
     const currentRecord=priceAndDateList.at(-1);
 
     const customName=productData?.trackedProduct.customName;
