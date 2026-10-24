@@ -31,9 +31,9 @@ function CustomTooltip({ hoveredPoint }: { hoveredPoint: ChartDataItem | null })
     if (!hoveredPoint) return null;
 
     return (
-        <div className="rounded-xl border border-zinc-800 bg-[#16171a]/95 p-2.5 shadow-2xl backdrop-blur-md">
-            <p className="text-[11px] font-medium text-zinc-400">{hoveredPoint.fullDate}</p>
-            <p className="text-sm font-bold text-[#F4F4F4] mt-0.5">
+        <div className="flex flex-col gap-0.5 rounded-xl border border-zinc-800 bg-[#16171a]/95 p-2.5 shadow-2xl backdrop-blur-md">
+            <p className="text-xs font-medium text-zinc-400">{hoveredPoint.fullDate}</p>
+            <p className="text-sm font-bold text-[#F4F4F4]">
                 {formatPrice(hoveredPoint.price)}
             </p>
         </div>
@@ -46,12 +46,14 @@ export function PriceChart({ priceHistory }: PriceChartProps) {
     // 1. Kenar Senaryo: 2'den az veri varsa bilgilendirme ekranı göster
     if (!priceHistory || priceHistory.length < 2) {
         return (
-            <div className="w-full h-64 rounded-xl border border-dashed border-gray-200 bg-gray-50/50 flex flex-col items-center justify-center text-center p-6 text-gray-400">
-                <TrendingUp className="size-8 mb-2 text-gray-300 stroke-1" />
-                <p className="text-sm font-medium text-gray-600">Henüz Yeterli Grafik Verisi Yok</p>
-                <p className="text-xs text-gray-400 mt-1 max-w-xs">
-                    Fiyat değişim grafiğinin oluşabilmesi için en az 2 farklı zaman kontrolü gereklidir.
-                </p>
+            <div className="flex h-64 w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-zinc-800/80 bg-zinc-900/30 p-6 text-center">
+                <TrendingUp className="size-8 text-zinc-500 stroke-1" />
+                <div className="flex flex-col gap-1">
+                    <p className="text-sm font-medium text-[#F4F4F4]">Henüz Yeterli Grafik Verisi Yok</p>
+                    <p className="max-w-xs text-xs text-zinc-400">
+                        Fiyat değişim grafiğinin oluşabilmesi için en az 2 farklı fiyat kaydı gereklidir.
+                    </p>
+                </div>
             </div>
         );
     }
@@ -146,9 +148,6 @@ export function PriceChart({ priceHistory }: PriceChartProps) {
                             <stop offset="95%" stopColor="#10b981" stopOpacity={0.0} />
                         </linearGradient>
                     </defs>
-
-
-
 
                     {/* X Ekseni */}
                     <XAxis
