@@ -1,6 +1,7 @@
 import { PriceHistoryOutputType, PriceInsightResultType } from "@repo/types";
 
 const TIME_WINDOW=30;
+const FAKE_DISCOUNT_MAX_AGE_DAYS=7;
 
 export function PriceInsight(productPriceHistory: PriceHistoryOutputType[]):PriceInsightResultType{
 
@@ -17,7 +18,7 @@ export function PriceInsight(productPriceHistory: PriceHistoryOutputType[]):Pric
         const oldestRecord=pricesOutsideTimeWindow.at(-1);
 
         if(pricesInsideTimeWindow.length===0){
-            return {status:"no_change"}
+            return {status:"insufficient_data"}
         }
 
         if(oldestRecord){
@@ -33,10 +34,6 @@ export function PriceInsight(productPriceHistory: PriceHistoryOutputType[]):Pric
 
     if(!latestPriceItem || !previousPriceItem){
         return {status:"insufficient_data"};
-    }
-
-    else if(latestPrice===previousPrice){
-        return {status:"no_change"}
     }
 
     else if(latestPrice>previousPrice){
@@ -86,6 +83,14 @@ export function PriceInsight(productPriceHistory: PriceHistoryOutputType[]):Pric
 
             const priceChangeAmount=peakPrice-latestPrice;
 
+            return {status:"real_discount",priceChangePercent:discountPercentage,priceChangeAmount};
+        }
+
+        const peakRecord=pricesInsideTimeWindow[peakIndex];
+        const peakAgeInDays=peakRecord ? (Date.now() - new Date(peakRecord.checkedAt).getTime()) / (1000 * 60 * 60 * 24) : 0;
+
+        if(peakAgeInDays>FAKE_DISCOUNT_MAX_AGE_DAYS){
+            const priceChangeAmount=peakPrice-latestPrice;
             return {status:"real_discount",priceChangePercent:discountPercentage,priceChangeAmount};
         }
 
