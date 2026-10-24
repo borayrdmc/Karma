@@ -24,13 +24,13 @@ export function ProductCard({productItem,setModal,deleteProduct}:ProductCardProp
 
     return( 
 
-        <div className="w-full min-w-0 group flex flex-col gap-3">
+        <div className="w-full min-w-0 group flex flex-col gap-2.5 rounded-2xl border border-zinc-800/80 bg-[#16171a] p-2.5 transition-all duration-200 hover:border-emerald-500/40 hover:shadow-[0_0_30px_-10px_rgba(16,185,129,0.35)]">
 
-            <div className="flex flex-col gap-3 cursor-pointer" onClick={()=>setModal(productItem)}>
+            <div className="flex flex-col gap-2.5 cursor-pointer" onClick={()=>setModal(productItem)}>
 
-                <div className="relative aspect-4/3 w-full rounded-xl bg-gray-50 border border-gray-100 flex flex-col items-center justify-center text-gray-300 group-hover:bg-gray-100/70 transition-colors">
+                <div className="relative aspect-4/5 w-full rounded-xl bg-zinc-900/60 border border-zinc-800/80 flex flex-col items-center justify-center gap-1 text-zinc-600 group-hover:bg-zinc-900 transition-colors">
                     <svg
-                        className="w-10 h-10 mb-1 stroke-1"
+                        className="size-8 stroke-1"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -41,18 +41,18 @@ export function ProductCard({productItem,setModal,deleteProduct}:ProductCardProp
                             d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
                         />
                     </svg>
-                    <span className="text-[11px] font-medium text-gray-400">Görsel Yakında</span>
+                    <span className="text-xs font-medium text-zinc-500">Görsel Yakında</span>
                 </div>
                 
-                <h3 className="text-sm font-semibold text-gray-800 line-clamp-2 min-h-10 group-hover:text-black transition-colors">
+                <h3 className="text-sm font-semibold text-[#F4F4F4] line-clamp-2 min-h-10 transition-colors">
                     {productName}
                 </h3>
                 
-                <PriceSection priceInsightResult={definatelyPerfectAccurateInsight} formattedPrice={formattedCurrentPrice} formattedLastChangeTime={formattedLastChangeTime}/>
+                <PriceSection priceInsightResult={definatelyPerfectAccurateInsight} formattedPrice={formattedCurrentPrice} formattedLastChangeTime={formattedLastChangeTime} priceHistoryLength={productPriceHistory.length}/>
 
             </div>
 
-            <div className="flex flex-row items-center justify-between gap-2 mt-auto">
+            <div className="flex flex-row items-center justify-between gap-1.5 mt-auto">
                 <RedirectToProductPageButton productUrl={productItem.product.productUrl} productPlatform={productItem.product.productPlatform}/>                
                 <DeleteProductButton productId={productItem.product.productId} deleteProduct={deleteProduct}/>
             </div>
