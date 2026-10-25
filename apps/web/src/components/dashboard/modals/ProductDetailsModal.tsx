@@ -109,8 +109,8 @@ export function ProductDetailsModal({productData,onClose}:ProductDetailsModalPro
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
 
                         <div className="flex flex-col gap-2 rounded-xl border border-zinc-800/90 bg-zinc-900/60 p-3.5">
-                            <div className="flex items-center justify-between text-xs font-medium text-zinc-400 uppercase tracking-wider">
-                                <span>Güncel Fiyat</span>
+                            <div className="flex items-center justify-between text-xs font-medium text-zinc-400 tracking-wider">
+                                <span>GÜNCEL FİYAT</span>
                                 <Clock className="size-3.5 text-zinc-400" />
                             </div>
                             <div className="flex flex-col gap-0.5">
@@ -124,8 +124,8 @@ export function ProductDetailsModal({productData,onClose}:ProductDetailsModalPro
                         </div>
 
                         <div className="flex flex-col gap-2 rounded-xl border border-zinc-800/90 bg-zinc-900/60 p-3.5">
-                            <div className="flex items-center justify-between text-xs font-medium text-zinc-400 uppercase tracking-wider">
-                                <span>En Düşük (Dip)</span>
+                            <div className="flex items-center justify-between text-xs font-medium text-zinc-400 tracking-wider">
+                                <span>EN DÜŞÜK (DİP)</span>
                                 <TrendingDown className="size-3.5 text-emerald-400" />
                             </div>
                             <div className="flex flex-col gap-0.5">
@@ -139,8 +139,8 @@ export function ProductDetailsModal({productData,onClose}:ProductDetailsModalPro
                         </div>
 
                         <div className="flex flex-col gap-2 rounded-xl border border-zinc-800/90 bg-zinc-900/60 p-3.5">
-                            <div className="flex items-center justify-between text-xs font-medium text-zinc-400 uppercase tracking-wider">
-                                <span>En Yüksek (Zirve)</span>
+                            <div className="flex items-center justify-between text-xs font-medium text-zinc-400 tracking-wider">
+                                <span>EN YÜKSEK (ZİRVE)</span>
                                 <TrendingUp className="size-3.5 text-rose-400" />
                             </div>
                             <div className="flex flex-col gap-0.5">
@@ -155,8 +155,8 @@ export function ProductDetailsModal({productData,onClose}:ProductDetailsModalPro
                     </div>
 
                     <div className="flex flex-col gap-1 border-t border-zinc-800/80 pt-4">
-                        <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
-                            Fiyat Değişim Grafiği
+                        <p className="text-xs font-semibold text-zinc-400 tracking-wider">
+                            FİYAT DEĞİŞİM GRAFİĞİ
                         </p>
                         <PriceChart priceHistory={productData?.productPriceHistory ?? []} />
                     </div>
