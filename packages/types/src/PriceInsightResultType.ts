@@ -1,4 +1,4 @@
-export type PriceStatus ="price_increase" | "real_discount" | "fake_discount" | "insufficient_data";
+export type PriceStatus ="price_increase" | "real_discount" | "fake_discount" | "no_change" | "insufficient_data";
 
 export interface PriceInsightResultType{
 
@@ -7,4 +7,8 @@ export interface PriceInsightResultType{
     priceChangePercent?:number; 
     recentDropPercent?:number; 
     recentDropAmount?:number;
+    basePrice?:number;
+    baseDate?:Date | string;
+    peakPrice?:number;
+    peakDate?:Date | string;
 }

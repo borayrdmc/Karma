@@ -29,7 +29,7 @@ export function PriceSection({priceInsightResult,formattedPrice,formattedLastCha
 
             <div className="flex flex-row flex-wrap items-center gap-x-2 gap-y-1">
             
-                <span className="text-xl font-bold tracking-tight text-[#F4F4F4]">
+                <span className="text-xl font-bold tracking-tight leading-none text-[#F4F4F4]">
                     {formattedPrice}
                 </span>
 
@@ -77,15 +77,6 @@ export function PriceSection({priceInsightResult,formattedPrice,formattedLastCha
 
             </div> 
 
-            {priceInsightResult.status==="fake_discount" && (
-                
-                <span className="inline-flex items-center justify-center gap-1 rounded-md bg-amber-500/10 px-1.5 py-0.5 text-xs font-semibold text-amber-400 border border-amber-500/25">
-                        Sahte İndirim Şüphesi
-                        <MoveUp className="size-3"/>
-                        {formatPrice(Math.round(priceInsightResult.priceChangeAmount ?? 0))}
-                </span>
-            )}
-
             {priceHistoryLength>1 ? (
                 <p className="text-xs text-zinc-500">
                     Son fiyat değişimi: <span className="font-medium text-zinc-400" suppressHydrationWarning>{formattedLastChangeTime}</span>
@@ -96,7 +87,6 @@ export function PriceSection({priceInsightResult,formattedPrice,formattedLastCha
                 </p>
             )}
                 
-            
 
         </div>
     )

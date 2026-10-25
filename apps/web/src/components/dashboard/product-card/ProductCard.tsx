@@ -3,9 +3,9 @@ import { DeleteProductButton } from "./DeleteProductButton";
 import { RedirectToProductPageButton } from "./RedirectToProductPageButton";
 import { formatPrice, formatTime, PriceInsight } from "@/lib";
 import { PriceSection } from "./PriceSection";
+import { FakeDiscountTooltip } from "./FakeDiscountTooltip";
 
 interface ProductCardProps{
-
     productItem:TrackedProductItemType;
     setModal:(productItem:TrackedProductItemType)=>void;
     deleteProduct:()=>void;
@@ -26,9 +26,12 @@ export function ProductCard({productItem,setModal,deleteProduct}:ProductCardProp
 
         <div className="w-full min-w-0 group flex flex-col gap-2.5 rounded-2xl border border-zinc-800/80 bg-[#16171a] p-2.5 transition-all duration-200 hover:border-emerald-500/40 hover:shadow-[0_0_30px_-10px_rgba(16,185,129,0.35)]">
 
-            <div className="flex flex-col gap-2.5 cursor-pointer" onClick={()=>setModal(productItem)}>
+            <div className="flex flex-col gap-3 cursor-pointer" onClick={()=>setModal(productItem)}>
 
                 <div className="relative aspect-4/5 w-full rounded-xl bg-zinc-900/60 border border-zinc-800/80 flex flex-col items-center justify-center gap-1 text-zinc-600 group-hover:bg-zinc-900 transition-colors">
+                    
+                    <FakeDiscountTooltip priceInsightResult={definatelyPerfectAccurateInsight} formattedCurrentPrice={formattedCurrentPrice}/>
+
                     <svg
                         className="size-8 stroke-1"
                         fill="none"
@@ -42,6 +45,7 @@ export function ProductCard({productItem,setModal,deleteProduct}:ProductCardProp
                         />
                     </svg>
                     <span className="text-xs font-medium text-zinc-500">Görsel Yakında</span>
+                    
                 </div>
                 
                 <h3 className="text-sm font-semibold text-[#F4F4F4] line-clamp-2 min-h-10 transition-colors">
@@ -49,12 +53,11 @@ export function ProductCard({productItem,setModal,deleteProduct}:ProductCardProp
                 </h3>
                 
                 <PriceSection priceInsightResult={definatelyPerfectAccurateInsight} formattedPrice={formattedCurrentPrice} formattedLastChangeTime={formattedLastChangeTime} priceHistoryLength={productPriceHistory.length}/>
-
-            </div>
-
-            <div className="flex flex-row items-center justify-between gap-1.5 mt-auto">
-                <RedirectToProductPageButton productUrl={productItem.product.productUrl} productPlatform={productItem.product.productPlatform}/>                
-                <DeleteProductButton productId={productItem.product.productId} deleteProduct={deleteProduct}/>
+                
+                <div className="flex flex-row items-center justify-between gap-1.5 mt-auto">
+                    <RedirectToProductPageButton productUrl={productItem.product.productUrl} productPlatform={productItem.product.productPlatform}/>                
+                    <DeleteProductButton productId={productItem.product.productId} deleteProduct={deleteProduct}/>
+                </div>
             </div>
         </div>
     )
