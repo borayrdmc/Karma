@@ -2,8 +2,32 @@ import { PriceHistoryOutputType, PriceInsightResultType } from "@repo/types";
 
 const TIME_WINDOW=30;
 const FAKE_DISCOUNT_MAX_AGE_DAYS=7;
+const MINIMUM_PRICE_CHANGE_THRESHOLD_PERCENT=1;
 
 export function PriceInsight(productPriceHistory: PriceHistoryOutputType[]):PriceInsightResultType{
+
+    const result=calculatePriceInsight(productPriceHistory);
+    const percent=result.priceChangePercent ?? 0;
+
+    if(result.status==="price_increase" || result.status==="real_discount"){
+        return percent<MINIMUM_PRICE_CHANGE_THRESHOLD_PERCENT ? {status:"no_change"} : result;
+    }
+
+    if(result.status==="fake_discount"){
+
+        if(percent<MINIMUM_PRICE_CHANGE_THRESHOLD_PERCENT){
+            return {status:"no_change"};
+        }
+
+        if((result.recentDropPercent ?? 0)<MINIMUM_PRICE_CHANGE_THRESHOLD_PERCENT){
+            return {status:"price_increase",priceChangePercent:result.priceChangePercent,priceChangeAmount:result.priceChangeAmount};
+        }
+    }
+
+    return result;
+}
+
+function calculatePriceInsight(productPriceHistory: PriceHistoryOutputType[]):PriceInsightResultType{
 
     const timeWindowStartDate=new Date(Date.now()-TIME_WINDOW*24*60*60*1000);
 
@@ -96,36 +120,55 @@ export function PriceInsight(productPriceHistory: PriceHistoryOutputType[]):Pric
 
         else{
             
-            let lowestPriceBeforePeak=Infinity;
-            const beforePeakPriceHistory=pricesInsideTimeWindow.slice(0,peakIndex);
+            let basePriceBeforePeak=Number(pricesInsideTimeWindow[peakIndex-1]?.price);
+            let baseRecord=pricesInsideTimeWindow[peakIndex-1];
 
-            for(const beforePeakPriceItem of beforePeakPriceHistory){
+            for(let i=peakIndex-1; i>=0; i--){
+                const item=pricesInsideTimeWindow[i];
+                const itemPrice=Number(item?.price);
+                const itemAgeInDays=item ? (Date.now() - new Date(item.checkedAt).getTime()) / (1000 * 60 * 60 * 24) : 0;
 
-                const currentItemPrice=Number(beforePeakPriceItem.price);
+                if(itemPrice<=basePriceBeforePeak){
+                    basePriceBeforePeak=itemPrice;
+                    baseRecord=item;
+                }
+                else{
+                    break;
+                }
 
-                if(currentItemPrice<lowestPriceBeforePeak){
-                    lowestPriceBeforePeak=currentItemPrice;
+                if(itemAgeInDays>FAKE_DISCOUNT_MAX_AGE_DAYS){
+                    break;
                 }
             }
             
-            if(latestPrice<=lowestPriceBeforePeak){
+            if(latestPrice<=basePriceBeforePeak){
 
-                const realDiscountPercentage=((lowestPriceBeforePeak-latestPrice)/lowestPriceBeforePeak)*100;
+                const realDiscountPercentage=((basePriceBeforePeak-latestPrice)/basePriceBeforePeak)*100;
 
-                const priceChangeAmount=lowestPriceBeforePeak-latestPrice;
+                const priceChangeAmount=basePriceBeforePeak-latestPrice;
 
                 return{status:"real_discount",priceChangePercent:realDiscountPercentage,priceChangeAmount};
             }
 
             else{
 
-                const realIncreasePercentage=((latestPrice-lowestPriceBeforePeak)/lowestPriceBeforePeak)*100;
+                const realIncreasePercentage=((latestPrice-basePriceBeforePeak)/basePriceBeforePeak)*100;
 
-                const priceChangeAmount=latestPrice-lowestPriceBeforePeak;
+                const priceChangeAmount=latestPrice-basePriceBeforePeak;
                
                 const recentDropAmount=peakPrice-latestPrice;
 
-                return{status:"fake_discount",priceChangePercent:realIncreasePercentage,priceChangeAmount,recentDropPercent:discountPercentage,recentDropAmount};
+                return{
+                    status:"fake_discount",
+                    priceChangePercent:realIncreasePercentage,
+                    priceChangeAmount,
+                    recentDropPercent:discountPercentage,
+                    recentDropAmount,
+                    basePrice:basePriceBeforePeak,
+                    baseDate:baseRecord?.checkedAt,
+                    peakPrice,
+                    peakDate:peakRecord?.checkedAt,
+                };
             }
         }
     }
