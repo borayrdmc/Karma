@@ -28,13 +28,14 @@ export function AddProductModal({isOpen,onClose,onProductAdd}:addProductModalPro
         try{
             const formData=new FormData(e.currentTarget);
             const productUrl=formData.get("productUrl") as string;
+            const customName=formData.get("customName") as string;
 
             const response=await fetch("/api/products",{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"
                 },
-                body:JSON.stringify({productUrl})
+                body:JSON.stringify({productUrl,customName})
             })
 
             const result=await response.json();
@@ -46,7 +47,7 @@ export function AddProductModal({isOpen,onClose,onProductAdd}:addProductModalPro
                     return;
                 }
 
-                else if(result.error.fieldErrors.productUrl[0]){
+                else if(result.error.fieldErrors.productUrl[0] ?? result.error.fieldErrors?.customName?.[0]){
                     setErrorMessage(result.error.fieldErrors.productUrl[0]);
                     return;
                 }
@@ -107,6 +108,7 @@ export function AddProductModal({isOpen,onClose,onProductAdd}:addProductModalPro
                                 placeholder="Örnek: Babama alacağım ceket"
                                 title="Özel isim giriniz"
                                 disabled={isLoading}
+                                maxLength={50}
                                 className="w-full rounded-xl border border-zinc-800 bg-zinc-950/70 px-3.5 py-2.5 text-sm text-[#F4F4F4] placeholder:text-zinc-600 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/40 disabled:opacity-50 transition-all duration-150"
                             />
                         </div>

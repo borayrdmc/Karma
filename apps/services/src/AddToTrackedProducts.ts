@@ -3,7 +3,7 @@ import { createNewProduct, findProductInProductsTable, getPriceHistoryOfProduct,
 import { extractProductCodeAndPlatform } from "./platforms/ExtractProductCodeAndPlatform";
 import { scrapeProductData } from "./ScrapeProductData";
 
-export async function addToTrackedProducts(productUrl:string,userId:string): Promise<TrackedProductItemType>{
+export async function addToTrackedProducts(productUrl:string,userId:string,customName?:string): Promise<TrackedProductItemType>{
 
     const {productPlatform,productCode}=extractProductCodeAndPlatform(productUrl);
     
@@ -11,7 +11,7 @@ export async function addToTrackedProducts(productUrl:string,userId:string): Pro
 
     if(matchedProduct!==undefined){
 
-        const trackedProduct=await trackProduct({userId,productId:matchedProduct.productId});
+        const trackedProduct=await trackProduct({userId,productId:matchedProduct.productId,customName});
 
         const productPriceHistory=await getPriceHistoryOfProduct(matchedProduct.productId);
 
@@ -25,7 +25,7 @@ export async function addToTrackedProducts(productUrl:string,userId:string): Pro
         const scraperData:ScraperDataType=await scrapeProductData(productUrl);
 
         const createdProduct=await createNewProduct(scraperData.productData)
-        const trackedProduct=await trackProduct({userId,productId:createdProduct.productId});
+        const trackedProduct=await trackProduct({userId,productId:createdProduct.productId,customName});
         const currentProductPrice=await insertPriceData({price:scraperData.price,productId:createdProduct.productId});
 
         const trackedProductItem:TrackedProductItemType={trackedProduct,product:createdProduct,productPriceHistory:[currentProductPrice]}
