@@ -24,7 +24,7 @@ export function ProductCard({productItem,setModal,deleteProduct}:ProductCardProp
 
     return( 
 
-        <div className="w-full min-w-0 group flex flex-col gap-2.5 rounded-2xl border border-zinc-800/80 bg-[#16171a] p-2.5 transition-all duration-200 hover:border-emerald-500/40 hover:shadow-[0_0_30px_-10px_rgba(16,185,129,0.35)]">
+        <div className="w-full min-w-0 group flex flex-col gap-3 rounded-2xl border border-zinc-800/80 bg-[#16171a] p-2.5 transition-all duration-200 hover:border-emerald-500/40 hover:shadow-[0_0_30px_-10px_rgba(16,185,129,0.35)]">
 
             <div className="flex flex-col gap-3 cursor-pointer" onClick={()=>setModal(productItem)}>
 
@@ -48,16 +48,16 @@ export function ProductCard({productItem,setModal,deleteProduct}:ProductCardProp
                     
                 </div>
                 
-                <h3 className="text-sm font-semibold text-[#F4F4F4] line-clamp-2 min-h-10 transition-colors">
+                <h3 className="text-sm font-semibold text-[#F4F4F4] line-clamp-2 min-h-10 transition-colors wrap-break-word">
                     {productName}
                 </h3>
                 
                 <PriceSection priceInsightResult={definatelyPerfectAccurateInsight} formattedPrice={formattedCurrentPrice} formattedLastChangeTime={formattedLastChangeTime} priceHistoryLength={productPriceHistory.length}/>
-                
-                <div className="flex flex-row items-center justify-between gap-1.5 mt-auto">
-                    <RedirectToProductPageButton productUrl={productItem.product.productUrl} productPlatform={productItem.product.productPlatform}/>                
-                    <DeleteProductButton productId={productItem.product.productId} deleteProduct={deleteProduct}/>
-                </div>
+            </div>
+
+            <div className="flex flex-row items-center justify-between gap-1.5 mt-auto">
+                <RedirectToProductPageButton productUrl={productItem.product.productUrl} productPlatform={productItem.product.productPlatform}/>                
+                <DeleteProductButton productId={productItem.product.productId} deleteProduct={deleteProduct}/>
             </div>
         </div>
     )

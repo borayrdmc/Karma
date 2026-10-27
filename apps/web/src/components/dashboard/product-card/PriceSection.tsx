@@ -27,7 +27,7 @@ export function PriceSection({priceInsightResult,formattedPrice,formattedLastCha
         
         <div className="flex flex-col gap-1">
 
-            <div className="flex flex-row flex-wrap items-center gap-x-2 gap-y-1">
+            <div className="flex flex-row flex-wrap items-center gap-x-2 gap-y-1 min-h-6">
             
                 <span className="text-xl font-bold tracking-tight leading-none text-[#F4F4F4]">
                     {formattedPrice}
@@ -36,7 +36,7 @@ export function PriceSection({priceInsightResult,formattedPrice,formattedLastCha
                 {priceInsightResult.status==="real_discount" && (
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <span className="inline-flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 cursor-help">
+                            <span className="inline-flex items-center gap-1 text-xs font-semibold px-1.5 py-1 rounded-md leading-none bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 cursor-help">
                                 <MoveDown className="size-3"/>
                                 {formatPrice(Math.round(priceInsightResult.priceChangeAmount ?? 0))}
                             </span>
@@ -50,7 +50,7 @@ export function PriceSection({priceInsightResult,formattedPrice,formattedLastCha
                 {priceInsightResult.status==="price_increase" && (
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <span className="inline-flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded-md bg-rose-500/10 text-rose-400 border border-rose-500/25 cursor-help">
+                            <span className="inline-flex items-center gap-1 text-xs font-semibold px-1.5 py-1 rounded-md leading-none bg-rose-500/10 text-rose-400 border border-rose-500/25 cursor-help">
                                 <MoveUp className="size-3"/>
                                 {formatPrice(Math.round(priceInsightResult.priceChangeAmount ?? 0))}
                             </span>
@@ -64,7 +64,7 @@ export function PriceSection({priceInsightResult,formattedPrice,formattedLastCha
                 {priceInsightResult.status==="fake_discount" && (
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <span className="inline-flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded-md bg-zinc-800/80 text-zinc-300 border border-zinc-700/60 cursor-help">
+                            <span className="inline-flex items-center gap-1 text-xs font-semibold px-1.5 py-1 rounded-md leading-none bg-zinc-800/80 text-zinc-300 border border-zinc-700/60 cursor-help">
                                 <MoveDown className="size-3"/>
                                 {formatPrice(Math.round(priceInsightResult.recentDropAmount ?? 0))}
                             </span>
@@ -78,12 +78,12 @@ export function PriceSection({priceInsightResult,formattedPrice,formattedLastCha
             </div> 
 
             {priceHistoryLength>1 ? (
-                <p className="text-xs text-zinc-500">
+                <p className="text-xs text-zinc-500 truncate">
                     Son fiyat değişimi: <span className="font-medium text-zinc-400" suppressHydrationWarning>{formattedLastChangeTime}</span>
                 </p>
                 ) : (
-                <p className="text-xs text-zinc-500">
-                    Takibe başlandı: <span className="font-medium text-zinc-400">{formattedLastChangeTime}</span>
+                <p className="text-xs text-zinc-500 truncate">
+                    Takibe başlandı: <span className="font-medium text-zinc-400" suppressHydrationWarning>{formattedLastChangeTime}</span>
                 </p>
             )}
                 
