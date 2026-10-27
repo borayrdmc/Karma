@@ -1,20 +1,15 @@
 import { ScraperDataType } from "@repo/types";
-
-import { ServiceError } from "@repo/errors";
 import { hepsiburadaService } from "./platforms/HepsiburadaService";
 import { trendyolService } from "./platforms/TrendyolService";
+import { extractPlatformFromUrl } from "./platforms/ExtractPlatformFromUrl";
 
 export async function scrapeProductData(productUrl:string): Promise<ScraperDataType>{
 
-    if(productUrl.includes("hepsiburada")){
+    const platform = extractPlatformFromUrl(productUrl);
 
-        const productData=await hepsiburadaService(productUrl);
-        return productData;
+    if(platform==="hepsiburada"){
+        return await hepsiburadaService(productUrl);
     }
-    if(productUrl.includes("trendyol")){
 
-        const productData=await trendyolService(productUrl);
-        return productData;
-    }
-    throw new ServiceError("Unsupported product platform.",400);
+    return await trendyolService(productUrl);
 }
