@@ -1,14 +1,22 @@
 import { ServiceError } from "@repo/errors";
 import { ProductInputType } from "@repo/types";
+import { extractHepsiburadaProductCodeAndName } from "./ExtractHepsiburadaProductCodeAndName";
 
-export function extractHepsiburadaProductCodeAndPlatform(productUrl:string):{productPlatform:ProductInputType["productPlatform"],productCode:ProductInputType["productCode"]}{
+export async function extractHepsiburadaProductCodeAndPlatform(productUrl: string): Promise<{ productPlatform: ProductInputType["productPlatform"]; productCode: string }> {
 
-    const match = productUrl.match(/-p[m]?-([A-Za-z0-9]+)(?:[/?#].*)?$/); //2nd part is for search params
+    const match=productUrl.match(/-p[m]?-([A-Za-z0-9]+)(?:[/?#].*)?$/);
 
     if(!match || !match[1]){
-        throw new ServiceError("Product code not found in given URL.",400);
+        throw new ServiceError("Product code not found in given URL.", 400);
     }
-    const productCode = match[1];
 
-    return {productPlatform:"hepsiburada", productCode}; //Ignore first (all of the regex) match and 3rd match (search params)
+    const rawCode=match[1];
+
+    if(rawCode.startsWith("HBCV") || rawCode.startsWith("HBV")){
+        return {productPlatform:"hepsiburada", productCode:rawCode};
+    }
+
+    const {productCode}=await extractHepsiburadaProductCodeAndName(productUrl);
+
+    return {productPlatform:"hepsiburada", productCode};
 }
