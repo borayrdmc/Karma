@@ -2,7 +2,7 @@ import { ScraperDataType } from "@repo/types";
 import { ServiceError } from "@repo/errors";
 import { getTrendyolHtml } from "./trendyol/GetTrendyolHtml";
 import { extractProductData } from "./trendyol/ExtractProductData";
-import { extractTrendyolProductCodeAndPlatform } from "./trendyol/ExtractTrendyolProductCode";
+import { extractTrendyolProductCodeAndPlatform } from "./trendyol/ExtractTrendyolProductCodeAndPlatform";
 
 export async function trendyolService(productUrl:string) : Promise<ScraperDataType>{
 
