@@ -7,6 +7,7 @@ export async function getTrackedProductDetails(){
         .selectDistinct({
             productId: products.productId,
             productUrl: products.productUrl,
+            productCode: products.productCode,
         })
         .from(products)
         .innerJoin(trackedProducts,eq(products.productId,trackedProducts.productId));
