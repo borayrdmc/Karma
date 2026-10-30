@@ -1,6 +1,6 @@
 import { ServiceError } from "@repo/errors";
 import { ProductInputType } from "@repo/types";
-import { extractHepsiburadaProductCodeAndName } from "./ExtractHepsiburadaProductCodeAndName";
+import { extractHepsiburadaCodeNameImage } from "./ExtractHepsiburadaCodeNameImage";
 
 export async function extractHepsiburadaProductCodeAndPlatform(productUrl: string): Promise<{ productPlatform: ProductInputType["productPlatform"]; productCode: string }> {
 
@@ -16,7 +16,7 @@ export async function extractHepsiburadaProductCodeAndPlatform(productUrl: strin
         return {productPlatform:"hepsiburada", productCode:rawCode};
     }
 
-    const {productCode}=await extractHepsiburadaProductCodeAndName(productUrl);
+    const {productCode}=await extractHepsiburadaCodeNameImage(productUrl);
 
     return {productPlatform:"hepsiburada", productCode};
 }

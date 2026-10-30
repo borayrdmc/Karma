@@ -2,12 +2,12 @@ import { ScraperDataType } from "@repo/types";
 import { ServiceError } from "@repo/errors";
 import { hepsiburadaApiCall } from "./hepsiburada/HepsiburadaApiCall";
 import { findCheapestListing } from "./hepsiburada/FindCheapestListing";
-import { extractHepsiburadaProductCodeAndName } from "./hepsiburada/ExtractHepsiburadaProductCodeAndName";
+import { extractHepsiburadaCodeNameImage } from "./hepsiburada/ExtractHepsiburadaCodeNameImage";
 
 export async function hepsiburadaService(productUrl:string): Promise<ScraperDataType>{
 
     try{
-        const {productCode,productName}=await extractHepsiburadaProductCodeAndName(productUrl);
+        const {productCode,productName,productImageUrl}=await extractHepsiburadaCodeNameImage(productUrl);
 
         const responseData=await hepsiburadaApiCall(productCode);
         
@@ -15,7 +15,7 @@ export async function hepsiburadaService(productUrl:string): Promise<ScraperData
 
         const price=cheapestListing.price.value.toString();
 
-        return {productData:{productUrl,productPlatform:"hepsiburada",productCode,productName},price};
+        return {productData:{productUrl,productPlatform:"hepsiburada",productCode,productName,productImageUrl},price};
     }
     catch(productServiceError){
 
