@@ -47,8 +47,8 @@ export function AddProductModal({isOpen,onClose,onProductAdd}:addProductModalPro
                     return;
                 }
 
-                else if(result.error.fieldErrors.productUrl[0] ?? result.error.fieldErrors?.customName?.[0]){
-                    setErrorMessage(result.error.fieldErrors.productUrl[0]);
+                else if(result.error.fieldErrors?.productUrl[0] ?? result.error.fieldErrors?.customName?.[0]){
+                    setErrorMessage(result.error.fieldErrors?.productUrl[0]);
                     return;
                 }
                 else{
