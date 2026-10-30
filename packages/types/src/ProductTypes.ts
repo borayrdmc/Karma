@@ -3,11 +3,13 @@ export interface ProductInputType{
     productPlatform:"trendyol" | "hepsiburada"
     productCode:string;
     productName:string;
+    productImageUrl:string | null;
 }
 export interface ProductOutputType{
     productUrl:string;
     productId:string;
     productPlatform:"trendyol" | "hepsiburada"
     productCode:string;
-    productName:string|null;
+    productName:string;
+    productImageUrl:string | null
 }
