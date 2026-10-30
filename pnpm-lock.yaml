@@ -79,6 +79,9 @@ importers:
       '@repo/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@repo/errors':
+        specifier: workspace:*
+        version: link:../../packages/errors
       '@repo/types':
         specifier: workspace:*
         version: link:../../packages/types

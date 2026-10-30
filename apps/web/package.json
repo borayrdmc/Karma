@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@repo/db": "workspace:*",
+    "@repo/errors": "workspace:*",
     "@repo/types": "workspace:*",
     "better-auth": "^1.7.1",
     "class-variance-authority": "^0.7.1",
