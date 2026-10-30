@@ -2,6 +2,7 @@ export interface TrendyolResponseProductData{
 
     product:{
         name:string;
+        images?: string[];
         inStock:boolean
         merchantListing:null | {
             winnerVariant:{
