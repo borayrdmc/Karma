@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { formatPrice, formatTime } from "@/lib";
 import { TrackedProductItemType } from "@repo/types";
 import { Copy, Check, ExternalLink, TrendingDown, TrendingUp, Clock } from "lucide-react";
-import { PriceChart } from "../PriceChart";
+import { PriceChart } from "../product-card/PriceChart";
 
 interface ProductDetailsModalProps {
     productData: TrackedProductItemType | null;

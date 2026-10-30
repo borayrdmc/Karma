@@ -1,4 +1,4 @@
-import { Dashboard } from "@/components/dashboard/Dashboard";
+import { Dashboard } from "@/components/dashboard/dashboard-elements/Dashboard";
 import { auth } from "@/lib/AuthConfig";
 import { fetchTrackedProducts } from "@/lib/FetchTrackedProducts";
 import { headers } from "next/headers";
