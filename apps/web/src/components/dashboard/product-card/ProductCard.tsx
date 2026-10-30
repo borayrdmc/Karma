@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { TrackedProductItemType } from "@repo/types";
 import { DeleteProductButton } from "./DeleteProductButton";
 import { RedirectToProductPageButton } from "./RedirectToProductPageButton";
@@ -7,14 +8,21 @@ import { FakeDiscountTooltip } from "./FakeDiscountTooltip";
 
 interface ProductCardProps{
     productItem:TrackedProductItemType;
+    index?:number;
     setModal:(productItem:TrackedProductItemType)=>void;
     deleteProduct:()=>void;
 }
 
-export function ProductCard({productItem,setModal,deleteProduct}:ProductCardProps){
+export function ProductCard({productItem,index=0,setModal,deleteProduct}:ProductCardProps){
 
-    const {product,trackedProduct,productPriceHistory}=productItem
+    const {product,trackedProduct,productPriceHistory}=productItem;
+    const [imageError, setImageError] = useState(false);
+
     const productName=(trackedProduct.customName) ? trackedProduct.customName : product.productName;
+    
+    const showImage = Boolean(product.productImageUrl) && !imageError;
+    const isLcpCandidate = index === 0;
+    const isBelowFold = index >= 12;
 
     const latestPriceRecord=productPriceHistory.at(-1);
     const formattedCurrentPrice=latestPriceRecord ? formatPrice(latestPriceRecord.price) : "Fiyat Hatası";
@@ -28,23 +36,37 @@ export function ProductCard({productItem,setModal,deleteProduct}:ProductCardProp
 
             <div className="flex flex-col gap-3 cursor-pointer" onClick={()=>setModal(productItem)}>
 
-                <div className="relative aspect-4/5 w-full rounded-xl bg-zinc-900/60 border border-zinc-800/80 flex flex-col items-center justify-center gap-1 text-zinc-600 group-hover:bg-zinc-900 transition-colors">
+                <div className="relative aspect-4/5 w-full overflow-hidden rounded-xl bg-zinc-900/60 border border-zinc-800/80 flex flex-col items-center justify-center gap-1 text-zinc-600 group-hover:bg-zinc-900 transition-colors">
                     
                     <FakeDiscountTooltip priceInsightResult={definatelyPerfectAccurateInsight} formattedCurrentPrice={formattedCurrentPrice}/>
 
-                    <svg
-                        className="size-8 stroke-1"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                    {showImage ? (
+                        <img
+                            src={product.productImageUrl!}
+                            alt={productName ?? "Ürün görseli"}
+                            fetchPriority={isLcpCandidate ? "high" : undefined}
+                            loading={isBelowFold ? "lazy" : undefined}
+                            decoding="async"
+                            onError={() => setImageError(true)}
+                            className="h-full w-full object-cover"
                         />
-                    </svg>
-                    <span className="text-xs font-medium text-zinc-500">Görsel Yakında</span>
+                        ) : (
+                        <>
+                            <svg
+                                className="size-8 stroke-1"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                                />
+                            </svg>
+                            <span className="text-xs font-medium text-zinc-500">Görsel Yok</span>
+                        </>
+                    )}
                     
                 </div>
                 
