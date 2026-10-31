@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Image from "next/image";
 import { TrackedProductItemType } from "@repo/types";
 import { DeleteProductButton } from "./DeleteProductButton";
 import { RedirectToProductPageButton } from "./RedirectToProductPageButton";
@@ -22,7 +23,6 @@ export function ProductCard({productItem,index=0,setModal,deleteProduct}:Product
     
     const showImage = Boolean(product.productImageUrl) && !imageError;
     const isLcpCandidate = index === 0;
-    const isBelowFold = index >= 12;
 
     const latestPriceRecord=productPriceHistory.at(-1);
     const formattedCurrentPrice=latestPriceRecord ? formatPrice(latestPriceRecord.price) : "Fiyat Hatası";
@@ -41,14 +41,14 @@ export function ProductCard({productItem,index=0,setModal,deleteProduct}:Product
                     <FakeDiscountTooltip priceInsightResult={definatelyPerfectAccurateInsight} formattedCurrentPrice={formattedCurrentPrice}/>
 
                     {showImage ? (
-                        <img
+                        <Image
                             src={product.productImageUrl!}
                             alt={productName ?? "Ürün görseli"}
-                            fetchPriority={isLcpCandidate ? "high" : undefined}
-                            loading={isBelowFold ? "lazy" : undefined}
-                            decoding="async"
+                            fill
+                            sizes="(min-width: 1280px) 17vw, (min-width: 1024px) 25vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
+                            priority={isLcpCandidate}
                             onError={() => setImageError(true)}
-                            className="h-full w-full object-cover"
+                            className="object-cover"
                         />
                         ) : (
                         <>
@@ -64,7 +64,7 @@ export function ProductCard({productItem,index=0,setModal,deleteProduct}:Product
                                     d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
                                 />
                             </svg>
-                            <span className="text-xs font-medium text-zinc-500">Görsel Yok</span>
+                            <span className="text-xs font-medium text-zinc-400">Görsel Yok</span>
                         </>
                     )}
                     
