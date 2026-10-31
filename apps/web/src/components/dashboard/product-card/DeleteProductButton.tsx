@@ -1,11 +1,10 @@
 import { Trash } from 'lucide-react';
 
 interface DeleteButtonProps{
-    productId:string;
     deleteProduct:()=>void
 }
 
-export function DeleteProductButton({productId,deleteProduct}:DeleteButtonProps){
+export function DeleteProductButton({deleteProduct}:DeleteButtonProps){
 
     return(
         <button
