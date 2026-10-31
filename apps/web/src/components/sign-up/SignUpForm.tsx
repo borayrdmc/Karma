@@ -34,6 +34,9 @@ export function SignUpForm(){
         if(!parsedFormData.success){
             const fieldErrors=z.flattenError(parsedFormData.error).fieldErrors;
             setFieldErrors(fieldErrors);
+
+            const errorField=Object.keys(fieldErrors)[0];
+            (e.currentTarget.elements.namedItem(errorField) as HTMLElement)?.focus();
             return;
         }
 
@@ -62,41 +65,47 @@ export function SignUpForm(){
 
     return(
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
+        <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
 
             {
                 //react toast error for serverside errors maybe?
             }
 
             <div className="flex flex-col gap-1">
-                <label className="text-xs font-medium text-zinc-300 ml-0.5">İsim</label>
+                <label htmlFor="name" className="text-xs font-medium text-zinc-300 ml-1">İsim</label>
                 <input 
                     name="name"
+                    id="name"
                     type="text"
+                    autoComplete="name"
                     placeholder="İsim Soyisim"
-                    className="rounded-xl border border-zinc-800 bg-zinc-950/70 px-3.5 py-2 text-sm text-[#F4F4F4] placeholder:text-zinc-600 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/40 transition-all duration-150"
+                    className="rounded-xl border border-zinc-800 bg-zinc-950/70 px-3.5 py-2 text-sm text-[#F4F4F4] placeholder:text-zinc-400 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/40 transition-all duration-150"
                 />
                 {fieldErrors.name && <div className="text-xs text-rose-400 mt-0.5 ml-0.5">{fieldErrors.name[0]}</div>}
             </div>
             
             <div className="flex flex-col gap-1">
-                <label className="text-xs font-medium text-zinc-300 ml-0.5">E-Mail</label>
+                <label htmlFor="email" className="text-xs font-medium text-zinc-300 ml-1">E-Posta</label>
                 <input
                     name="email"
+                    id="email"
                     type="email"
+                    autoComplete="email"
                     placeholder="ornek@mail.com"
-                    className="rounded-xl border border-zinc-800 bg-zinc-950/70 px-3.5 py-2 text-sm text-[#F4F4F4] placeholder:text-zinc-600 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/40 transition-all duration-150"
+                    className="rounded-xl border border-zinc-800 bg-zinc-950/70 px-3.5 py-2 text-sm text-[#F4F4F4] placeholder:text-zinc-400 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/40 transition-all duration-150"
                 />
                 {fieldErrors.email && <div className="text-xs text-rose-400 mt-0.5 ml-0.5">{fieldErrors.email[0]}</div>}
             </div>
 
             <div className="flex flex-col gap-1">
-                <label className="text-xs font-medium text-zinc-300 ml-0.5">Şifre</label>
+                <label htmlFor="password" className="text-xs font-medium text-zinc-300 ml-1">Şifre</label>
                 <input 
                     name="password"
+                    id="password"
                     type="password"
+                    autoComplete="new-password"
                     placeholder="********"
-                    className="rounded-xl border border-zinc-800 bg-zinc-950/70 px-3.5 py-2 text-sm text-[#F4F4F4] placeholder:text-zinc-600 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/40 transition-all duration-150"
+                    className="rounded-xl border border-zinc-800 bg-zinc-950/70 px-3.5 py-2 text-sm text-[#F4F4F4] placeholder:text-zinc-400 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/40 transition-all duration-150"
                 />
                 {fieldErrors.password && <div className="text-xs text-rose-400 mt-0.5 ml-0.5">{fieldErrors.password[0]}</div>}
             </div>
