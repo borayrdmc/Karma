@@ -78,12 +78,12 @@ export function PriceSection({priceInsightResult,formattedPrice,formattedLastCha
             </div> 
 
             {priceHistoryLength>1 ? (
-                <p className="text-xs text-zinc-500 truncate">
-                    Son fiyat değişimi: <span className="font-medium text-zinc-400" suppressHydrationWarning>{formattedLastChangeTime}</span>
+                <p className="text-xs text-zinc-400 truncate">
+                    Son fiyat değişimi: <span className="font-medium text-zinc-300" suppressHydrationWarning>{formattedLastChangeTime}</span>
                 </p>
                 ) : (
-                <p className="text-xs text-zinc-500 truncate">
-                    Takibe başlandı: <span className="font-medium text-zinc-400" suppressHydrationWarning>{formattedLastChangeTime}</span>
+                <p className="text-xs text-zinc-400 truncate">
+                    Takibe başlandı: <span className="font-medium text-zinc-300" suppressHydrationWarning>{formattedLastChangeTime}</span>
                 </p>
             )}
                 

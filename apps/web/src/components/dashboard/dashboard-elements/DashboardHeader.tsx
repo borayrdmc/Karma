@@ -102,7 +102,7 @@ export function DashboardHeader({userName,totalCount,hepsiburadaCount,trendyolCo
                         <span>Tümü</span>
                         <span className={cn(
                             "rounded px-1 text-[10px]",
-                            selectedFilter === "all" ? "bg-zinc-700/80 text-zinc-200" : "text-zinc-500"
+                            selectedFilter === "all" ? "bg-zinc-700/80 text-zinc-200" : "text-zinc-400"
                         )}>
                             {totalCount}
                         </span>
@@ -121,7 +121,7 @@ export function DashboardHeader({userName,totalCount,hepsiburadaCount,trendyolCo
                         <span>Hepsiburada</span>
                         <span className={cn(
                             "rounded px-1 text-[10px]",
-                            selectedFilter === "hepsiburada" ? "bg-zinc-700/80 text-zinc-200" : "text-zinc-500"
+                            selectedFilter === "hepsiburada" ? "bg-zinc-700/80 text-zinc-200" : "text-zinc-400"
                         )}>
                             {hepsiburadaCount}
                         </span>
@@ -140,7 +140,7 @@ export function DashboardHeader({userName,totalCount,hepsiburadaCount,trendyolCo
                         <span>Trendyol</span>
                         <span className={cn(
                             "rounded px-1 text-[10px]",
-                            selectedFilter === "trendyol" ? "bg-zinc-700/80 text-zinc-200" : "text-zinc-500"
+                            selectedFilter === "trendyol" ? "bg-zinc-700/80 text-zinc-200" : "text-zinc-400"
                         )}>
                             {trendyolCount}
                         </span>
@@ -170,7 +170,7 @@ export function DashboardHeader({userName,totalCount,hepsiburadaCount,trendyolCo
                         </span>
                     )}
 
-                    <span className="text-xs text-zinc-500 font-medium">
+                    <span className="text-xs text-zinc-400 font-medium">
                         Toplam {totalCount} Takip
                     </span>
                 </div>

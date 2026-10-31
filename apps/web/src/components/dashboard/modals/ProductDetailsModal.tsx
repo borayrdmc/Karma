@@ -117,7 +117,7 @@ export function ProductDetailsModal({productData,onClose}:ProductDetailsModalPro
                                 <p className="text-xl font-bold text-[#F4F4F4]">
                                     {currentRecord ? formatPrice(currentRecord.price) : "—"}
                                 </p>
-                                <p className="text-xs text-zinc-500">
+                                <p className="text-xs text-zinc-400">
                                     {currentRecord ? formatTime(currentRecord.date) : "Veri Yok"}
                                 </p>
                             </div>
@@ -132,7 +132,7 @@ export function ProductDetailsModal({productData,onClose}:ProductDetailsModalPro
                                 <p className="text-xl font-bold text-[#F4F4F4]">
                                     {baseRecord ? formatPrice(baseRecord.price) : "—"}
                                 </p>
-                                <p className="text-xs text-zinc-500">
+                                <p className="text-xs text-zinc-400">
                                     {baseRecord ? formatTime(baseRecord.date) : "Veri Yok"}
                                 </p>
                             </div>
@@ -147,7 +147,7 @@ export function ProductDetailsModal({productData,onClose}:ProductDetailsModalPro
                                 <p className="text-xl font-bold text-[#F4F4F4]">
                                     {peakRecord ? formatPrice(peakRecord.price) : "—"}
                                 </p>
-                                <p className="text-xs text-zinc-500">
+                                <p className="text-xs text-zinc-400">
                                     {peakRecord ? formatTime(peakRecord.date) : "Veri Yok"}
                                 </p>
                             </div>
