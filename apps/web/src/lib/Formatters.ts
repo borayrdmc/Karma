@@ -31,7 +31,7 @@ export function formatTime(checkedAt:Date|string){
     });
 }
 
-export function formatPrice(price:number|string){
+export function formatPriceValue(price:number|string){
 
     const numericPrice=Number(price);
 
@@ -39,10 +39,19 @@ export function formatPrice(price:number|string){
         return "HATA";
     }
 
+    const fractionDigits=Number.isInteger(numericPrice) ? 0 : 2;
+
     return(
         new Intl.NumberFormat("tr-TR", {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2,
-        }).format(numericPrice) + " TL"
+            minimumFractionDigits: fractionDigits,
+            maximumFractionDigits: fractionDigits,
+        }).format(numericPrice)
     );
+}
+
+export function formatPrice(price:number|string){
+
+    const formattedValue=formatPriceValue(price);
+
+    return formattedValue==="HATA" ? formattedValue : `${formattedValue} TL`;
 }
