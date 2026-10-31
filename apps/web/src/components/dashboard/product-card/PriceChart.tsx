@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { PriceHistoryOutputType } from "@repo/types";
-import { formatPrice } from "@/lib";
+import { formatPrice, formatPriceValue } from "@/lib";
 import {
     ResponsiveContainer,
     AreaChart,
@@ -47,7 +47,7 @@ export function PriceChart({ priceHistory }: PriceChartProps) {
     if (!priceHistory || priceHistory.length < 2) {
         return (
             <div className="flex h-64 w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-zinc-800/80 bg-zinc-900/30 p-6 text-center">
-                <TrendingUp className="size-8 text-zinc-500 stroke-1" />
+                <TrendingUp className="size-8 text-zinc-400 stroke-1" />
                 <div className="flex flex-col gap-1">
                     <p className="text-sm font-medium text-[#F4F4F4]">Henüz Yeterli Grafik Verisi Yok</p>
                     <p className="max-w-xs text-xs text-zinc-400">
@@ -174,7 +174,7 @@ export function PriceChart({ priceHistory }: PriceChartProps) {
                         axisLine={{ stroke: "#27272a", strokeWidth: 1.5 }}
                         tickLine={{ stroke: "#27272a" }}
                         tick={{ fontSize: 11, fill: "#a1a1aa" }}
-                        tickFormatter={(val) => `${Number(val).toLocaleString("tr-TR")} ₺`}
+                        tickFormatter={(val) => `${formatPriceValue(val)} ₺`}
                     />
 
                     {/* Nokta Üzerine Gelindiğinde Çıkan X ve Y Kılavuz Çubukları */}
