@@ -39,3 +39,7 @@ yarn-error.log*
 #Custom
 agents.md
 todo.txt
+.claude
+.impeccable
+DESIGN.md
+PRODUCT.md
