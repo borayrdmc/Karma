@@ -11,7 +11,7 @@ interface PriceSectionProps{
     priceHistoryLength:number;
 }
 
-function formatTooltipText(percent:number|undefined, amount:number|undefined, label:"İndirim" | "Zam"){
+function formatTooltipText(percent:number|undefined, amount:number|undefined, label:"İndirim" | "Zam" | "Şüpheli İndirim"){
 
     const formattedAmount=formatPrice(Math.round(amount ?? 0));
     
@@ -70,7 +70,7 @@ export function PriceSection({priceInsightResult,formattedPrice,formattedLastCha
                             </span>
                         </TooltipTrigger>
                         <TooltipContent>
-                            {formatTooltipText(priceInsightResult.recentDropPercent, priceInsightResult.recentDropAmount, "İndirim")}
+                            {formatTooltipText(priceInsightResult.recentDropPercent, priceInsightResult.recentDropAmount, "Şüpheli İndirim")}
                         </TooltipContent>
                     </Tooltip>
                 )}
