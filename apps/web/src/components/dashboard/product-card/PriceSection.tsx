@@ -64,7 +64,7 @@ export function PriceSection({priceInsightResult,formattedPrice,formattedLastCha
                 {priceInsightResult.status==="fake_discount" && (
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <span className="inline-flex items-center gap-1 text-xs font-semibold px-1.5 py-1 rounded-md leading-none bg-zinc-800/80 text-zinc-300 border border-zinc-700/60 cursor-help">
+                            <span className="inline-flex items-center gap-1 text-xs font-semibold px-1.5 py-1 rounded-md leading-none bg-amber-500/10 text-amber-400 border border-amber-500/25 cursor-help">
                                 <MoveDown className="size-3"/>
                                 {formatPrice(Math.round(priceInsightResult.recentDropAmount ?? 0))}
                             </span>
