@@ -46,7 +46,7 @@ export function PriceChart({ priceHistory }: PriceChartProps) {
     // 1. Kenar Senaryo: 2'den az veri varsa bilgilendirme ekranı göster
     if (!priceHistory || priceHistory.length < 2) {
         return (
-            <div className="flex h-64 w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-zinc-800/80 bg-zinc-900/30 p-6 text-center">
+            <div className="flex h-52 sm:h-64 w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-zinc-800/80 bg-zinc-900/30 p-6 text-center">
                 <TrendingUp className="size-8 text-zinc-400 stroke-1" />
                 <div className="flex flex-col gap-1">
                     <p className="text-sm font-medium text-[#F4F4F4]">Henüz Yeterli Grafik Verisi Yok</p>
@@ -134,7 +134,7 @@ export function PriceChart({ priceHistory }: PriceChartProps) {
     const hoveredPoint = hoveredIndex !== null ? (chartData[hoveredIndex] ?? null) : null;
 
     return (
-        <div className="w-full h-64 pt-2">
+        <div className="w-full h-52 sm:h-64 pt-2">
             <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
                     data={chartData}
