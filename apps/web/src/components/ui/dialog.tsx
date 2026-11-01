@@ -74,10 +74,10 @@ function DialogContent({
             <Button
               variant="ghost"
               disabled={closeDisabled}
-              className="absolute top-3 right-3 text-emerald-500 hover:text-emerald-400 bg-transparent hover:bg-transparent transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-40"
+              className="absolute top-2 right-2 size-11 text-emerald-500 sm:size-10 hover:text-emerald-400 bg-transparent hover:bg-transparent transition-colors cursor-pointer active:not-aria-[haspopup]:translate-y-0 disabled:cursor-not-allowed disabled:opacity-40"
               size="icon"
             >
-              <XIcon className="size-5" />
+              <XIcon className="size-6" />
               <span className="sr-only">Close</span>
             </Button>
           </DialogPrimitive.Close>
