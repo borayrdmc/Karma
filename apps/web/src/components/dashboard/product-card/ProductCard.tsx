@@ -79,7 +79,7 @@ export function ProductCard({productItem,index=0,setModal,deleteProduct}:Product
 
             <div className="flex flex-row items-center justify-between gap-1.5 mt-auto">
                 <RedirectToProductPageButton productUrl={productItem.product.productUrl} productPlatform={productItem.product.productPlatform}/>                
-                <DeleteProductButton productId={productItem.product.productId} deleteProduct={deleteProduct}/>
+                <DeleteProductButton deleteProduct={deleteProduct}/>
             </div>
         </div>
     )
