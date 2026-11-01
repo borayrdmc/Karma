@@ -22,12 +22,23 @@ export function AddProductModal({isOpen,onClose,onProductAdd}:addProductModalPro
 
     const [isLoading,setIsLoading]=useState(false);
     const [fieldErrors,setFieldErrors]=useState<AddProductFieldErrors>({});
-    const pendingFocusId=useRef<string|null>(null);
+    
+    const productUrlInputRef = useRef<HTMLInputElement>(null);
+    const customNameInputRef = useRef<HTMLInputElement>(null);
+    const pendingFocusRef = useRef<"productUrl" | "customName" | null>(null);
 
     useEffect(()=>{
-        if(!isLoading && pendingFocusId.current){
-            document.getElementById(pendingFocusId.current)?.focus();
-            pendingFocusId.current=null;
+        
+        if(!isLoading && pendingFocusRef.current){
+
+            if(pendingFocusRef.current==="productUrl"){
+                productUrlInputRef.current?.focus();
+            }
+
+            else if(pendingFocusRef.current==="customName"){
+                customNameInputRef.current?.focus();
+            }
+            pendingFocusRef.current=null;
         }
     },[isLoading]);
 
@@ -56,7 +67,7 @@ export function AddProductModal({isOpen,onClose,onProductAdd}:addProductModalPro
 
                 if(typeof result.error==="string"){
                     setFieldErrors({productUrl:result.error});
-                    pendingFocusId.current="productUrl";
+                    pendingFocusRef.current="productUrl";
                     return;
                 }
 
@@ -65,7 +76,7 @@ export function AddProductModal({isOpen,onClose,onProductAdd}:addProductModalPro
 
                 if(productUrlError || customNameError){
                     setFieldErrors({productUrl:productUrlError,customName:customNameError});
-                    pendingFocusId.current=productUrlError ? "productUrl" : "customName";
+                    pendingFocusRef.current=productUrlError ? "productUrl" : "customName";
                     return;
                 }
 
