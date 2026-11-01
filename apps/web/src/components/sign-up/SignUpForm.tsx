@@ -1,11 +1,12 @@
 "use client"
 
 import { authClient, signUpFormValidationSchema } from "@/lib";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import z from "zod";
 import { SignUpButton } from "./SignupButton";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 
 interface SignUpFieldErrors{
   name?: string[];
@@ -16,9 +17,14 @@ interface SignUpFieldErrors{
 export function SignUpForm(){
 
     const [isLoading,setIsLoading]=useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const [fieldErrors, setFieldErrors]=useState<SignUpFieldErrors>({});
     const [serverError,setServerError]=useState("");
     const router=useRouter()
+
+    const nameInputRef = useRef<HTMLInputElement>(null);
+    const emailInputRef = useRef<HTMLInputElement>(null);
+    const passwordInputRef = useRef<HTMLInputElement>(null);
 
     async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>){
 
@@ -35,8 +41,15 @@ export function SignUpForm(){
             const fieldErrors=z.flattenError(parsedFormData.error).fieldErrors;
             setFieldErrors(fieldErrors);
 
-            const errorField=Object.keys(fieldErrors)[0];
-            (e.currentTarget.elements.namedItem(errorField) as HTMLElement)?.focus();
+            if(fieldErrors.name){
+                nameInputRef.current?.focus();
+            } 
+            else if(fieldErrors.email){
+                emailInputRef.current?.focus();
+            } 
+            else if(fieldErrors.password){
+                passwordInputRef.current?.focus();
+            }
             return;
         }
 
@@ -74,6 +87,7 @@ export function SignUpForm(){
             <div className="flex flex-col gap-1">
                 <label htmlFor="name" className="text-xs font-medium text-zinc-300 ml-1">İsim</label>
                 <input 
+                    ref={nameInputRef}
                     name="name"
                     id="name"
                     type="text"
@@ -87,6 +101,7 @@ export function SignUpForm(){
             <div className="flex flex-col gap-1">
                 <label htmlFor="email" className="text-xs font-medium text-zinc-300 ml-1">E-Posta</label>
                 <input
+                    ref={emailInputRef}
                     name="email"
                     id="email"
                     type="email"
@@ -99,14 +114,26 @@ export function SignUpForm(){
 
             <div className="flex flex-col gap-1">
                 <label htmlFor="password" className="text-xs font-medium text-zinc-300 ml-1">Şifre</label>
-                <input 
-                    name="password"
-                    id="password"
-                    type="password"
-                    autoComplete="new-password"
-                    placeholder="********"
-                    className="rounded-xl border border-zinc-800 bg-zinc-950/70 px-3.5 py-2 text-sm text-[#F4F4F4] placeholder:text-zinc-400 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/40 transition-all duration-150"
-                />
+                <div className="relative">
+                    <input 
+                        ref={passwordInputRef}
+                        name="password"
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        autoComplete="new-password"
+                        placeholder="********"
+                        className="w-full rounded-xl border border-zinc-800 bg-zinc-950/70 pl-3.5 pr-10 py-2 text-sm text-[#F4F4F4] placeholder:text-zinc-400 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/40 transition-all duration-150"
+                    />
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        aria-label={showPassword ? "Şifreyi gizle" : "Şifreyi göster"}
+                        tabIndex={-1}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-200 focus:outline-none cursor-pointer transition-colors p-1"
+                    >
+                        {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                    </button>
+                </div>
                 {fieldErrors.password && <div className="text-xs text-rose-400 mt-0.5 ml-0.5">{fieldErrors.password[0]}</div>}
             </div>
 
