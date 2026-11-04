@@ -1,7 +1,7 @@
-import {ProductInputType } from "./ProductTypes";
+import { ProductInputType } from "./ProductTypes";
 
 export interface ScraperDataType{
 
     productData:ProductInputType;
-    price:string;
+    price:string | null;
 }

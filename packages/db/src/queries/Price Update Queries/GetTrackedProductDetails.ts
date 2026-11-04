@@ -8,6 +8,7 @@ export async function getTrackedProductDetails(){
             productId: products.productId,
             productUrl: products.productUrl,
             productCode: products.productCode,
+            inStock: products.inStock,
         })
         .from(products)
         .innerJoin(trackedProducts,eq(products.productId,trackedProducts.productId));

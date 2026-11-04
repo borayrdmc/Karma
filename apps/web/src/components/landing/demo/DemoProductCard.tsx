@@ -151,7 +151,7 @@ export function DemoProductCard({demo}:{demo:DemoProduct}){
                                 </div>
                                 <PriceSection
                                     priceInsightResult={inStock ? insight : {status:"insufficient_data"}}
-                                    formattedPrice={formatPrice(selectedRecord.price)}
+                                    formattedPrice={inStock ? formatPrice(selectedRecord.price) : "Stokta Yok"}
                                     formattedLastChangeTime={formatDateTime(selectedRecord.checkedAt)}
                                     priceHistoryLength={selectedIndex+1}
                                 />

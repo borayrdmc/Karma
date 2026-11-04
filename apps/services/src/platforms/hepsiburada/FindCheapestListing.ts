@@ -1,12 +1,11 @@
-import { ServiceError } from "@repo/errors";
-import { HepsiburadaListing, HepsiburadaResponseProductData} from "./HepsiburadaTypes";
+import { HepsiburadaListing, HepsiburadaResponseProductData } from "./HepsiburadaTypes";
 
-export function findCheapestListing(responseData:HepsiburadaResponseProductData): HepsiburadaListing{
+export function findCheapestListing(responseData:HepsiburadaResponseProductData): HepsiburadaListing | null{
 
     const productListings=responseData.data?.listings;
 
     if(!productListings || productListings.length === 0){
-        throw new ServiceError("Product listings not found.",404);
+        return null;
     }
 
     const cheapestListing = productListings.reduce(

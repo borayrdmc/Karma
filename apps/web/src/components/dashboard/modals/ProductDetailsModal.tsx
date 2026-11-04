@@ -27,6 +27,7 @@ export function ProductDetailsModal({productData,onClose}:ProductDetailsModalPro
     const platform=productData?.product.productPlatform;
     const productCode=productData?.product.productCode;
     const productUrl=productData?.product.productUrl;
+    const inStock=productData?.product.inStock ?? true;
 
     async function handleCopy(){
         if(!productUrl){
@@ -133,7 +134,7 @@ export function ProductDetailsModal({productData,onClose}:ProductDetailsModalPro
                             </div>
                             <div className="flex flex-col gap-0.5">
                                 <p className="text-xl font-bold text-[#F4F4F4]">
-                                    {currentRecord ? formatPrice(currentRecord.price) : "—"}
+                                    {!inStock ? "Stokta Yok" : (currentRecord ? formatPrice(currentRecord.price) : "—")}
                                 </p>
                                 <p className="text-xs text-zinc-400">
                                     {currentRecord ? formatTime(currentRecord.date) : "Veri Yok"}

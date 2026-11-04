@@ -23,7 +23,8 @@ export async function createPriceUpdateJobs(){
                 productId:product.productId,
                 productUrl:product.productUrl,
                 latestPrice:latestPricesMap.get(product.productId),
-                productCode:product.productCode
+                productCode:product.productCode,
+                inStock:product.inStock
             },
             opts: {attempts:3, backoff:{type:"custom"}},
         }))

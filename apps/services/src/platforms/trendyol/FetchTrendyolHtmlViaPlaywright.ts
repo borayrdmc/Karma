@@ -2,6 +2,8 @@ import { chromium } from 'patchright';
 import { STATUS_CODES } from 'node:http';
 import { ServiceError } from "@repo/errors";
 
+const BLOCKED_RESOURCE_TYPES = new Set(["image", "stylesheet", "font", "media"]);
+
 export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promise<string>{
 
     const PLAYWRIGHT_ERRORS : [string,string,number][] = [
@@ -44,6 +46,13 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
 
         const page=await context.newPage();
 
+        await page.route("**/*", (route) => {
+            if (BLOCKED_RESOURCE_TYPES.has(route.request().resourceType())) {
+                return route.abort();
+            }
+            return route.continue();
+        });
+
         const response = await page.goto(productUrl,{waitUntil:'domcontentloaded',timeout:10000});
 
         if(!response){
@@ -74,6 +83,10 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
     catch(error){
 
         if(error instanceof ServiceError){
+            throw error;
+        }
+
+        if(error instanceof Error){
 
             const lowerErrorMessage=error.message.toLowerCase();
 
@@ -83,9 +96,8 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
                     throw new ServiceError(errorMessage,errorStatusCode);
                 }
             }
-
-            throw new ServiceError("Couldn't get product data",502);
         }
+
         throw new ServiceError("Unexpected error",500,{cause:error});
     }
 

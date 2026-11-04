@@ -13,9 +13,10 @@ export async function hepsiburadaService(productUrl:string): Promise<ScraperData
         
         const cheapestListing=findCheapestListing(responseData);
 
-        const price=cheapestListing.price.value.toString();
+        const inStock=cheapestListing!==null;
+        const price=cheapestListing ? cheapestListing.price.value.toString() : null;
 
-        return {productData:{productUrl,productPlatform:"hepsiburada",productCode,productName,productImageUrl},price};
+        return {productData:{productUrl,productPlatform:"hepsiburada",productCode,productName,productImageUrl,inStock},price};
     }
     catch(productServiceError){
 

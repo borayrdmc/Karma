@@ -13,6 +13,7 @@ export * from "./List Queries/GetTrackedProducts";
 //Price Update Queries
 export * from "./Price Update Queries/GetTrackedProductDetails";
 export * from "./Price Update Queries/GetLatestPricesOfGivenProducts";
+export * from "./Price Update Queries/UpdateProductStockStatus";
 
 //Track Queries
 export * from "./Track Queries/InsertPriceData";

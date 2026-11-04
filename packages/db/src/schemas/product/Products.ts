@@ -1,4 +1,4 @@
-import { pgEnum, pgTable, text, unique, uuid } from "drizzle-orm/pg-core";
+import { boolean, pgEnum, pgTable, text, unique, uuid } from "drizzle-orm/pg-core";
 
 export const platformEnum = pgEnum('platform_type',[
   'trendyol',
@@ -13,6 +13,7 @@ export const products = pgTable("products",{
     productImageUrl: text("product_image_url"),
     productPlatform: platformEnum("product_platform").notNull(),
     productCode: text("product_code").notNull(),
+    inStock: boolean("in_stock").default(true).notNull(),
 	},
 	//Schema Configs
 	(table)=>[

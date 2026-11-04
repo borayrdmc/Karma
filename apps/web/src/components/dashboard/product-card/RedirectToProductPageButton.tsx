@@ -18,7 +18,7 @@ export function RedirectToProductPageButton({productUrl,productPlatform}:Redirec
             rel="noopener noreferrer"
             className="flex-1 min-w-0 inline-flex items-center justify-center gap-1 overflow-hidden whitespace-nowrap rounded-lg bg-[#f75d00] hover:bg-[#ff7214] px-1.5 h-8 text-xs font-semibold text-[#0c0d0e] transition-all cursor-pointer shadow-sm"
         >
-            Siteye Git <ShoppingCart className='size-3.5'/> - {productPlatformUppercase}
+            Siteye Git - {productPlatformUppercase}
         </a>
     )
 }

@@ -58,8 +58,7 @@ export async function getDemoProduct():Promise<DemoProduct>{
         return{
             isPlaceholder:false,
             snapshotAt:(snapshot ?? new Date()).toISOString(),
-            // Scraper henüz stok bilgisi tutmuyor; eklendiğinde buradan okunacak.
-            inStock:true,
+            inStock:product.inStock,
             product:{
                 name:process.env.DEMO_PRODUCT_NAME ?? product.productName ?? "Ürün",
                 brand:process.env.DEMO_PRODUCT_BRAND ?? "",
