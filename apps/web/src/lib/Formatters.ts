@@ -55,3 +55,16 @@ export function formatPrice(price:number|string){
 
     return formattedValue==="HATA" ? formattedValue : `${formattedValue} TL`;
 }
+
+// Mutlak tarih ve saat ("28 Ekim 2026, 14:00"). Sunucu ve istemci aynı çıktıyı üretsin diye saat dilimi sabit.
+export function formatDateTime(checkedAt:Date|string, withTime:boolean=true){
+
+    return new Date(checkedAt).toLocaleString("tr-TR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        hour: withTime ? "2-digit" : undefined,
+        minute: withTime ? "2-digit" : undefined,
+        timeZone: "Europe/Istanbul",
+    });
+}
