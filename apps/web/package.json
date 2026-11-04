@@ -9,12 +9,14 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@gsap/react": "2.1.2",
     "@repo/db": "workspace:*",
     "@repo/errors": "workspace:*",
     "@repo/types": "workspace:*",
     "better-auth": "^1.7.1",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.5.0",
+    "gsap": "3.15.0",
     "lucide-react": "^1.59.0",
     "next": "16.3.2",
     "radix-ui": "^1.8.1",
