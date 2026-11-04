@@ -23,6 +23,7 @@ export function ProductCard({productItem,index=0,setModal,deleteProduct}:Product
     
     const showImage = Boolean(product.productImageUrl) && !imageError;
     const isLcpCandidate = index === 0;
+    const isFirstTwoRows = index < 12;
 
     const latestPriceRecord=productPriceHistory.at(-1);
     const formattedCurrentPrice=latestPriceRecord ? formatPrice(latestPriceRecord.price) : "Fiyat Hatası";
@@ -45,8 +46,10 @@ export function ProductCard({productItem,index=0,setModal,deleteProduct}:Product
                             src={product.productImageUrl!}
                             alt={productName ?? "Ürün görseli"}
                             fill
+                            unoptimized
                             sizes="(min-width: 1280px) 17vw, (min-width: 1024px) 25vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
                             priority={isLcpCandidate}
+                            loading={isLcpCandidate ? undefined : (isFirstTwoRows ? "eager" : "lazy")}
                             onError={() => setImageError(true)}
                             className="object-cover"
                         />
