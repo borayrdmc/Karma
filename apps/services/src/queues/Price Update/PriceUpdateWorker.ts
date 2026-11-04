@@ -1,4 +1,4 @@
-import { insertPriceData } from "@repo/db";
+import { insertPriceData, updateProductStockStatus } from "@repo/db";
 import { Job, UnrecoverableError, Worker } from "bullmq";
 import { redisConnection } from "../connection";
 import { isFatalError, ServiceError } from "@repo/errors";
@@ -8,15 +8,25 @@ export const priceUpdateWorker = new Worker(
 
     "price-update-queue",
 
-    async(job: Job<{productId:string; productUrl:string; latestPrice:string, productCode:string}>)=>{
+    async(job: Job<{productId:string; productUrl:string; latestPrice:string; productCode:string; inStock:boolean}>)=>{
 
-        const {productId,productUrl,latestPrice,productCode}=job.data;
+        const {productId,productUrl,latestPrice,productCode,inStock}=job.data;
 
         try{
 
             console.log(`Started processing product Id: ${productId}`);
 
-            const currentPrice=(await scrapeProductPrice(productUrl,productCode));
+            const {price:currentPrice,inStock:currentInStock}=await scrapeProductPrice(productUrl,productCode);
+
+            if(currentInStock!==inStock){
+                await updateProductStockStatus(productId,currentInStock);
+                console.log(`Stock status of Product ID:${productId} has been changed to: ${currentInStock}`);
+            }
+
+            if(!currentInStock){
+                console.log(`Product ID:${productId} is out of stock. Skipping price update.`);
+                return;
+            }
 
             if(Number(currentPrice)!==Number(latestPrice)){
                 await insertPriceData({price:currentPrice,productId});
