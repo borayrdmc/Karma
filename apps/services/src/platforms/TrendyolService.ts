@@ -1,6 +1,5 @@
 import { ScraperDataType } from "@repo/types";
-import { ServiceError } from "@repo/errors";
-import { getTrendyolHtml } from "./trendyol/GetTrendyolHtml";
+import { fetchTrendyolHtmlViaPlaywright } from "./trendyol/FetchTrendyolHtmlViaPlaywright";
 import { extractProductData } from "./trendyol/ExtractProductData";
 import { extractTrendyolProductCodeAndPlatform } from "./trendyol/ExtractTrendyolProductCodeAndPlatform";
 
@@ -8,22 +7,18 @@ export async function trendyolService(productUrl:string) : Promise<ScraperDataTy
 
     try{
         
-        const trendyolRawHtml= await getTrendyolHtml(productUrl);
+        const trendyolRawHtml= await fetchTrendyolHtmlViaPlaywright(productUrl);
 
         const productDataJSON=extractProductData(trendyolRawHtml);
 
-        if(!productDataJSON.product.merchantListing){
-            throw new ServiceError("No listings were found.",404);
-        }
-        
-        const winnerVariant=productDataJSON.product.merchantListing.winnerVariant;
+        const winnerVariant=productDataJSON.product.merchantListing?.winnerVariant ?? null;
 
         const { productCode } = extractTrendyolProductCodeAndPlatform(productUrl);
         const productName=productDataJSON.product.name;
-        const price=winnerVariant.price.sellingPrice.value.toString();
+        const price=winnerVariant ? winnerVariant.price.sellingPrice.value.toString() : null;
 
         const productImageUrl=productDataJSON.product.images?.[0] ?? null;
-        const inStock=Boolean(productDataJSON.product.inStock && winnerVariant.inStock);
+        const inStock=Boolean(productDataJSON.product.inStock && winnerVariant?.inStock);
         
         return {productData:{productUrl,productPlatform:"trendyol",productCode,productName,productImageUrl,inStock},price};
     }
