@@ -8,7 +8,7 @@ export const priceUpdateWorker = new Worker(
 
     "price-update-queue",
 
-    async(job: Job<{productId:string; productUrl:string; latestPrice:string; productCode:string; inStock:boolean}>)=>{
+    async(job: Job<{productId:string; productUrl:string; latestPrice?:string; productCode:string; inStock:boolean}>)=>{
 
         const {productId,productUrl,latestPrice,productCode,inStock}=job.data;
 
@@ -23,12 +23,12 @@ export const priceUpdateWorker = new Worker(
                 console.log(`Stock status of Product ID:${productId} has been changed to: ${currentInStock}`);
             }
 
-            if(!currentInStock){
+            if(!currentInStock || currentPrice===null){
                 console.log(`Product ID:${productId} is out of stock. Skipping price update.`);
                 return;
             }
 
-            if(Number(currentPrice)!==Number(latestPrice)){
+            if(latestPrice===undefined || Number(currentPrice)!==Number(latestPrice)){
                 await insertPriceData({price:currentPrice,productId});
                 console.log(`Price of Product ID:${productId} has been changed. Latest price: ${latestPrice} Current Price: ${currentPrice}`);
             }

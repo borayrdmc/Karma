@@ -3,7 +3,7 @@ import { hepsiburadaApiCall } from "./platforms/hepsiburada/HepsiburadaApiCall";
 import { trendyolService } from "./platforms/TrendyolService";
 import { extractPlatformFromUrl } from "./platforms/ExtractPlatformFromUrl";
 
-export async function scrapeProductPrice(productUrl:string, productCode:string): Promise<string>{
+export async function scrapeProductPrice(productUrl:string, productCode:string): Promise<{price:string | null, inStock:boolean}>{
 
     const platform=extractPlatformFromUrl(productUrl);
 
@@ -11,10 +11,15 @@ export async function scrapeProductPrice(productUrl:string, productCode:string):
 
         const responseData=await hepsiburadaApiCall(productCode);
         const cheapestListing=findCheapestListing(responseData);
-        return cheapestListing.price.value.toString();
+
+        if(!cheapestListing){
+            return {price:null, inStock:false};
+        }
+
+        return {price:cheapestListing.price.value.toString(), inStock:true};
     }
     
-    const productData=await trendyolService(productUrl);
+    const scraperData=await trendyolService(productUrl);
 
-    return productData.price;
+    return {price:scraperData.price, inStock:scraperData.productData.inStock};
 }
