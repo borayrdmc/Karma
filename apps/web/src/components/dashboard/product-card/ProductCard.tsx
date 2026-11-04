@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
-import { TrackedProductItemType } from "@repo/types";
+import { PriceInsightResultType, TrackedProductItemType } from "@repo/types";
 import { DeleteProductButton } from "./DeleteProductButton";
 import { RedirectToProductPageButton } from "./RedirectToProductPageButton";
 import { formatPrice, formatTime, PriceInsight } from "@/lib";
@@ -26,10 +26,14 @@ export function ProductCard({productItem,index=0,setModal,deleteProduct}:Product
     const isFirstTwoRows = index < 12;
 
     const latestPriceRecord=productPriceHistory.at(-1);
-    const formattedCurrentPrice=latestPriceRecord ? formatPrice(latestPriceRecord.price) : "Fiyat Hatası";
+    const formattedCurrentPrice=!product.inStock
+        ? "Stokta Yok"
+        : (latestPriceRecord ? formatPrice(latestPriceRecord.price) : "Fiyat Hatası");
     const formattedLastChangeTime=latestPriceRecord ? formatTime(latestPriceRecord.checkedAt) : "Zaman Hatası";
 
-    const definatelyPerfectAccurateInsight=PriceInsight(productPriceHistory);
+    const definatelyPerfectAccurateInsight: PriceInsightResultType = product.inStock
+        ? PriceInsight(productPriceHistory)
+        : { status: "no_change" };
 
     return( 
 

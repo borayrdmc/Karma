@@ -46,11 +46,13 @@ export function Dashboard({trackedProductsList,userName}:dashboardProps){
             if(item.product.productPlatform==="hepsiburada"){hepsiburadaCount++;}
             if(item.product.productPlatform==="trendyol"){trendyolCount++;}
 
-            const status=PriceInsight(item.productPriceHistory).status;
+            if(item.product.inStock){
+                const status=PriceInsight(item.productPriceHistory).status;
 
-            if(status==="real_discount"){discountCount++;}
-            if(status==="price_increase"){increaseCount++;}
-            if(status==="fake_discount"){fakeDiscountCount++;}
+                if(status==="real_discount"){discountCount++;}
+                if(status==="price_increase"){increaseCount++;}
+                if(status==="fake_discount"){fakeDiscountCount++;}
+            }
         }
 
         return {hepsiburadaCount,trendyolCount,discountCount,increaseCount,fakeDiscountCount};
