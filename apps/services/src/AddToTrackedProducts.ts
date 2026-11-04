@@ -27,11 +27,13 @@ export async function addToTrackedProducts(rawProductUrl:string,userId:string,cu
 
         const scraperData:ScraperDataType=await scrapeProductData(cleanUrl);
 
-        const createdProduct=await createNewProduct(scraperData.productData)
+        const createdProduct=await createNewProduct(scraperData.productData);
         const trackedProduct=await trackProduct({userId,productId:createdProduct.productId,customName});
-        const currentProductPrice=await insertPriceData({price:scraperData.price,productId:createdProduct.productId});
+        const productPriceHistory=scraperData.price!==null
+            ? [await insertPriceData({price:scraperData.price,productId:createdProduct.productId})]
+            : [];
 
-        const trackedProductItem:TrackedProductItemType={trackedProduct,product:createdProduct,productPriceHistory:[currentProductPrice]}
+        const trackedProductItem:TrackedProductItemType={trackedProduct,product:createdProduct,productPriceHistory}
 
         return trackedProductItem;
     }
