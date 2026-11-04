@@ -23,8 +23,9 @@ export async function trendyolService(productUrl:string) : Promise<ScraperDataTy
         const price=winnerVariant.price.sellingPrice.value.toString();
 
         const productImageUrl=productDataJSON.product.images?.[0] ?? null;
+        const inStock=Boolean(productDataJSON.product.inStock && winnerVariant.inStock);
         
-        return {productData:{productUrl,productPlatform:"trendyol",productCode,productName,productImageUrl},price};
+        return {productData:{productUrl,productPlatform:"trendyol",productCode,productName,productImageUrl,inStock},price};
     }
     catch(productServiceError){
         throw productServiceError;
