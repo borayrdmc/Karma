@@ -29,7 +29,9 @@ export function ProductCard({productItem,index=0,setModal,deleteProduct}:Product
     const formattedCurrentPrice=!product.inStock
         ? "Stokta Yok"
         : (latestPriceRecord ? formatPrice(latestPriceRecord.price) : "Fiyat Hatası");
-    const formattedLastChangeTime=latestPriceRecord ? formatTime(latestPriceRecord.checkedAt) : "Zaman Hatası";
+    const formattedLastChangeTime=latestPriceRecord
+        ? formatTime(latestPriceRecord.checkedAt)
+        : (trackedProduct.trackedAt ? formatTime(trackedProduct.trackedAt) : "Zaman Hatası");
 
     const definatelyPerfectAccurateInsight: PriceInsightResultType = product.inStock
         ? PriceInsight(productPriceHistory)
