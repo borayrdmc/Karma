@@ -1,5 +1,5 @@
 import { TrackedProductItemType } from "@repo/types";
-import { ServiceError } from "../../../../packages/errors/src";
+import { ServiceError } from "@repo/errors";
 
 interface FetchProductsResponse {
     success:boolean;

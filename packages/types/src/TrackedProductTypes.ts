@@ -2,6 +2,7 @@ export interface TrackedProductInputType{
 
     userId:string;
     productId:string;
+    customName?:string;
 }
 export interface TrackedProductOutputType{
 

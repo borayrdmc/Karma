@@ -3,10 +3,10 @@ import { db } from "../../client";
 import { ServiceError } from "@repo/errors";
 import { ProductInputType, ProductOutputType } from "@repo/types";
 
-export async function createNewProduct({productUrl,productPlatform,productCode,productName}:ProductInputType): Promise<ProductOutputType>{
+export async function createNewProduct({productUrl,productPlatform,productCode,productName,productImageUrl}:ProductInputType): Promise<ProductOutputType>{
 
     const [createdProduct]=await db.insert(products)
-            .values({productUrl,productPlatform,productCode,productName})
+            .values({productUrl,productPlatform,productCode,productName,productImageUrl})
             .onConflictDoNothing()
             .returning();
     

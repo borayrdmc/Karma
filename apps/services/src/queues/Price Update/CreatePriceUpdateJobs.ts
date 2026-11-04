@@ -22,7 +22,8 @@ export async function createPriceUpdateJobs(){
             data:{
                 productId:product.productId,
                 productUrl:product.productUrl,
-                latestPrice:latestPricesMap.get(product.productId)
+                latestPrice:latestPricesMap.get(product.productId),
+                productCode:product.productCode
             },
             opts: {attempts:3, backoff:{type:"custom"}},
         }))

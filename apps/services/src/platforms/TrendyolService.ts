@@ -2,7 +2,7 @@ import { ScraperDataType } from "@repo/types";
 import { ServiceError } from "@repo/errors";
 import { getTrendyolHtml } from "./trendyol/GetTrendyolHtml";
 import { extractProductData } from "./trendyol/ExtractProductData";
-import { extractTrendyolProductCodeAndPlatform } from "./trendyol/ExtractTrendyolProductCode";
+import { extractTrendyolProductCodeAndPlatform } from "./trendyol/ExtractTrendyolProductCodeAndPlatform";
 
 export async function trendyolService(productUrl:string) : Promise<ScraperDataType>{
 
@@ -21,8 +21,10 @@ export async function trendyolService(productUrl:string) : Promise<ScraperDataTy
         const { productCode } = extractTrendyolProductCodeAndPlatform(productUrl);
         const productName=productDataJSON.product.name;
         const price=winnerVariant.price.sellingPrice.value.toString();
+
+        const productImageUrl=productDataJSON.product.images?.[0] ?? null;
         
-        return {productData:{productUrl,productPlatform:"trendyol",productCode,productName},price};
+        return {productData:{productUrl,productPlatform:"trendyol",productCode,productName,productImageUrl},price};
     }
     catch(productServiceError){
         throw productServiceError;

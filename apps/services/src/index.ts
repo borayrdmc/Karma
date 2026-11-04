@@ -37,12 +37,14 @@ app.get("/health",async()=>{
     return {status:"ok"};
 });
 
-app.post<{Body:{productUrl:string}}>("/api/products", async(request,reply)=>{
+app.post<{Body:{productUrl:string,customName:string}}>("/api/products", async(request,reply)=>{
 
     const productUrl=request.body.productUrl;
+    const customName=request.body.customName;
+
     const userId=request.headers["x-user-id"] as string;
 
-    const productData=await addToTrackedProducts(productUrl,userId);
+    const productData=await addToTrackedProducts(productUrl,userId,customName);
 
     return reply.status(201).send({
         success: true,

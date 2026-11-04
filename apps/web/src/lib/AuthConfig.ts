@@ -8,6 +8,12 @@ export const auth = betterAuth({
         schema: { user, session, account },
     }),
     emailAndPassword: { enabled: true },
+    session: {
+        cookieCache: {
+            enabled: true,
+            maxAge: 60 * 60 * 24,
+        },
+    },
     secret: process.env.BETTER_AUTH_SECRET,
     baseURL: process.env.BETTER_AUTH_URL,
 });

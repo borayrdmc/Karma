@@ -32,7 +32,7 @@ export async function POST(request:Request){
                 "x-internal-api-key":process.env.INTERNAL_API_KEY!,
                 "x-user-id":session.user.id
             },
-            body:JSON.stringify({productUrl:parsedRequest.data.productUrl})
+            body:JSON.stringify({productUrl:parsedRequest.data.productUrl,customName:parsedRequest.data.customName})
         })
 
         const data=await response.json();

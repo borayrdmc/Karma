@@ -9,7 +9,7 @@ export function SignUpButton({isLoading}:SignUpButtonProps){
         <button
             type="submit" 
             disabled={isLoading}
-            className="w-full rounded-lg bg-blue-600 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50 transition cursor-pointer" 
+            className="w-full rounded-xl bg-emerald-500 py-2.5 text-sm font-semibold text-zinc-950 hover:bg-emerald-400 shadow-[0_0_20px_-3px_rgba(16,185,129,0.25)] hover:shadow-[0_0_25px_-3px_rgba(16,185,129,0.4)] disabled:opacity-50 transition-all duration-200 cursor-pointer active:scale-[0.99]" 
         >
             {isLoading ? "Kayıt Olunuyor..." : "Kayıt Ol!"}
         </button>
