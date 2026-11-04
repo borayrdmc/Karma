@@ -50,7 +50,7 @@ export function DashboardHeader({userName,totalCount,hepsiburadaCount,trendyolCo
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="text-sm font-semibold tracking-tight text-[#F4F4F4]">
-                            Fiyat Takip
+                            Karma
                         </span>
                         <span className="rounded-md border border-zinc-800 bg-zinc-900/80 px-1.5 py-0.5 font-mono text-[10px] font-medium text-zinc-400">
                             Beta
