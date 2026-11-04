@@ -4,6 +4,7 @@ export interface ProductInputType{
     productCode:string;
     productName:string;
     productImageUrl:string | null;
+    inStock:boolean;
 }
 export interface ProductOutputType{
     productUrl:string;
@@ -11,5 +12,6 @@ export interface ProductOutputType{
     productPlatform:"trendyol" | "hepsiburada"
     productCode:string;
     productName:string;
-    productImageUrl:string | null
+    productImageUrl:string | null;
+    inStock:boolean;
 }
