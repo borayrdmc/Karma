@@ -4,3 +4,4 @@ export * from "./ScraperDataType";
 export * from "./TrackedProductItemType";
 export * from "./PriceHistoryTypes";
 export * from "./PriceInsightResultType";
+export * from "./ServiceResponseTypes"
