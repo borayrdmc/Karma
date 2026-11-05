@@ -1,4 +1,4 @@
-import { HepsiburadaListing, HepsiburadaResponseProductData } from "./HepsiburadaTypes";
+import { HepsiburadaListing, HepsiburadaResponseProductData } from "@repo/types";
 
 export function findCheapestListing(responseData:HepsiburadaResponseProductData): HepsiburadaListing | null{
 

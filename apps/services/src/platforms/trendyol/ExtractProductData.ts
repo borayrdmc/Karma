@@ -1,5 +1,5 @@
 import { ServiceError } from "@repo/errors";
-import { TrendyolResponseProductData } from "./TrendyolTypes";
+import { TrendyolResponseProductData } from "@repo/types";
 
 export function extractProductData(trendyolRawHtml:string){
 
