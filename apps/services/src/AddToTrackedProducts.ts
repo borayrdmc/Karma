@@ -1,14 +1,16 @@
 import { ScraperDataType, TrackedProductItemType } from "@repo/types";
 import { createNewProduct, findProductInProductsTable, getPriceHistoryOfProduct, insertPriceData, trackProduct } from "@repo/db";
 import { scrapeProductData } from "./ScrapeProductData";
-import { extractProductCodeAndPlatform } from "./platforms/ExtractPlatformAndCode";
 import { removeUrlParameters } from "./platforms/RemoveUrlParameters";
+import { extractPlatformFromUrl } from "./platforms/ExtractPlatformFromUrl";
+import { extractProductCodeFromUrl } from "./platforms/ExtractProductCodeFromUrl";
 
 export async function addToTrackedProducts(rawProductUrl:string,userId:string,customName?:string): Promise<TrackedProductItemType>{
 
     const {cleanUrl}=removeUrlParameters(rawProductUrl);
 
-    const {productPlatform,productCode}=await extractProductCodeAndPlatform(cleanUrl);
+    const productPlatform=extractPlatformFromUrl(cleanUrl)
+    const productCode=await extractProductCodeFromUrl(cleanUrl);
     
     const matchedProduct=await findProductInProductsTable(productPlatform,productCode);
 
