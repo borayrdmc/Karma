@@ -26,10 +26,13 @@ export function ProductCard({productItem,index=0,setModal,deleteProduct}:Product
     const isFirstTwoRows = index < 12;
 
     const latestPriceRecord=productPriceHistory.at(-1);
+    
     const formattedCurrentPrice=!product.inStock
         ? "Stokta Yok"
         : (latestPriceRecord ? formatPrice(latestPriceRecord.price) : "Fiyat Hatası");
-    const formattedLastChangeTime=latestPriceRecord
+
+    const hasPriceChanged = productPriceHistory.length > 1 && latestPriceRecord;
+    const formattedLastChangeTime=hasPriceChanged
         ? formatTime(latestPriceRecord.checkedAt)
         : (trackedProduct.trackedAt ? formatTime(trackedProduct.trackedAt) : "Zaman Hatası");
 
