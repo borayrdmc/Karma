@@ -1,5 +1,5 @@
 import { ServiceError } from "@repo/errors";
-import { HepsiburadaResponseProductData } from "./HepsiburadaTypes";
+import { HepsiburadaResponseProductData } from "@repo/types";
 
 const HEPSIBURADA_API_BASE_URL = "https://www.hepsiburada.com/api/v1/product/listings";
 
