@@ -1,18 +1,16 @@
 import { chromium } from 'patchright';
-import { STATUS_CODES } from 'node:http';
 import { ServiceError } from "@repo/errors";
 
 const BLOCKED_RESOURCE_TYPES = new Set(["image", "stylesheet", "font", "media"]);
 
 export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promise<string>{
 
-    const PLAYWRIGHT_ERRORS : [string,string,number][] = [
+    const PLAYWRIGHT_ERRORS : [string,string,number,boolean?][] = [
 
-        ["timeout","Request timed out.",504],
-        ["net::err_name_not_resolved","URL not resolved to an adress",400],
-        ["target page, context or browser has been closed","Browser killed during process",500],
-        ["browsertype.launch","Couldn't launch browser",500],
-        ["err_http_response_code_failure", "Connection shut down by server",502],
+        ["timeout","İstek zaman aşımına uğradı.",504,false],
+        ["target page, context or browser has been closed","Tarayıcı kapatıldı.",500,false],
+        ["browsertype.launch","Tarayıcı başlatılamadı.",500,true],
+        ["err_http_response_code_failure", "Sunucu bağlanmayı reddetti.",502,true],
     ]
 
     let browser;
@@ -56,25 +54,28 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
         const response = await page.goto(productUrl,{waitUntil:'domcontentloaded',timeout:10000});
 
         if(!response){
-            throw new ServiceError("Response is null.",500);
+            throw new ServiceError("Sayfaya ulaşılamadı.",500);
         }
 
         if(!response.ok()){
 
             const responseStatusCode=response.status();
-            const responseStatusText=STATUS_CODES[responseStatusCode] ?? 'Unknown status';
 
             if(responseStatusCode===403 || responseStatusCode===429){
-                throw new ServiceError("Request denied by upstream service.",502);
+                throw new ServiceError("Trendyol bağlantıyı reddetti.",502,true);
             }
-            
-            throw new ServiceError(responseStatusText,responseStatusCode);
+            else if(responseStatusCode===404){
+                throw new ServiceError("Ürün bulunamadı.",404,true);
+            }
+            else{
+                throw new ServiceError("Trendyol sayfasına ulaşılamadı.",502)
+            }            
         }
 
         const trendyolRawHtml=await page.content();
 
         if(!trendyolRawHtml.includes('window["__envoy__SHARED_PROPS"]=')){
-            throw new ServiceError("Product data missing.",502); //Sent to a cloudflare security check or captcha check
+            throw new ServiceError("Ürün bilgisi eksik.",502,true); //Sent to a cloudflare security check or captcha check
         }
 
         return trendyolRawHtml;
@@ -90,15 +91,15 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
 
             const lowerErrorMessage=error.message.toLowerCase();
 
-            for( const [errorType,errorMessage,errorStatusCode] of PLAYWRIGHT_ERRORS){
+            for( const [errorType,errorMessage,errorStatusCode,isFatal] of PLAYWRIGHT_ERRORS){
 
                 if(lowerErrorMessage.includes(errorType)){
-                    throw new ServiceError(errorMessage,errorStatusCode);
-                }
+                    throw new ServiceError(errorMessage,errorStatusCode,isFatal);
+                }   
             }
         }
 
-        throw new ServiceError("Unexpected error",500,{cause:error});
+        throw new ServiceError("Beklenmeyen hata.",500);
     }
 
     finally{

@@ -6,7 +6,7 @@ export async function extractHepsiburadaCode(productUrl:string,htmlData?:string)
     const match=productUrl.match(/-p[m]?-([A-Za-z0-9]+)(?:[/?#].*)?$/);
 
     if(!match || !match[0] || !match[1]){
-        throw new ServiceError("No product code found in given URL",400);
+        throw new ServiceError("Verilen linkte ürün kodu bulunamadı.",400);
     }
     
     const rawCode=match[1];
@@ -20,7 +20,7 @@ export async function extractHepsiburadaCode(productUrl:string,htmlData?:string)
     const productCodeMatch=html?.match(/<meta\s+name="page_value"\s+content="([^"]+)"/i);
 
     if(!productCodeMatch || !productCodeMatch[1]){
-        throw new ServiceError("Couldn't find product code", 500);
+        throw new ServiceError("Sayfada ürün kodu bulunamadı.", 502, true);
     }
 
     return productCodeMatch[1];

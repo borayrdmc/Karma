@@ -14,7 +14,7 @@ async function internalAuthPlugin(fastify:FastifyInstance){
         const internalApiKey=process.env.INTERNAL_API_KEY;
 
         if(!clientApiKey || clientApiKey!==internalApiKey){
-            throw new ServiceError("Unauthorized.",401);
+            throw new ServiceError("Yetkisiz erişim.",401);
         }
     })
 }

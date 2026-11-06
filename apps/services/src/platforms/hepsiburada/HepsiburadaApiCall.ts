@@ -13,13 +13,17 @@ export async function hepsiburadaApiCall(productCode:string) : Promise<Hepsibura
     });
 
     if(!response.ok){
-        throw new ServiceError("Couldn't fetch Hepsiburada listings.",response.status);
+
+        if(response.status===403 ||response.status==429){
+            throw new ServiceError("Hepsiburada bağlantıyı reddetti.",502,true);
+        }
+        throw new ServiceError("Hepsiburada ürün bilgisi alınamadı.",502);
     }
             
     const responseData: HepsiburadaResponseProductData = await response.json();
     
     if(!responseData.data){
-        throw new ServiceError("Invalid product code.",400);
+        throw new ServiceError("Ürün bulunamadı.",400,true);
     }
 
     return responseData;
