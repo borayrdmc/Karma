@@ -9,7 +9,7 @@ export async function POST(request:Request){
     const session=await auth.api.getSession({headers:await headers()});
 
     if(!session){
-        return NextResponse.json({success:false,error:"Unauthorized"},{status:401});
+        return NextResponse.json({success:false,error:"Yetkisiz erişim."},{status:401});
     }
 
     try{
@@ -42,10 +42,10 @@ export async function POST(request:Request){
     catch(routeError){
         
         if(routeError instanceof SyntaxError){
-            return NextResponse.json({success:false,error:"Invalid JSON body format."},{status:400})
+            return NextResponse.json({success:false,error:"Geçersiz istek."},{status:400})
         }
         else{
-            return NextResponse.json({success:false,error:"Route unable to answer. Please try again"},{status:500})
+            return NextResponse.json({success:false,error:"Sunucu şu anda yanıt veremiyor. Daha sonra tekrar deneyin."},{status:500})
         }
     }
 }
@@ -55,7 +55,7 @@ export async function DELETE(request:Request){
     const session=await auth.api.getSession({headers: await headers()})
 
     if(!session){
-        return NextResponse.json({success:false,error:"Unauthorized"},{status:401});
+        return NextResponse.json({success:false,error:"Yetkisiz erişim."},{status:401});
     }
 
     try{
@@ -84,10 +84,10 @@ export async function DELETE(request:Request){
     catch(routeError){
         
         if(routeError instanceof SyntaxError){
-            return NextResponse.json({success:false,error:"Invalid JSON body format."},{status:400})
+            return NextResponse.json({success:false,error:"Geçersiz istek."},{status:400})
         }
         else{
-            return NextResponse.json({success:false,error:"Route unable to answer. Please try again"},{status:500})
+            return NextResponse.json({success:false,error:"Sunucu şu anda yanıt veremiyor. Daha sonra tekrar deneyin."},{status:500})
         }
     }
 }
@@ -98,7 +98,7 @@ export async function GET(request:Request){
         const session=await auth.api.getSession({headers:await headers()});
 
         if(!session){
-            return NextResponse.json({success:false,error:"Unauthorized"},{status:401});
+            return NextResponse.json({success:false,error:"Yetkisiz erişim."},{status:401});
         }
         
         const response = await fetch("http://localhost:3001/api/products",{
@@ -116,10 +116,10 @@ export async function GET(request:Request){
     catch(routeError){
         
         if(routeError instanceof SyntaxError){
-            return NextResponse.json({success:false,error:"Invalid JSON body format."},{status:400})
+            return NextResponse.json({success:false,error:"Geçersiz istek."},{status:400})
         }
         else{
-            return NextResponse.json({success:false,error:"Route unable to answer. Please try again"},{status:500})
+            return NextResponse.json({success:false,error:"Sunucu şu anda yanıt veremiyor. Daha sonra tekrar deneyin."},{status:500})
         }
     }
 }

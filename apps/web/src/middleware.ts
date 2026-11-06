@@ -13,7 +13,7 @@ export async function middleware(request:NextRequest){
         if(pathname.startsWith("/api")){
 
             return NextResponse.json(
-                {success:false,error:"Unauthorized"},
+                {success:false,error:"Yetkisiz erişim."},
                 {status:401}
             )
         }

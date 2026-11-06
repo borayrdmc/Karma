@@ -14,7 +14,7 @@ export async function insertPriceData({price,productId}:PriceHistoryInputType): 
         .returning();
 
     if(!newPrice){
-        throw new ServiceError("Couldn't save price data.",500);
+        throw new ServiceError("Fiyat bilgisi oluşturulamadı.",500);
     }
 
     const timeoutDate=new Date(Date.now()-TIMEOUT_DAYS*24*60*60*1000);

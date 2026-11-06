@@ -29,7 +29,7 @@ app.setErrorHandler((error,request,reply)=>{
 
     reply.status(500).send({
         success: false,
-        error: "Unknown error occured"
+        error: "Bilinmeyen bir hata oluştu."
     });  
 });
 

@@ -9,7 +9,11 @@ export async function fetchHepsiburadaHtml(productUrl:string){
                 })
     
     if(!response.ok){
-        throw new ServiceError("Couldn't fetch Hepsiburada data",response.status);
+
+        if(response.status===403 ||response.status===429){
+            throw new ServiceError("Hepsiburada bağlantıyı reddetti.",502,true);
+        }
+        throw new ServiceError("Hepsiburada ürün bilgisi alınamadı.",502);
     }
 
     const htmlData=await response.text();

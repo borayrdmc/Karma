@@ -1,2 +1,1 @@
-export * from "./ServiceError";
-export * from "./IsFatalError"
+export * from "./ServiceError"

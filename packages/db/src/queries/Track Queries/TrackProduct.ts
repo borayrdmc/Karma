@@ -11,11 +11,11 @@ export async function trackProduct({userId,productId,customName}:TrackedProductI
         .returning();
 
     if(trackedProduct.length===0){
-        throw new ServiceError("Product already tracked",409);
+        throw new ServiceError("Ürün zaten takip ediliyor.",409);
     }
 
     if(!trackedProduct[0]){
-        throw new ServiceError("Database Error",500);
+        throw new ServiceError("Veritabanı hatası.",500);
     }
 
     return trackedProduct[0];

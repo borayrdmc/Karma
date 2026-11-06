@@ -8,7 +8,7 @@ export function extractProductData(trendyolRawHtml:string){
         const startIndexOfPropsText = trendyolRawHtml.indexOf(sharedPropsText);
 
         if(startIndexOfPropsText===-1){
-            throw new ServiceError("Source HTML code changed.",502);
+            throw new ServiceError("Trendyol ürün bilgisi alınamadı.",502,true);
         }
 
         const startIndexOfJson = startIndexOfPropsText+sharedPropsText.length;
@@ -16,7 +16,7 @@ export function extractProductData(trendyolRawHtml:string){
         const lastIndexOfJson = trendyolRawHtml.indexOf('</script>',startIndexOfJson);
 
         if(lastIndexOfJson===-1){
-            throw new ServiceError("Source HTML code changed.",502);
+            throw new ServiceError("Trendyol ürün bilgisi alınamadı!",502,true);
         }
 
         const rawStringJSON = trendyolRawHtml.slice(startIndexOfJson,lastIndexOfJson).trim();
@@ -30,8 +30,8 @@ export function extractProductData(trendyolRawHtml:string){
             throw parsingError
         }
         if(parsingError instanceof SyntaxError){
-            throw new ServiceError("JSON parse failed",502);
+            throw new ServiceError("Geçersiz ürün bilgisi yapısı.",502,true);
         }
-        throw new ServiceError("Unknown error",500,{cause:parsingError});
+        throw new ServiceError("Beklenmeyen hata.",500,false);
     }
 }

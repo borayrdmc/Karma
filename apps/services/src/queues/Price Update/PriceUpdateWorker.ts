@@ -1,7 +1,7 @@
 import { insertPriceData, updateProductStockStatus } from "@repo/db";
 import { Job, UnrecoverableError, Worker } from "bullmq";
 import { redisConnection } from "../connection";
-import { isFatalError, ServiceError } from "@repo/errors";
+import { ServiceError } from "@repo/errors";
 import { scrapeProductPrice } from "../../ScrapeProductPrice";
 
 export const priceUpdateWorker = new Worker(
@@ -37,7 +37,7 @@ export const priceUpdateWorker = new Worker(
             }
         }
         catch(error){
-            if(error instanceof ServiceError && isFatalError(error)){
+            if(error instanceof ServiceError && error.isFatal){
                 console.error(`Error occured on Product ID: ${productId}. Details: ${error.message} ${error.statusCode}`);
                 throw new UnrecoverableError(error.message);
             }

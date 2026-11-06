@@ -22,7 +22,7 @@ export function removeUrlParameters(productUrl:string):{productPlatform:ProductP
     const codeMatch=[...pathname.matchAll(PRODUCT_CODE_PATTERNS[productPlatform])].at(-1);
 
     if(!codeMatch){
-        throw new ServiceError("Product code not found in given URL.",400);
+        throw new ServiceError("Verilen linkte ürün kodu bulunamadı.",400);
     }
 
     const productPath=pathname

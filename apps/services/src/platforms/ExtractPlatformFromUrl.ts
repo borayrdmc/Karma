@@ -16,17 +16,17 @@ export function extractPlatformFromUrl(productUrl:string): ProductInputType["pro
         parsedUrl = new URL(productUrl);
     } 
     catch{
-        throw new ServiceError("Invalid product URL.", 400);
+        throw new ServiceError("Geçerli bir ürün linki giriniz.", 400);
     }
 
     if(parsedUrl.protocol!=="https:" || parsedUrl.port !== ""){
-        throw new ServiceError("Unsupported URL protocol or port.", 400);
+        throw new ServiceError("Geçersiz protokol.", 400);
     }
 
     const platform=ALLOWED_PLATFORMS[parsedUrl.hostname.toLowerCase()];
 
     if(!platform){
-        throw new ServiceError("Unsupported product platform.", 400);
+        throw new ServiceError("Lütfen geçerli bir Hepsiburada veya Trendyol ürün linki giriniz.", 400);
     }
 
     return platform;

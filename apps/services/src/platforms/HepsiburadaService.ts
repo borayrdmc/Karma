@@ -31,7 +31,7 @@ export async function hepsiburadaService(productUrl:string): Promise<ScraperData
            throw productServiceError
         }
         else{
-            throw new ServiceError("Internal server error.",500);
+            throw new ServiceError("Sunucu hatası.",500);
         }
     }
 }

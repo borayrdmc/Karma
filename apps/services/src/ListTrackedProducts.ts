@@ -22,7 +22,7 @@ export async function listTrackedProducts(userId: string): Promise<TrackedProduc
         const productPriceHistory = priceHistoryList.filter(priceHistoryItem => priceHistoryItem.productId === trackedProduct.productId);
 
         if(!matchedProduct){
-            throw new ServiceError(`Product data not found for id: ${trackedProduct.productId}`, 404);
+            throw new ServiceError(`Verilen ID için ürün bilgisi bulunamadı: ${trackedProduct.productId}`, 404);
         }
 
         return {trackedProduct,product:matchedProduct,productPriceHistory};

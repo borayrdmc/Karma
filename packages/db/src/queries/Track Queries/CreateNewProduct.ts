@@ -11,7 +11,7 @@ export async function createNewProduct({productUrl,productPlatform,productCode,p
             .returning();
     
     if(!createdProduct){
-        throw new ServiceError("Couldn't create new product.",500);
+        throw new ServiceError("Ürün bilgisi oluşturulamadı.",500);
     }
     return createdProduct;
 }
