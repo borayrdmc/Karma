@@ -15,7 +15,7 @@ export async function removeFromTrackedProducts({userId,productId}:TrackedProduc
         ).returning();
 
     if(untrackedProduct.length===0){
-        throw new ServiceError("Tracked product not found",404);
+        throw new ServiceError("Takip edilen ürün bulunamadı",404,true);
     }
 
     return untrackedProduct[0];
