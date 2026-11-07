@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { authClient } from "@/lib/AuthClient";
+import { authClient } from "@/lib/auth/AuthClient";
 
 const focusRing="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0c0d0e]";
 

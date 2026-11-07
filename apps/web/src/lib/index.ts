@@ -1,9 +1,16 @@
-export * from "./AuthClient";
+export * from "./auth/AuthClient";
 
 //Validation Schemas
 export * from "./validations/SignInValidationSchema";
 export * from "./validations/SignUpFormValidationSchema";
 export * from "./validations/TrackProductValidationSchema";
 export * from "./validations/UntrackProductValidationSchema";
-export * from "./PriceInsight";
-export * from "./Formatters"
+
+//Utils
+export * from "./utils/PriceInsight";
+export * from "./utils/Formatters";
+export * from "./utils/utils";
+
+//Auth
+export * from "./auth/AuthClient";
+export * from "./auth/GetAuthError";

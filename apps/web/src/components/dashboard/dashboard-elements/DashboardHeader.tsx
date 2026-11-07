@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { TrendingDown, TrendingUp, LogOut, AlertTriangle } from "lucide-react";
-import { authClient } from "@/lib/AuthClient";
+import { authClient } from "@/lib/auth/AuthClient";
 import { cn } from "cn";
 
 export interface DashboardHeaderProps{

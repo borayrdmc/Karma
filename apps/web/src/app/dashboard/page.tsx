@@ -1,6 +1,6 @@
 import { Dashboard } from "@/components/dashboard/dashboard-elements/Dashboard";
-import { auth } from "@/lib/AuthConfig";
-import { fetchTrackedProducts } from "@/lib/FetchTrackedProducts";
+import { auth } from "@/lib/auth/AuthConfig";
+import { fetchTrackedProducts } from "@/app/dashboard/FetchTrackedProducts";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
