@@ -1,11 +1,20 @@
 import { ScraperDataType, TrackedProductItemType } from "@repo/types";
-import { createNewProduct, findProductInProductsTable, getPriceHistoryOfProduct, insertPriceData, trackProduct } from "@repo/db";
+import { createNewProduct, findProductInProductsTable, getPriceHistoryOfProduct, getUserTrackedProductCount, insertPriceData, trackProduct } from "@repo/db";
+import { ServiceError } from "@repo/errors";
 import { scrapeProductData } from "./ScrapeProductData";
 import { removeUrlParameters } from "./platforms/RemoveUrlParameters";
 import { extractPlatformFromUrl } from "./platforms/ExtractPlatformFromUrl";
 import { extractProductCodeFromUrl } from "./platforms/ExtractProductCodeFromUrl";
 
+const TRACKED_PRODUCT_LIMIT=24;
+
 export async function addToTrackedProducts(rawProductUrl:string,userId:string,customName?:string): Promise<TrackedProductItemType>{
+
+    const trackedProductCount=await getUserTrackedProductCount(userId);
+
+    if(trackedProductCount===TRACKED_PRODUCT_LIMIT){
+        throw new ServiceError(`En fazla ${TRACKED_PRODUCT_LIMIT} ürün takip edebilirsiniz.`, 403);
+    }
 
     const {cleanUrl}=removeUrlParameters(rawProductUrl);
 
