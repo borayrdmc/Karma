@@ -8,6 +8,7 @@ import { SignInButton } from "./SignInButton";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
+import { getAuthError } from "@/lib/auth/GetAuthError";
 
 interface LoginFieldErrors{
   email?: string[];
@@ -57,7 +58,7 @@ export function SignInForm(){
             const res=await authClient.signIn.email({email,password});
 
             if(res.error){
-                setServerError(res.error.message || "Giriş yaparken hata oluştu. Tekrar deneyiniz.");
+                setServerError(getAuthError(res.error.code, "Giriş yaparken hata oluştu. Tekrar deneyiniz."));
                 passwordInputRef.current?.focus();
             } 
             else{
@@ -77,10 +78,6 @@ export function SignInForm(){
     return(
         
         <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
-        
-            {
-                //react toast error for serverside errors maybe?
-            }
             
             <div className="flex flex-col gap-1">
                 <label htmlFor="email" className="text-xs font-medium text-zinc-300 ml-0.5">E-Posta</label>
