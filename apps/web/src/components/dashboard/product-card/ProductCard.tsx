@@ -27,18 +27,13 @@ export function ProductCard({productItem,index=0,setModal,deleteProduct}:Product
 
     const latestPriceRecord=productPriceHistory.at(-1);
     
-    const formattedCurrentPrice=!product.inStock
-        ? "Stokta Yok"
-        : (latestPriceRecord ? formatPrice(latestPriceRecord.price) : "Fiyat Hatası");
+    const formattedCurrentPrice=product.inStock ? "Stokta Yok" : (latestPriceRecord ? formatPrice(latestPriceRecord.price) : "Fiyat Hatası");
 
     const hasPriceChanged = productPriceHistory.length > 1 && latestPriceRecord;
-    const formattedLastChangeTime=hasPriceChanged
-        ? formatTime(latestPriceRecord.checkedAt)
-        : (trackedProduct.trackedAt ? formatTime(trackedProduct.trackedAt) : "Zaman Hatası");
 
-    const definatelyPerfectAccurateInsight: PriceInsightResultType = product.inStock
-        ? PriceInsight(productPriceHistory)
-        : { status: "no_change" };
+    const formattedLastChangeTime=hasPriceChanged ? formatTime(latestPriceRecord.checkedAt) : (trackedProduct.trackedAt ? formatTime(trackedProduct.trackedAt) : "Zaman Hatası");
+
+    const definatelyPerfectAccurateInsight: PriceInsightResultType = product.inStock ? PriceInsight(productPriceHistory) : { status: "no_change" };
 
     return( 
 
@@ -76,7 +71,7 @@ export function ProductCard({productItem,index=0,setModal,deleteProduct}:Product
                                     d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
                                 />
                             </svg>
-                            <span className="text-xs font-medium text-zinc-400">Görsel Yok</span>
+                            <span className="text-xs font-medium text-zinc-400">Görsel Yüklenemedi</span>
                         </>
                     )}
                     

@@ -1,5 +1,5 @@
 import { trackProductValidationSchema, untrackProductValidationSchema } from "@/lib";
-import { auth } from "@/lib/AuthConfig";
+import { auth } from "@/lib/auth/AuthConfig";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import z from "zod";
