@@ -65,7 +65,7 @@ export function AddProductModal({isOpen,onClose,onProductAdd}:addProductModalPro
 
             if(!response.ok){
 
-                if(typeof result.error==="string"){
+                if(typeof result.error==="string"){ //For server errors
                     setFieldErrors({productUrl:result.error});
                     pendingFocusRef.current="productUrl";
                     return;

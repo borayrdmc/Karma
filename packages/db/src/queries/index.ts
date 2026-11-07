@@ -18,4 +18,5 @@ export * from "./Track Queries/InsertPriceData";
 export * from "./Track Queries/TrackProduct";
 export * from "./Track Queries/FindProductInProductsTable";
 export * from "./Track Queries/CreateNewProduct";
-export * from "./Track Queries/GetPriceHistoryOfProduct"
+export * from "./Track Queries/GetPriceHistoryOfProduct";
+export * from "./Track Queries/GetUserTrackedProductCount";
