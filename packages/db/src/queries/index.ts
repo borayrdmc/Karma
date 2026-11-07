@@ -2,8 +2,6 @@ export * from "././RemoveFromTrackedProducts";
 
 //Delete Queries
 export * from "./Delete Queries/DeleteUntrackedProducts";
-export * from "./Delete Queries/GetAllTrackedProductIds";
-export * from "./Delete Queries/ClearUntrackedProducts";
 
 //List Queries
 export * from "./List Queries/GetPriceHistoryOfTrackedProducts";
