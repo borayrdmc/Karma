@@ -12,18 +12,23 @@ export async function POST(request:Request){
         return NextResponse.json({success:false,error:"Yetkisiz erişim."},{status:401});
     }
 
+    let requestJson;
+
     try{
-        const requestJson=await request.json();
+        requestJson=await request.json();
+    }
+    catch{
+        return NextResponse.json({success:false,error:"Geçersiz istek."},{status:400});
+    }
 
-        const parsedRequest=trackProductValidationSchema.safeParse(requestJson);
+    const parsedRequest=trackProductValidationSchema.safeParse(requestJson);
 
-        if(!parsedRequest.success){
+    if(!parsedRequest.success){
+        const parsedRequestError=z.flattenError(parsedRequest.error);
+        return NextResponse.json({success:false,error:parsedRequestError},{status: 400});
+    }
 
-            const parsedRequestError=z.flattenError(parsedRequest.error);
-
-            return NextResponse.json({success:false,error:parsedRequestError},{status: 400});
-        }
-
+    try{
         const response=await fetch("http://localhost:3001/api/products",{
 
             method:"POST",
@@ -33,42 +38,40 @@ export async function POST(request:Request){
                 "x-user-id":session.user.id
             },
             body:JSON.stringify({productUrl:parsedRequest.data.productUrl,customName:parsedRequest.data.customName})
-        })
+        });
 
         const data=await response.json();
-
         return NextResponse.json(data,{status:response.status});
     }
-    catch(routeError){
-        
-        if(routeError instanceof SyntaxError){
-            return NextResponse.json({success:false,error:"Geçersiz istek."},{status:400})
-        }
-        else{
-            return NextResponse.json({success:false,error:"Sunucu şu anda yanıt veremiyor. Daha sonra tekrar deneyin."},{status:500})
-        }
+    catch{
+        return NextResponse.json({success:false,error:"Sunucu şu anda yanıt veremiyor. Daha sonra tekrar deneyin."},{status:500});
     }
 }
 
 export async function DELETE(request:Request){
 
-    const session=await auth.api.getSession({headers: await headers()})
+    const session=await auth.api.getSession({headers: await headers()});
 
     if(!session){
         return NextResponse.json({success:false,error:"Yetkisiz erişim."},{status:401});
     }
 
+    let requestJson;
     try{
-        const requestJson=await request.json();
-        const parsedRequest=untrackProductValidationSchema.safeParse(requestJson);
+        requestJson = await request.json();
+    }
+    catch{
+        return NextResponse.json({success:false,error:"Geçersiz istek."},{status:400});
+    }
 
-        if(!parsedRequest.success){
+    const parsedRequest=untrackProductValidationSchema.safeParse(requestJson);
 
-            const parsedRequestError=z.flattenError(parsedRequest.error);
-            
-            return NextResponse.json({success:false,error:parsedRequestError},{status: 400});
-        }
+    if(!parsedRequest.success){
+        const parsedRequestError=z.flattenError(parsedRequest.error);
+        return NextResponse.json({success:false,error:parsedRequestError},{status: 400});
+    }
 
+    try{
         const response=await fetch(`http://localhost:3001/api/products/${parsedRequest.data.productId}`,{
 
             method:"DELETE",
@@ -81,26 +84,20 @@ export async function DELETE(request:Request){
         const data=await response.json();
         return NextResponse.json(data,{status:response.status});
     }
-    catch(routeError){
-        
-        if(routeError instanceof SyntaxError){
-            return NextResponse.json({success:false,error:"Geçersiz istek."},{status:400})
-        }
-        else{
-            return NextResponse.json({success:false,error:"Sunucu şu anda yanıt veremiyor. Daha sonra tekrar deneyin."},{status:500})
-        }
+    catch{
+        return NextResponse.json({success:false,error:"Sunucu şu anda yanıt veremiyor. Daha sonra tekrar deneyin."},{status:500});
     }
 }
 
-export async function GET(request:Request){
+export async function GET(){
+
+    const session=await auth.api.getSession({headers:await headers()});
+
+    if(!session){
+        return NextResponse.json({success:false,error:"Yetkisiz erişim."},{status:401});
+    }
 
     try{
-        const session=await auth.api.getSession({headers:await headers()});
-
-        if(!session){
-            return NextResponse.json({success:false,error:"Yetkisiz erişim."},{status:401});
-        }
-        
         const response = await fetch("http://localhost:3001/api/products",{
 
             method:"GET",
@@ -108,18 +105,12 @@ export async function GET(request:Request){
                 "x-internal-api-key":process.env.INTERNAL_API_KEY!,
                 "x-user-id":session.user.id
             }
-        })
+        });
 
         const data=await response.json();
         return NextResponse.json(data,{status:response.status});
     }
-    catch(routeError){
-        
-        if(routeError instanceof SyntaxError){
-            return NextResponse.json({success:false,error:"Geçersiz istek."},{status:400})
-        }
-        else{
-            return NextResponse.json({success:false,error:"Sunucu şu anda yanıt veremiyor. Daha sonra tekrar deneyin."},{status:500})
-        }
+    catch{
+        return NextResponse.json({success:false,error:"Sunucu şu anda yanıt veremiyor. Daha sonra tekrar deneyin."},{status:500});
     }
 }
