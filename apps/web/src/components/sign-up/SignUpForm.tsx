@@ -7,6 +7,7 @@ import { SignUpButton } from "./SignupButton";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
+import { getAuthError } from "@/lib/auth/GetAuthError";
 
 interface SignUpFieldErrors{
   name?: string[];
@@ -61,7 +62,7 @@ export function SignUpForm(){
             const res=await authClient.signUp.email({name,email,password});
 
             if(res.error){
-                setServerError(res.error.message || "Kayıt olunurken hata oluştu. Tekrar deneyiniz.")
+                setServerError(getAuthError(res.error.code, "Kayıt olunurken hata oluştu. Tekrar deneyiniz."));
             } 
             else{
                 console.log("Kayıt Başarılı! Kullanıcı Verisi:", res.data);
@@ -79,10 +80,6 @@ export function SignUpForm(){
     return(
 
         <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
-
-            {
-                //react toast error for serverside errors maybe?
-            }
 
             <div className="flex flex-col gap-1">
                 <label htmlFor="name" className="text-xs font-medium text-zinc-300 ml-1">İsim</label>
