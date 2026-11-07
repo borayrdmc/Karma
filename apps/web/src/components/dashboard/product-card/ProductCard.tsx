@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
+import { ImageOff } from "lucide-react";
 import { PriceInsightResultType, TrackedProductItemType } from "@repo/types";
 import { DeleteProductButton } from "./DeleteProductButton";
 import { RedirectToProductPageButton } from "./RedirectToProductPageButton";
@@ -27,7 +28,7 @@ export function ProductCard({productItem,index=0,setModal,deleteProduct}:Product
 
     const latestPriceRecord=productPriceHistory.at(-1);
     
-    const formattedCurrentPrice=product.inStock ? "Stokta Yok" : (latestPriceRecord ? formatPrice(latestPriceRecord.price) : "Fiyat Hatası");
+    const formattedCurrentPrice=product.inStock ? (latestPriceRecord ? formatPrice(latestPriceRecord.price) : "Fiyat Hatası")  : "Stokta Yok";
 
     const hasPriceChanged = productPriceHistory.length > 1 && latestPriceRecord;
 
@@ -59,18 +60,7 @@ export function ProductCard({productItem,index=0,setModal,deleteProduct}:Product
                         />
                         ) : (
                         <>
-                            <svg
-                                className="size-8 stroke-1"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                                />
-                            </svg>
+                            <ImageOff className="size-8 stroke-1" />
                             <span className="text-xs font-medium text-zinc-400">Görsel Yüklenemedi</span>
                         </>
                     )}
