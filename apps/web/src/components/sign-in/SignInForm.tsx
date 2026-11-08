@@ -62,7 +62,6 @@ export function SignInForm(){
                 passwordInputRef.current?.focus();
             } 
             else{
-                console.log("Giriş Başarılı! Kullanıcı Verisi:", res.data);
                 router.push("/dashboard");
             }
         } 

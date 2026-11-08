@@ -65,7 +65,6 @@ export function SignUpForm(){
                 setServerError(getAuthError(res.error.code, "Kayıt olunurken hata oluştu. Tekrar deneyiniz."));
             } 
             else{
-                console.log("Kayıt Başarılı! Kullanıcı Verisi:", res.data);
                 router.push("/signin");
             }
         } 
