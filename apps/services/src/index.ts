@@ -1,4 +1,5 @@
 import Fastify from "fastify";
+import rateLimit from "@fastify/rate-limit";
 import { ServiceError } from "@repo/errors";
 import { listTrackedProducts } from "./ListTrackedProducts";
 import { addToTrackedProducts } from "./AddToTrackedProducts";
@@ -11,6 +12,24 @@ import { internalAuth } from "./plugins/InternalAuth";
 const app = Fastify({ logger: true });
 
 app.register(internalAuth);
+
+app.register(rateLimit,{
+
+    max:30, 
+    timeWindow:"1 minute",
+    allowList:["/health"],
+
+    keyGenerator:(request)=>{
+        return (request.headers["x-user-id"] as string) || request.ip;
+    },
+    
+    errorResponseBuilder: () => {
+        return {
+            success: false,
+            error: "Çok fazla istek gönderdiniz. Lütfen bir süre sonra tekrar deneyin."
+        };
+    }
+});
 
 app.setErrorHandler((error,request,reply)=>{
 
@@ -37,12 +56,19 @@ app.get("/health",async()=>{
     return {status:"ok"};
 });
 
-app.post<{Body:{productUrl:string,customName:string}}>("/api/products", async(request,reply)=>{
+app.post<{Body:{productUrl?:string,customName?:string}}>("/api/products", async(request,reply)=>{
 
-    const productUrl=request.body.productUrl;
-    const customName=request.body.customName;
-
+    const productUrl=request.body?.productUrl;
+    const customName=request.body?.customName;
     const userId=request.headers["x-user-id"] as string;
+
+    if(!userId){
+        throw new ServiceError("Yetkisiz erişim. Kullanıcı kimliği bulunamadı.", 401);
+    }
+
+    if(!productUrl){
+        throw new ServiceError("Ürün linki boş olamaz.", 400);
+    }
 
     const productData=await addToTrackedProducts(productUrl,userId,customName);
 
@@ -54,7 +80,11 @@ app.post<{Body:{productUrl:string,customName:string}}>("/api/products", async(re
 
 app.get("/api/products", async(request,reply)=>{
 
-    const userId=request.headers["x-user-id"] as string; //Zod already validated it 
+    const userId=request.headers["x-user-id"] as string;
+
+    if(!userId){
+        throw new ServiceError("Yetkisiz erişim. Kullanıcı kimliği bulunamadı.", 401);
+    }
 
     const productList = await listTrackedProducts(userId);
 
@@ -67,7 +97,15 @@ app.get("/api/products", async(request,reply)=>{
 app.delete<{Params:{productId:string}}>("/api/products/:productId", async(request,reply)=>{
 
     const productId=request.params.productId;
-    const userId=request.headers["x-user-id"] as string; //Zod already validated it 
+    const userId=request.headers["x-user-id"] as string;
+
+    if(!userId){
+        throw new ServiceError("Yetkisiz erişim. Kullanıcı kimliği bulunamadı.", 401);
+    }
+
+    if(!productId){
+        throw new ServiceError("Ürün ID bilgisi eksik.", 400);
+    }
 
     await removeFromTrackedProducts({userId,productId});
 
