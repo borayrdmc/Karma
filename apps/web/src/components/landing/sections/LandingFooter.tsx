@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { ExternalLink, Mail } from "lucide-react";
 
-export const CONTACT_EMAIL="bborayrdmc@gmail.com";
+export const CONTACT_EMAIL="yrdmcbora@gmail.com";
 export const GITHUB_URL="https://github.com/borayrdmc";
 
 const linkClass="inline-flex min-h-11 items-center gap-1.5 rounded text-zinc-300 transition-colors hover:text-[#F4F4F4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70";
@@ -15,7 +16,13 @@ export function LandingFooter(){
                     <p>Karma, Trendyol veya Hepsiburada ile bağlantılı değildir.</p>
                 </div>
 
-                <nav aria-label="İletişim" className="flex flex-wrap items-center gap-x-6">
+                <nav aria-label="Bağlantılar ve Yasal" className="flex flex-wrap items-center gap-x-6 gap-y-2">
+                    <Link href="/gizlilik" className={linkClass}>
+                        Gizlilik &amp; KVKK
+                    </Link>
+                    <Link href="/kullanim-kosullari" className={linkClass}>
+                        Kullanım Koşulları
+                    </Link>
                     <a href={`mailto:${CONTACT_EMAIL}`} className={linkClass}>
                         <Mail className="size-4" aria-hidden="true"/>
                         Mail adresim
