@@ -1,3 +1,4 @@
+const SERVICES_URL=process.env.SERVICES_URL || "http://localhost:3001";
 import { TrackedProductItemType } from "@repo/types";
 import { ServiceError } from "@repo/errors";
 
@@ -9,7 +10,7 @@ interface FetchProductsResponse {
 
 export async function fetchTrackedProducts(userId:string):Promise<TrackedProductItemType[]>{
 
-    const response=await fetch("http://localhost:3001/api/products",{
+    const response=await fetch(`${SERVICES_URL}/api/products`,{
 
         method:"GET",
         headers:{
