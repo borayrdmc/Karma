@@ -4,9 +4,9 @@ export function formatTime(checkedAt:Date|string){
 
     const now=new Date();
 
-    const diffInSeconds = Math.floor((now.getTime()-targetDate.getTime())/1000);
+    const diffInSeconds=Math.floor((now.getTime()-targetDate.getTime())/1000);
 
-    if(isNaN(diffInSeconds) || diffInSeconds<0 || diffInSeconds<60) {
+    if(isNaN(diffInSeconds) || diffInSeconds<0 || diffInSeconds<60){
         return "Az önce";
     }
 
@@ -24,10 +24,11 @@ export function formatTime(checkedAt:Date|string){
     if(diffInDays<30){
         return `${diffInDays} gün önce`;
     }
-    return targetDate.toLocaleDateString("tr-TR", {
-        day: "numeric",
-        month: "long",
-        year: targetDate.getFullYear() !== now.getFullYear() ? "numeric" : undefined,
+    return targetDate.toLocaleDateString("tr-TR",{
+        day:"numeric",
+        month:"long",
+        year:targetDate.getFullYear()!==now.getFullYear() ? "numeric" : undefined,
+        timeZone:"Europe/Istanbul",
     });
 }
 
@@ -42,9 +43,9 @@ export function formatPriceValue(price:number|string){
     const fractionDigits=Number.isInteger(numericPrice) ? 0 : 2;
 
     return(
-        new Intl.NumberFormat("tr-TR", {
-            minimumFractionDigits: fractionDigits,
-            maximumFractionDigits: fractionDigits,
+        new Intl.NumberFormat("tr-TR",{
+            minimumFractionDigits:fractionDigits,
+            maximumFractionDigits:fractionDigits,
         }).format(numericPrice)
     );
 }
@@ -57,14 +58,14 @@ export function formatPrice(price:number|string){
 }
 
 // Mutlak tarih ve saat ("28 Ekim 2026, 14:00"). Sunucu ve istemci aynı çıktıyı üretsin diye saat dilimi sabit.
-export function formatDateTime(checkedAt:Date|string, withTime:boolean=true){
+export function formatDateTime(checkedAt:Date|string,withTime:boolean=true){
 
-    return new Date(checkedAt).toLocaleString("tr-TR", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-        hour: withTime ? "2-digit" : undefined,
-        minute: withTime ? "2-digit" : undefined,
-        timeZone: "Europe/Istanbul",
+    return new Date(checkedAt).toLocaleString("tr-TR",{
+        day:"numeric",
+        month:"long",
+        year:"numeric",
+        hour:withTime ? "2-digit" : undefined,
+        minute:withTime ? "2-digit" : undefined,
+        timeZone:"Europe/Istanbul",
     });
 }

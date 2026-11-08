@@ -63,12 +63,13 @@ export function PriceChart({ priceHistory }: PriceChartProps) {
         const dateObj = new Date(item.checkedAt);
         return {
             index: idx,
-            date: dateObj.toLocaleDateString("tr-TR", { day: "numeric", month: "short" }),
+            date: dateObj.toLocaleDateString("tr-TR", { day: "numeric", month: "short", timeZone: "Europe/Istanbul" }),
             fullDate: dateObj.toLocaleString("tr-TR", {
                 day: "numeric",
                 month: "long",
                 hour: "2-digit",
                 minute: "2-digit",
+                timeZone: "Europe/Istanbul",
             }),
             price: Number(item.price),
         };
