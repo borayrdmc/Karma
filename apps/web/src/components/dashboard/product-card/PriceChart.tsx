@@ -10,7 +10,6 @@ import {
     XAxis,
     YAxis,
     Tooltip,
-    CartesianGrid,
     ReferenceLine,
 } from "recharts";
 import { TrendingUp } from "lucide-react";
@@ -221,7 +220,7 @@ export function PriceChart({ priceHistory }: PriceChartProps) {
                         fill="url(#priceGradient)"
                         isAnimationActive={false}
                         activeDot={false}
-                        dot={(props: any) => {
+                        dot={(props: { cx?: number; cy?: number; index?: number }) => {
                             const { cx, cy, index } = props;
                             if (cx == null || cy == null) return <g key={index} />;
                             const isHovered = hoveredIndex === index;
@@ -243,7 +242,7 @@ export function PriceChart({ priceHistory }: PriceChartProps) {
                                         r={12}
                                         fill="transparent"
                                         className="cursor-pointer"
-                                        onMouseEnter={() => setHoveredIndex(index)}
+                                        onMouseEnter={() => setHoveredIndex(index ?? null)}
                                         onMouseLeave={() => setHoveredIndex(null)}
                                     />
                                 </g>
