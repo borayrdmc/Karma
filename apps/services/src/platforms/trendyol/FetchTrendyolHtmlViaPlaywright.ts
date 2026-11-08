@@ -17,14 +17,18 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
 
     try{
 
+        const chromeChannel=process.env.CHROME_CHANNEL || (process.platform==="win32" ? "chrome" : undefined);
         browser=await chromium.launch({
-            channel:"chrome", //Use real chrome browser instead of chromium.
+            channel:chromeChannel,
+
             ignoreDefaultArgs: ['--enable-automation'], //Remove automation flag
             args: [
                 '--headless=new', //Hide browser in screen but run it in background like headless
                 '--window-size=1920,1080', //Like normal browser
                 '--no-sandbox',//Linux?
-                '--disable-setuid-sandbox'//Linux?
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-gpu'
             ]
         });
         
