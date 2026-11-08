@@ -33,7 +33,7 @@ export default function NotFound(){
                 className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold px-5 py-2.5 text-sm transition-all duration-200 cursor-pointer"
             >
                 <ArrowLeft className="size-4 stroke-3" />
-                <span>Dashboard'a Dön</span>
+                <span>Dashboard&apos;a Dön</span>
             </Link>
         </div>
     );

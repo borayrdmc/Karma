@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { LandingHeader } from "@/components/landing/sections/header/LandingHeader";
 import { LandingFooter, CONTACT_EMAIL } from "@/components/landing/sections/LandingFooter";
 import Link from "next/link";
-import { ArrowLeft, ShieldCheck } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 export const metadata:Metadata={
     title:"Gizlilik Politikası ve Aydınlatma Metni",

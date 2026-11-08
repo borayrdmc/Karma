@@ -7,7 +7,7 @@ export const cleanupQueue = new Queue("cleanup-queue",{
     connection:redisConnection,
 });
 
-const cleanupWorker = new Worker(
+export const cleanupWorker = new Worker(
     
     "cleanup-queue",
     

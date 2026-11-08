@@ -1,10 +1,10 @@
 import { ServiceError } from "@repo/errors";
-import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
+import { FastifyInstance, FastifyRequest } from "fastify";
 import fp from "fastify-plugin";
 
 async function internalAuthPlugin(fastify:FastifyInstance){
 
-    fastify.addHook("onRequest",async (request:FastifyRequest,reply:FastifyReply)=>{
+    fastify.addHook("onRequest",async (request:FastifyRequest)=>{
 
         if(request.url==="/health"){
             return;
