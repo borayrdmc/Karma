@@ -29,7 +29,7 @@ export default function TermsPage(){
                             Kullanım Koşulları
                         </h1>
                         <p className="mt-2 text-xs text-zinc-400">
-                            Son Güncelleme: Mart 2026
+                            Son Güncelleme: Kasım 2026
                         </p>
                     </div>
 
