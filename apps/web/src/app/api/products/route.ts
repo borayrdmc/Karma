@@ -4,6 +4,8 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import z from "zod";
 
+const SERVICES_URL=process.env.SERVICES_URL || "http://localhost:3001";
+
 export async function POST(request:Request){
 
     const session=await auth.api.getSession({headers:await headers()});
@@ -29,7 +31,7 @@ export async function POST(request:Request){
     }
 
     try{
-        const response=await fetch("http://localhost:3001/api/products",{
+        const response=await fetch(`${SERVICES_URL}/api/products`,{
 
             method:"POST",
             headers:{
@@ -72,7 +74,7 @@ export async function DELETE(request:Request){
     }
 
     try{
-        const response=await fetch(`http://localhost:3001/api/products/${parsedRequest.data.productId}`,{
+        const response=await fetch(`${SERVICES_URL}/api/products/${parsedRequest.data.productId}`,{
 
             method:"DELETE",
             headers:{
@@ -98,7 +100,7 @@ export async function GET(){
     }
 
     try{
-        const response = await fetch("http://localhost:3001/api/products",{
+        const response=await fetch(`${SERVICES_URL}/api/products`,{
 
             method:"GET",
             headers:{

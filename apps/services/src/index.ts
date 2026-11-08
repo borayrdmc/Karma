@@ -1,3 +1,4 @@
+import "dotenv/config";
 import Fastify from "fastify";
 import rateLimit from "@fastify/rate-limit";
 import { ServiceError } from "@repo/errors";
@@ -8,6 +9,16 @@ import "./queues/Price Update/PriceUpdateWorker";
 import { priceUpdateQueueScheduler } from "./queues/Price Update/PriceUpdateQueueScheduler";
 import { cleanupJobScheduler } from "./queues/Clear Untracked/ClearUntrackedQueue";
 import { internalAuth } from "./plugins/InternalAuth";
+
+function validateEnv(){
+    const required=["DATABASE_URL", "INTERNAL_API_KEY"];
+    const missing=required.filter((key)=>!process.env[key]);
+    if(missing.length>0){
+        console.error(`❌ [SERVICES] Eksik ortam değişkeni: ${missing.join(", ")}. Lütfen .env dosyasını kontrol edin.`);
+        process.exit(1);
+    }
+}
+validateEnv();
 
 const app = Fastify({ logger: true });
 
@@ -114,7 +125,10 @@ app.delete<{Params:{productId:string}}>("/api/products/:productId", async(reques
     });
 });
 
-app.listen({port:3001},async(err,address)=>{
+const port=Number(process.env.PORT) || 3001;
+const host=process.env.HOST || "0.0.0.0";
+
+app.listen({port,host},async(err,address)=>{
 
     if(err){
         console.error(err);
