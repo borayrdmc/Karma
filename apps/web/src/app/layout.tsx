@@ -17,7 +17,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="tr"
-      className={`${jakartaSans.variable} h-full antialiased font-sans`}
+      className={`${jakartaSans.variable} dark h-full antialiased font-sans`}
     >
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
