@@ -1,8 +1,9 @@
 import { authClient } from "./AuthClient";
 
-type AuthErrorCode = keyof typeof authClient.$ERROR_CODES;
+type AuthErrorCode=keyof typeof authClient.$ERROR_CODES;
 
-const AUTH_ERROR_MESSAGES: Partial<Record<AuthErrorCode, string>> = {
+const AUTH_ERROR_MESSAGES: Partial<Record<AuthErrorCode, string>>={
+
     INVALID_EMAIL_OR_PASSWORD: "E-posta adresi veya şifre hatalı.",
     INVALID_EMAIL: "Geçersiz e-posta adresi.",
     INVALID_PASSWORD: "Şifre hatalı.",
@@ -19,8 +20,10 @@ const AUTH_ERROR_MESSAGES: Partial<Record<AuthErrorCode, string>> = {
     FAILED_TO_CREATE_SESSION: "Oturum açılamadı, lütfen tekrar deneyin.",
 };
 
-export function getAuthError(code?: string, fallback = "İşlem sırasında bir hata oluştu.") {
-    if (code && code in AUTH_ERROR_MESSAGES) {
+export function getAuthError(code?: string, fallback="İşlem sırasında bir hata oluştu."){
+
+    if(code && code in AUTH_ERROR_MESSAGES){
+
         return AUTH_ERROR_MESSAGES[code as AuthErrorCode]!;
     }
 
