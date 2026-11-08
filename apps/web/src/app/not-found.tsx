@@ -24,7 +24,7 @@ export default function NotFound(){
                 </h1>
 
                 <p className="max-w-md text-sm text-zinc-400 leading-relaxed">
-                    Aradığın sayfa buralarda bir yerde yok gibi görünüyor. Sayfa taşınmış yada yazım yanlışı yapmış olabilirsin
+                    Aradığın sayfa buralarda bir yerde yok gibi görünüyor. Sayfa taşınmış ya da yazım hatası yapmış olabilirsin.
                 </p>
             </div>
             
