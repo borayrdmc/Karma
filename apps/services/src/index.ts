@@ -5,9 +5,10 @@ import { ServiceError } from "@repo/errors";
 import { listTrackedProducts } from "./ListTrackedProducts";
 import { addToTrackedProducts } from "./AddToTrackedProducts";
 import { removeFromTrackedProducts } from "@repo/db";
-import "./queues/Price Update/PriceUpdateWorker";
+import { priceUpdateWorker } from "./queues/Price Update/PriceUpdateWorker";
+import { redisConnection } from "./queues/connection";
 import { priceUpdateQueueScheduler } from "./queues/Price Update/PriceUpdateQueueScheduler";
-import { cleanupJobScheduler } from "./queues/Clear Untracked/ClearUntrackedQueue";
+import { cleanupJobScheduler, cleanupWorker } from "./queues/Clear Untracked/ClearUntrackedQueue";
 import { internalAuth } from "./plugins/InternalAuth";
 
 function validateEnv(){
@@ -140,3 +141,22 @@ app.listen({port,host},async(err,address)=>{
     await priceUpdateQueueScheduler();
     await cleanupJobScheduler();
 });
+
+async function gracefulShutdown(signal:string){
+    app.log.info(`[SERVICES] ${signal} sinyali alındı. Sunucu güvenle kapatılıyor...`);
+    try{
+        await app.close();
+        await priceUpdateWorker.close();
+        await cleanupWorker.close();
+        await redisConnection.quit();
+        app.log.info("[SERVICES] Tüm bağlantılar temizce kapatıldı.");
+        process.exit(0);
+    }
+    catch(error){
+        app.log.error(error, "[SERVICES] Kapanış sırasında hata oluştu.");
+        process.exit(1);
+    }
+}
+
+process.on("SIGTERM",()=>gracefulShutdown("SIGTERM"));
+process.on("SIGINT",()=>gracefulShutdown("SIGINT"));
