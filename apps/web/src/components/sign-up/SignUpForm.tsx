@@ -21,7 +21,7 @@ export function SignUpForm(){
     const [showPassword, setShowPassword] = useState(false);
     const [fieldErrors, setFieldErrors]=useState<SignUpFieldErrors>({});
     const [serverError,setServerError]=useState("");
-    const router=useRouter()
+    const router=useRouter();
 
     const nameInputRef = useRef<HTMLInputElement>(null);
     const emailInputRef = useRef<HTMLInputElement>(null);
@@ -65,7 +65,7 @@ export function SignUpForm(){
                 setServerError(getAuthError(res.error.code, "Kayıt olunurken hata oluştu. Tekrar deneyiniz."));
             } 
             else{
-                router.push("/signin");
+                router.push("/dashboard");
             }
         } 
         catch{
