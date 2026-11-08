@@ -11,12 +11,19 @@ interface DeleteProductModalProps{
 export function DeleteProductModal({productToBeDeleted,onClose,onDelete}:DeleteProductModalProps){
 
     const [isLoading,setIsLoading]=useState(false);
+    const [errorMessage,setErrorMessage]=useState("");
     const isOpen=!!productToBeDeleted;
     const productName=productToBeDeleted?.trackedProduct.customName || productToBeDeleted?.product.productName;
+
+    function handleClose(){
+        setErrorMessage("");
+        onClose();
+    }
     
     async function handleDelete(){
 
         setIsLoading(true);
+        setErrorMessage("");
 
         try{
             const productId=productToBeDeleted?.product.productId;
@@ -33,15 +40,15 @@ export function DeleteProductModal({productToBeDeleted,onClose,onDelete}:DeleteP
 
                 if(productId){
                     onDelete(productId);
-                    onClose();
+                    handleClose();
                 }
             }
             else{
-                alert("Ürün silinirken hata oluştu.");
+                setErrorMessage("Ürün silinirken hata oluştu.");
             }
         }
         catch(error){
-            alert("Sunucu hatası.");
+            setErrorMessage("Sunucu hatası.");
         }
         finally{
             setIsLoading(false);
@@ -50,22 +57,29 @@ export function DeleteProductModal({productToBeDeleted,onClose,onDelete}:DeleteP
 
     return(
 
-        <Dialog open={isOpen} onOpenChange={(open)=> {if(!open && !isLoading){onClose()}}}>
+        <Dialog open={isOpen} onOpenChange={(open)=> {if(!open && !isLoading){handleClose()}}}>
             <DialogContent className="sm:max-w-md border-zinc-800/80 bg-[#16171a]/95 text-[#F4F4F4] shadow-[0_0_50px_-12px_rgba(244,63,94,0.12)] backdrop-blur-xl">
                 <DialogHeader>
-                        <DialogTitle className="text-xl font-bold tracking-tight text-[#F4F4F4]">
-                            Ürünü Takipten Çıkar
-                        </DialogTitle>
+                    <DialogTitle className="text-xl font-bold tracking-tight text-[#F4F4F4]">
+                        Ürünü Takipten Çıkar
+                    </DialogTitle>
                 </DialogHeader>
 
-                    <div className="flex flex-col gap-4 mt-2">
+                <div className="flex flex-col gap-4 mt-2">
                     <p className="text-sm text-zinc-400">
                         <span className="font-semibold text-[#F4F4F4]">{productName}</span> isimli ürünü takipten çıkarmak istediğinize emin misiniz?
                     </p>
+
+                    {errorMessage && (
+                        <div className="rounded-xl bg-rose-950/30 p-2.5 text-xs text-rose-300 border border-rose-900/50">
+                            {errorMessage}
+                        </div>
+                    )}
+
                     <div className="flex justify-end gap-2 mt-2">
                         <button
                             type="button"
-                            onClick={onClose}
+                            onClick={handleClose}
                             disabled={isLoading}
                             className="rounded-xl border border-zinc-700/80 bg-zinc-800 hover:bg-zinc-700/80 px-4 py-2.5 text-sm font-medium text-[#F4F4F4] shadow-sm disabled:opacity-50 transition-all duration-150 cursor-pointer"
                         >
