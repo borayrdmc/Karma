@@ -1,8 +1,8 @@
-export * from "./auth/AuthClient";
-
 //Validation Schemas
 export * from "./validations/SignInValidationSchema";
 export * from "./validations/SignUpFormValidationSchema";
+export * from "./validations/ForgotPasswordValidationSchema";
+export * from "./validations/ResetPasswordValidationSchema";
 export * from "./validations/TrackProductValidationSchema";
 export * from "./validations/UntrackProductValidationSchema";
 
