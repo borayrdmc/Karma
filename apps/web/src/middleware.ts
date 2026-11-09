@@ -7,7 +7,7 @@ export async function middleware(request:NextRequest){
     const {pathname}=request.nextUrl;
 
     const isProtectedPath=pathname.startsWith("/dashboard") || pathname.startsWith("/api/products");
-    const isAuthPage=pathname.startsWith("/signin") || pathname.startsWith("/signup");
+    const isAuthPage=pathname.startsWith("/signin") || pathname.startsWith("/signup") || pathname.startsWith("/forgot-password");
 
     if(isAuthPage && sessionCookie){
         return NextResponse.redirect(new URL("/dashboard", request.url));
@@ -30,5 +30,5 @@ export async function middleware(request:NextRequest){
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/api/products/:path*", "/signin", "/signup"],
+  matcher: ["/dashboard/:path*", "/api/products/:path*", "/signin", "/signup", "/forgot-password"],
 };

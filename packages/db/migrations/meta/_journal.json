@@ -43,6 +43,13 @@
       "when": 1793817567608,
       "tag": "0005_violet_unus",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794139067438,
+      "tag": "0006_round_zarek",
+      "breakpoints": true
     }
   ]
 }

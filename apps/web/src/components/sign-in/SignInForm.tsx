@@ -93,7 +93,10 @@ export function SignInForm(){
             </div>
 
             <div className="flex flex-col gap-1">
-                <label htmlFor="password" className="text-xs font-medium text-zinc-300 ml-0.5">Şifre</label>
+                <div className="flex items-center justify-between ml-0.5">
+                    <label htmlFor="password" className="text-xs font-medium text-zinc-300">Şifre</label>
+                    <Link href="/forgot-password" className="text-xs text-emerald-400 hover:text-emerald-300 font-medium hover:underline transition-colors">Şifremi unuttum</Link>
+                </div>
                 <div className="relative">
                     <input 
                         ref={passwordInputRef}
