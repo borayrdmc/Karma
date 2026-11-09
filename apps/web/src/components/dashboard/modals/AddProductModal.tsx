@@ -65,7 +65,7 @@ export function AddProductModal({isOpen,onClose,onProductAdd}:addProductModalPro
 
             if(!response.ok){
 
-                if(typeof result.error==="string"){
+                if(typeof result.error==="string"){ //For server errors
                     setFieldErrors({productUrl:result.error});
                     pendingFocusRef.current="productUrl";
                     return;
@@ -114,6 +114,7 @@ export function AddProductModal({isOpen,onClose,onProductAdd}:addProductModalPro
                             <label htmlFor="productUrl" className="text-xs font-medium text-zinc-300 ml-1">Ürün Linki <span className="text-rose-400 font-bold">*</span></label>
 
                             <input
+                                ref={productUrlInputRef}
                                 type="url"
                                 name="productUrl"
                                 id="productUrl"
@@ -134,6 +135,7 @@ export function AddProductModal({isOpen,onClose,onProductAdd}:addProductModalPro
                         <div className="flex flex-col gap-1">
                             <label htmlFor="customName" className="text-xs font-medium text-zinc-300 ml-1">Ürün Özel İsmi</label>
                             <input
+                                ref={customNameInputRef}
                                 type="text"
                                 id="customName"
                                 name="customName"

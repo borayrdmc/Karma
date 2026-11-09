@@ -28,7 +28,7 @@ export function EmptyState({onAddProduct}:EmptyStateProps){
                 </h2>
 
                 <p className="max-w-md text-sm text-zinc-400 leading-relaxed">
-                    Fiyat takibi yapmak ve indirimlerden anında haberdar olmak için aşağıdaki buton ile ilk ürününü takibe al
+                    Fiyat takibi yapmak ve indirimlerden anında haberdar olmak için aşağıdaki buton ile ilk ürününü takibe al.
                 </p>
             </div>
            

@@ -15,10 +15,10 @@ const DESCRIPTION="Trendyol ve Hepsiburada ürünlerinin fiyat geçmişini takip
 export const revalidate=86400;
 
 export const metadata: Metadata={
-    title:{absolute:"Karma · İndirim gerçek mi, yoksa öncesinde zam mı yapıldı?"},
+    title:"Karma",
     description:DESCRIPTION,
     openGraph:{
-        title:"Karma · İndirim gerçek mi, yoksa öncesinde zam mı yapıldı?",
+        title:"Karma",
         description:DESCRIPTION,
         type:"website",
         locale:"tr_TR",

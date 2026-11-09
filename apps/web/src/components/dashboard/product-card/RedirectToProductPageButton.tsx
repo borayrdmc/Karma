@@ -1,5 +1,3 @@
-import { ShoppingCart } from 'lucide-react';
-
 interface RedirectButtonProps{
     productUrl:string;
     productPlatform:string;

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { TrendingDown } from "lucide-react";
+import { KarmaLogo } from "@/components/ui/KarmaLogo";
 import { HeaderAuthLink } from "./HeaderAuthLink";
 
 // Marka bloğu dashboard başlığıyla birebir aynı tutulur.
@@ -10,7 +10,7 @@ export function LandingHeader(){
             <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
                 <Link href="/" className="flex items-center gap-2.5 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70">
                     <div className="flex size-7 items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 shadow-[0_0_15px_-3px_rgba(16,185,129,0.25)]">
-                        <TrendingDown className="size-3.5" aria-hidden="true"/>
+                        <KarmaLogo className="size-4"/>
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="text-sm font-semibold tracking-tight text-[#F4F4F4]">

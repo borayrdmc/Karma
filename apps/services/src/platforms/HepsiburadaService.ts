@@ -28,9 +28,10 @@ export async function hepsiburadaService(productUrl:string): Promise<ScraperData
     catch(productServiceError){
 
         if(productServiceError instanceof ServiceError){
-           throw productServiceError
+           throw productServiceError;
         }
         else{
+            console.error("Unexpected error in Hepsiburada Service:", productServiceError);
             throw new ServiceError("Sunucu hatası.",500);
         }
     }

@@ -24,7 +24,7 @@ export default function NotFound(){
                 </h1>
 
                 <p className="max-w-md text-sm text-zinc-400 leading-relaxed">
-                    Aradığın sayfa buralarda bir yerde yok gibi görünüyor. Sayfa taşınmış yada yazım yanlışı yapmış olabilirsin
+                    Aradığın sayfa buralarda bir yerde yok gibi görünüyor. Sayfa taşınmış ya da yazım hatası yapmış olabilirsin.
                 </p>
             </div>
             
@@ -33,7 +33,7 @@ export default function NotFound(){
                 className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold px-5 py-2.5 text-sm transition-all duration-200 cursor-pointer"
             >
                 <ArrowLeft className="size-4 stroke-3" />
-                <span>Dashboard'a Dön</span>
+                <span>Dashboard&apos;a Dön</span>
             </Link>
         </div>
     );

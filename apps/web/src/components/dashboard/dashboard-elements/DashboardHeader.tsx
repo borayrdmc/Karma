@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { TrendingDown, TrendingUp, LogOut, AlertTriangle } from "lucide-react";
 import { authClient } from "@/lib/auth/AuthClient";
+import { KarmaLogo } from "@/components/ui/KarmaLogo";
 import { cn } from "cn";
 
 export interface DashboardHeaderProps{
@@ -46,7 +47,7 @@ export function DashboardHeader({userName,totalCount,hepsiburadaCount,trendyolCo
             <div className="flex h-14 w-full items-center justify-between px-6 border-b border-zinc-800/50">
                 <div className="flex items-center gap-2.5">
                     <div className="flex size-7 items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 shadow-[0_0_15px_-3px_rgba(16,185,129,0.25)]">
-                        <TrendingDown className="size-3.5" />
+                        <KarmaLogo className="size-4"/>
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="text-sm font-semibold tracking-tight text-[#F4F4F4]">

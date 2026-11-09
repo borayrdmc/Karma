@@ -21,7 +21,7 @@ export function SignUpForm(){
     const [showPassword, setShowPassword] = useState(false);
     const [fieldErrors, setFieldErrors]=useState<SignUpFieldErrors>({});
     const [serverError,setServerError]=useState("");
-    const router=useRouter()
+    const router=useRouter();
 
     const nameInputRef = useRef<HTMLInputElement>(null);
     const emailInputRef = useRef<HTMLInputElement>(null);
@@ -65,8 +65,7 @@ export function SignUpForm(){
                 setServerError(getAuthError(res.error.code, "Kayıt olunurken hata oluştu. Tekrar deneyiniz."));
             } 
             else{
-                console.log("Kayıt Başarılı! Kullanıcı Verisi:", res.data);
-                router.push("/signin");
+                router.push("/dashboard");
             }
         } 
         catch{
@@ -137,6 +136,17 @@ export function SignUpForm(){
             <div className="flex flex-col gap-1">
                 <SignUpButton isLoading={isLoading} />
                 <div className="text-center text-xs text-zinc-400 mt-1">Hesabın var mı? <span><Link href="/signin" className="cursor-pointer text-emerald-400 hover:text-emerald-300 font-medium hover:underline transition-colors ml-0.5">Giriş Yap!</Link></span></div>
+                <p className="text-center text-[11px] text-zinc-400 leading-normal mt-2">
+                    Kayıt olarak{" "}
+                    <Link href="/kullanim-kosullari" className="text-zinc-400 underline hover:text-zinc-200 transition-colors">
+                        Kullanım Koşulları
+                    </Link>{" "}
+                    ve{" "}
+                    <Link href="/gizlilik" className="text-zinc-400 underline hover:text-zinc-200 transition-colors">
+                        Gizlilik &amp; KVKK Metni
+                    </Link>
+                    &apos;ni kabul etmiş olursun.
+                </p>
             </div>
 
             {serverError && 

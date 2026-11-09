@@ -1,14 +1,20 @@
-import { notInArray } from "drizzle-orm";
+import { notExists, eq } from "drizzle-orm";
 import { db } from "../../client";
-import { products } from "../../schemas";
+import { products, trackedProducts } from "../../schemas";
 
-export async function deleteUntrackedProducts(trackedProductsIdList:string[]){
+export async function deleteUntrackedProducts(){
 
-    if(trackedProductsIdList.length===0){
-        return;
-    }
+    const deletedProducts = await db
+        .delete(products)
+        .where(
+            notExists(
+                db
+                    .select({ id: trackedProducts.id })
+                    .from(trackedProducts)
+                    .where(eq(trackedProducts.productId, products.productId))
+            )
+        )
+        .returning();
 
-    const deletedProducts= await db.delete(products).where(notInArray(products.productId,trackedProductsIdList)).returning()
-
-    return deletedProducts
+    return deletedProducts;
 }

@@ -136,6 +136,7 @@ export function DemoProductCard({demo}:{demo:DemoProduct}){
                                         src={product.imageUrl!}
                                         alt={product.name}
                                         fill
+                                        unoptimized
                                         sizes="72px"
                                         onError={()=>setImageError(true)}
                                         className="object-cover"

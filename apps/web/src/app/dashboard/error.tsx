@@ -1,5 +1,7 @@
 "use client";
 
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { RotateCcw, Home } from "lucide-react";
 
@@ -8,14 +10,20 @@ interface DashboardErrorProps {
     reset: () => void;
 }
 
-export default function DashboardError({error,reset}:DashboardErrorProps) {
+export default function DashboardError({reset}:DashboardErrorProps) {
+    const router=useRouter();
+    const [isPending,startTransition]=useTransition();
+
+    function handleRetry(){
+        startTransition(()=>{
+            router.refresh();
+            reset();
+        });
+    }
 
     return(
-
         <div className="min-h-screen bg-[#0c0d0e] text-[#F4F4F4] flex flex-col items-center justify-center text-center gap-5">
-            
             <div className="relative -mb-2">
-
                 <div className="absolute size-48 rounded-full bg-rose-500/15 blur-3xl pointer-events-none" />
                 <img
                     src="/error-state.webp"
@@ -30,20 +38,19 @@ export default function DashboardError({error,reset}:DashboardErrorProps) {
                 </h1>
 
                 <p className="max-w-md text-sm text-zinc-400 leading-relaxed">
-                    Sunucuyla bağlantı kurarken bir sorun oluştu. Tekrar deneyebilir yada ana sayfaya dönebilirsiniz
+                    Sunucuyla bağlantı kurarken bir sorun oluştu. Tekrar deneyebilir ya da ana sayfaya dönebilirsiniz.
                 </p>
             </div>
-            
 
             <div className="flex flex-wrap items-center justify-center gap-3">
-
                 <button
                     type="button"
-                    onClick={() => reset()}
-                    className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold px-5 py-2.5 text-sm shadow-[0_0_25px_-3px_rgba(16,185,129,0.35)] cursor-pointer"
+                    onClick={handleRetry}
+                    disabled={isPending}
+                    className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold px-5 py-2.5 text-sm shadow-[0_0_25px_-3px_rgba(16,185,129,0.35)] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed transition-all"
                 >
-                    <RotateCcw className="size-4 stroke-[2.5]"  />
-                    <span>Tekrar Dene</span>
+                    <RotateCcw className={`size-4 stroke-[2.5] ${isPending ? "animate-spin" : ""}`} />
+                    <span>{isPending ? "Yenileniyor..." : "Tekrar Dene"}</span>
                 </button>
 
                 <Link

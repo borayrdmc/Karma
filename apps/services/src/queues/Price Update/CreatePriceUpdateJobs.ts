@@ -19,6 +19,7 @@ export async function createPriceUpdateJobs(){
         productsToUpdate.map(product=>({
 
             name:"price-update-job",
+            jobId:`price-update-${product.productId}`,
             data:{
                 productId:product.productId,
                 productUrl:product.productUrl,

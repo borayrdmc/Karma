@@ -1,19 +1,19 @@
 import { Queue, Worker } from "bullmq";
 import { redisConnection } from "../connection";
-import { clearUntrackedProducts } from "@repo/db";
+import { deleteUntrackedProducts } from "@repo/db";
 
 export const cleanupQueue = new Queue("cleanup-queue",{
     
     connection:redisConnection,
 });
 
-const cleanupWorker = new Worker(
+export const cleanupWorker = new Worker(
     
     "cleanup-queue",
     
     async()=>{
         console.log("Untracked product removal queue started");
-        const deletedProducts=await clearUntrackedProducts();
+        const deletedProducts=await deleteUntrackedProducts();
 
         if(!deletedProducts || deletedProducts.length===0){
             console.log("Untracked product removal queue finished. No products were deleted.");
@@ -36,7 +36,7 @@ export async function cleanupJobScheduler(){
 
         "cleanup-job-scheduler",
 
-        { pattern: "0 */2 * * *" }, // Every 2 hours
+        { pattern: "0 4 * * 0", tz: "Europe/Istanbul" }, // Every Sunday at 04:00 (Turkey time)
         { 
             name: "cleanup-job",
             data: {},
