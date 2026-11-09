@@ -5,4 +5,5 @@ export default defineConfig({
     format:["esm"],
     clean:true,
     external:["patchright", "playwright"],
+    noExternal:[/@repo\/.*/],
 });
