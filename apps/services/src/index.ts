@@ -1,4 +1,8 @@
 import "dotenv/config";
+import { initSentry, Sentry } from "./sentry";
+
+initSentry();
+
 import Fastify from "fastify";
 import rateLimit from "@fastify/rate-limit";
 import { ServiceError } from "@repo/errors";
@@ -46,6 +50,11 @@ app.register(rateLimit,{
 app.setErrorHandler((error,request,reply)=>{
 
     if(error instanceof ServiceError){
+        if(error.statusCode >= 500 || error.isFatal){
+            Sentry.captureException(error, {
+                extra: { url: request.url, method: request.method, userId: request.headers["x-user-id"] }
+            });
+        }
 
         app.log.error(error);
         
@@ -55,6 +64,10 @@ app.setErrorHandler((error,request,reply)=>{
         });
         return;
     }
+
+    Sentry.captureException(error, {
+        extra: { url: request.url, method: request.method, userId: request.headers["x-user-id"] }
+    });
 
     app.log.error(error);
 
@@ -135,8 +148,29 @@ try{
 
     await priceUpdateQueueScheduler();
     await cleanupJobScheduler();
+
+    priceUpdateWorker.on("failed", (job, err) => {
+        Sentry.captureException(err, {
+            extra: {
+                queue: "price-update-queue",
+                jobId: job?.id,
+                productId: job?.data?.productId,
+                productUrl: job?.data?.productUrl,
+            },
+        });
+    });
+
+    cleanupWorker.on("failed", (job, err) => {
+        Sentry.captureException(err, {
+            extra: {
+                queue: "cleanup-queue",
+                jobId: job?.id,
+            },
+        });
+    });
 }
 catch(err){
+    Sentry.captureException(err);
     console.error(err);
     process.exit(1);
 }
@@ -144,6 +178,7 @@ catch(err){
 async function gracefulShutdown(signal:string){
     app.log.info(`[SERVICES] ${signal} sinyali alındı. Sunucu güvenle kapatılıyor...`);
     try{
+        await Sentry.close(2000);
         await app.close();
         await priceUpdateWorker.close();
         await cleanupWorker.close();

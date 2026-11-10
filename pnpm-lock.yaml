@@ -32,6 +32,9 @@ importers:
       '@repo/types':
         specifier: workspace:*
         version: link:../../packages/types
+      '@sentry/node':
+        specifier: ^11.11.0
+        version: 11.11.0(rollup@4.68.0)
       bullmq:
         specifier: ^6.1.2
         version: 6.1.2(ioredis@6.0.0)

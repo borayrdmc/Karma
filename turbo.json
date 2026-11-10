@@ -19,7 +19,10 @@
     "RESEND_API_KEY",
     "RESEND_FROM_EMAIL",
     "NEXT_PUBLIC_SENTRY_DSN",
-    "NEXT_PUBLIC_SENTRY_RELEASE"
+    "NEXT_PUBLIC_SENTRY_RELEASE",
+    "SENTRY_DSN",
+    "SENTRY_RELEASE",
+    "NODE_ENV"
   ],
   "tasks": {
     "build": {
