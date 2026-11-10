@@ -49,20 +49,54 @@ jobs:
           NEXT_PUBLIC_SENTRY_RELEASE: "karma-web@1.0.0"
         run: pnpm run build
 
-      - name: Trigger Coolify Deployment
-        if: success() && github.ref == 'refs/heads/main'
+  deploy:
+    name: Deploy to Coolify
+    needs: verify
+    # Sadece main'e yapılan push'larda (PR'larda değil) ve CI yeşilse çalışır
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Coolify'daki "Watch Paths" yerine geçer: hangi uygulamanın etkilendiğini tespit eder
+      - name: Detect changed apps
+        id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            shared: &shared
+              - "packages/**"
+              - "package.json"
+              - "pnpm-lock.yaml"
+              - "pnpm-workspace.yaml"
+              - "turbo.json"
+            web:
+              - *shared
+              - "apps/web/**"
+            services:
+              - *shared
+              - "apps/services/**"
+
+      - name: Deploy Karma Web
+        if: steps.changes.outputs.web == 'true'
         env:
-          COOLIFY_WEBHOOK_WEB: ${{ secrets.COOLIFY_WEBHOOK_WEB }}
-          COOLIFY_WEBHOOK_SERVICES: ${{ secrets.COOLIFY_WEBHOOK_SERVICES }}
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK_WEB }}
         run: |
-          if [ -n "$COOLIFY_WEBHOOK_WEB" ]; then
-            echo "🚀 Triggering Coolify deployment for Karma Web..."
-            curl -f -s -X POST "$COOLIFY_WEBHOOK_WEB" || curl -f -s -X GET "$COOLIFY_WEBHOOK_WEB" || echo "⚠️ Web webhook failed"
-          fi
-          if [ -n "$COOLIFY_WEBHOOK_SERVICES" ]; then
-            echo "🚀 Triggering Coolify deployment for Karma Services..."
-            curl -f -s -X POST "$COOLIFY_WEBHOOK_SERVICES" || curl -f -s -X GET "$COOLIFY_WEBHOOK_SERVICES" || echo "⚠️ Services webhook failed"
-          fi
-          if [ -z "$COOLIFY_WEBHOOK_WEB" ] && [ -z "$COOLIFY_WEBHOOK_SERVICES" ]; then
-            echo "ℹ️ No Coolify webhook secrets configured yet. Skipping deployment trigger."
-          fi
+          echo "🚀 Triggering Coolify deployment for Karma Web..."
+          curl --fail-with-body -sS \
+            --header "Authorization: Bearer $COOLIFY_TOKEN" \
+            "$WEBHOOK_URL"
+
+      - name: Deploy Karma Services
+        if: steps.changes.outputs.services == 'true'
+        env:
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK_SERVICES }}
+        run: |
+          echo "🚀 Triggering Coolify deployment for Karma Services..."
+          curl --fail-with-body -sS \
+            --header "Authorization: Bearer $COOLIFY_TOKEN" \
+            "$WEBHOOK_URL"
