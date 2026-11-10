@@ -1,3 +1,4 @@
+// Sentry error monitoring configuration for background workers and scraper services
 import * as Sentry from "@sentry/node";
 
 export function initSentry(): void {

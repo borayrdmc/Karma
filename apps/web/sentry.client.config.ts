@@ -1,3 +1,4 @@
+// Sentry client-side configuration with 10% sampling
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
