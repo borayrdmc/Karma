@@ -48,3 +48,21 @@ jobs:
           NEXT_PUBLIC_SENTRY_DSN: "https://0d60003e6d132194f2a29d7733d44b47@o4512407980277760.ingest.de.sentry.io/4512408009703504"
           NEXT_PUBLIC_SENTRY_RELEASE: "karma-web@1.0.0"
         run: pnpm run build
+
+      - name: Trigger Coolify Deployment
+        if: success() && github.ref == 'refs/heads/main'
+        env:
+          COOLIFY_WEBHOOK_WEB: ${{ secrets.COOLIFY_WEBHOOK_WEB }}
+          COOLIFY_WEBHOOK_SERVICES: ${{ secrets.COOLIFY_WEBHOOK_SERVICES }}
+        run: |
+          if [ -n "$COOLIFY_WEBHOOK_WEB" ]; then
+            echo "🚀 Triggering Coolify deployment for Karma Web..."
+            curl -f -s -X POST "$COOLIFY_WEBHOOK_WEB" || curl -f -s -X GET "$COOLIFY_WEBHOOK_WEB" || echo "⚠️ Web webhook failed"
+          fi
+          if [ -n "$COOLIFY_WEBHOOK_SERVICES" ]; then
+            echo "🚀 Triggering Coolify deployment for Karma Services..."
+            curl -f -s -X POST "$COOLIFY_WEBHOOK_SERVICES" || curl -f -s -X GET "$COOLIFY_WEBHOOK_SERVICES" || echo "⚠️ Services webhook failed"
+          fi
+          if [ -z "$COOLIFY_WEBHOOK_WEB" ] && [ -z "$COOLIFY_WEBHOOK_SERVICES" ]; then
+            echo "ℹ️ No Coolify webhook secrets configured yet. Skipping deployment trigger."
+          fi
