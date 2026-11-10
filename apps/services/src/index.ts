@@ -129,18 +129,17 @@ app.delete<{Params:{productId:string}}>("/api/products/:productId", async(reques
 const port=Number(process.env.PORT) || 3001;
 const host=process.env.HOST || "0.0.0.0";
 
-app.listen({port,host},async(err,address)=>{
-
-    if(err){
-        console.error(err);
-        process.exit(1);
-    }
-
-  console.log(`Server listening at ${address}`);
+try{
+    const address=await app.listen({port,host});
+    console.log(`Server listening at ${address}`);
 
     await priceUpdateQueueScheduler();
     await cleanupJobScheduler();
-});
+}
+catch(err){
+    console.error(err);
+    process.exit(1);
+}
 
 async function gracefulShutdown(signal:string){
     app.log.info(`[SERVICES] ${signal} sinyali alındı. Sunucu güvenle kapatılıyor...`);

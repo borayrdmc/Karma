@@ -1,5 +1,6 @@
 import { chromium } from 'patchright';
 import { ServiceError } from "@repo/errors";
+import { getPlaywrightProxyConfig } from "../ProxyConfig";
 
 const BLOCKED_RESOURCE_TYPES = new Set(["image", "stylesheet", "font", "media"]);
 
@@ -18,8 +19,11 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
     try{
 
         const chromeChannel=process.env.CHROME_CHANNEL || (process.platform==="win32" ? "chrome" : undefined);
+        const proxyConfig=getPlaywrightProxyConfig();
+
         browser=await chromium.launch({
             channel:chromeChannel,
+            proxy:proxyConfig,
 
             ignoreDefaultArgs: ['--enable-automation'], //Remove automation flag
             args: [
