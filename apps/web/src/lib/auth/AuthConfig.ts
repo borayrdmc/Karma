@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db, user, session, account, verification } from "@repo/db";
+import { sendResetPasswordEmail } from "./SendResetPasswordEmail";
 
 export const auth=betterAuth({
     database:drizzleAdapter(db,{
@@ -11,9 +12,11 @@ export const auth=betterAuth({
         enabled:true,
         revokeSessionsOnPasswordReset:true,
         sendResetPassword:async({user,url})=>{
-            if(process.env.NODE_ENV==="development"){
-                console.log(`[PASSWORD_RESET] E-posta: ${user.email} | URL: ${url}`);
-            }
+            await sendResetPasswordEmail({
+                email:user.email,
+                name:user.name,
+                url,
+            });
         },
     },
     session:{
