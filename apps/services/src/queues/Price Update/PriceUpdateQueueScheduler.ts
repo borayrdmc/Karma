@@ -27,7 +27,7 @@ export async function priceUpdateQueueScheduler(){
 
         "price-update-scheduler",
 
-        {pattern:"0 * * * *"},
+        {pattern:"0 */4 * * *"},
         {
             name:"create-price-updater-job",
             data:{},
