@@ -2,8 +2,6 @@ import { chromium } from 'patchright';
 import { ServiceError } from "@repo/errors";
 import { getPlaywrightProxyConfig } from "../ProxyConfig";
 
-const BLOCKED_RESOURCE_TYPES = new Set(["image", "stylesheet", "font", "media"]);
-
 export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promise<string>{
 
     const PLAYWRIGHT_ERRORS : [string,string,number,boolean?][] = [
@@ -53,7 +51,7 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
         const page=await context.newPage();
 
         await page.route("**/*", (route) => {
-            if (BLOCKED_RESOURCE_TYPES.has(route.request().resourceType())) {
+            if (route.request().resourceType() !== "document") {
                 return route.abort();
             }
             return route.continue();

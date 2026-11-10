@@ -22,7 +22,29 @@ export async function fetchHepsiburadaHtml(productUrl:string){
             throw new ServiceError("Hepsiburada ürün bilgisi alınamadı.",502);
         }
 
-        const htmlData=await response.text();
+        if(!response.body){
+            return await response.text();
+        }
+
+        const reader=response.body.getReader();
+        const decoder=new TextDecoder("utf-8");
+        let htmlData="";
+
+        while(true){
+            const {done,value}=await reader.read();
+            if(done){
+                break;
+            }
+
+            htmlData+=decoder.decode(value,{stream:true});
+
+            if(htmlData.includes("</head>") && /const\s+utagData\s*=\s*\{.+?\}\s*(?:;|\r?\n)/.test(htmlData)){
+                await reader.cancel();
+                break;
+            }
+        }
+
+        htmlData+=decoder.decode();
 
         return htmlData;
     }
