@@ -86,9 +86,17 @@ jobs:
           WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK_WEB }}
         run: |
           echo "🚀 Triggering Coolify deployment for Karma Web..."
-          curl --fail-with-body -sS \
-            --header "Authorization: Bearer $COOLIFY_TOKEN" \
-            "$WEBHOOK_URL"
+          if [ -z "$WEBHOOK_URL" ]; then
+            echo "❌ ERROR: COOLIFY_WEBHOOK_WEB secret is empty or missing in GitHub Secrets!"
+            exit 1
+          fi
+          if [ -n "$COOLIFY_TOKEN" ]; then
+            curl --fail-with-body -sS \
+              --header "Authorization: Bearer $COOLIFY_TOKEN" \
+              -X POST "$WEBHOOK_URL" || curl --fail-with-body -sS --header "Authorization: Bearer $COOLIFY_TOKEN" "$WEBHOOK_URL"
+          else
+            curl --fail-with-body -sS -X POST "$WEBHOOK_URL" || curl --fail-with-body -sS "$WEBHOOK_URL"
+          fi
 
       - name: Deploy Karma Services
         if: steps.changes.outputs.services == 'true'
@@ -97,6 +105,14 @@ jobs:
           WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK_SERVICES }}
         run: |
           echo "🚀 Triggering Coolify deployment for Karma Services..."
-          curl --fail-with-body -sS \
-            --header "Authorization: Bearer $COOLIFY_TOKEN" \
-            "$WEBHOOK_URL"
+          if [ -z "$WEBHOOK_URL" ]; then
+            echo "❌ ERROR: COOLIFY_WEBHOOK_SERVICES secret is empty or missing in GitHub Secrets!"
+            exit 1
+          fi
+          if [ -n "$COOLIFY_TOKEN" ]; then
+            curl --fail-with-body -sS \
+              --header "Authorization: Bearer $COOLIFY_TOKEN" \
+              -X POST "$WEBHOOK_URL" || curl --fail-with-body -sS --header "Authorization: Bearer $COOLIFY_TOKEN" "$WEBHOOK_URL"
+          else
+            curl --fail-with-body -sS -X POST "$WEBHOOK_URL" || curl --fail-with-body -sS "$WEBHOOK_URL"
+          fi
