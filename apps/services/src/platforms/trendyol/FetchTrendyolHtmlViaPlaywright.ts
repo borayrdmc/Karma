@@ -57,7 +57,7 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
             return route.continue();
         });
 
-        const response = await page.goto(productUrl,{waitUntil:'domcontentloaded',timeout:10000});
+        const response = await page.goto(productUrl,{waitUntil:'domcontentloaded',timeout:15000});
 
         if(!response){
             throw new ServiceError("Sayfaya ulaşılamadı.",500);
@@ -81,7 +81,7 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
         const trendyolRawHtml=await page.content();
 
         if(!trendyolRawHtml.includes('window["__envoy__SHARED_PROPS"]=')){
-            throw new ServiceError("Ürün bilgisi eksik.",502,true); //Sent to a cloudflare security check or captcha check
+            throw new ServiceError("Ürün bilgisi eksik.",502,false); //Sent to a cloudflare security check or captcha check
         }
 
         return trendyolRawHtml;
