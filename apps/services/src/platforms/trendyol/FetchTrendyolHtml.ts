@@ -67,8 +67,11 @@ export async function fetchTrendyolHtmlViaPlaywright(productUrl:string) : Promis
 
             const responseStatusCode=response.status();
 
-            if(responseStatusCode===403 || responseStatusCode===429){
+            if(responseStatusCode===403){
                 throw new ServiceError("Trendyol bağlantıyı reddetti.",502,true);
+            }
+            else if(responseStatusCode===429){
+                throw new ServiceError("Trendyol istek sınırında takıldı.",502,false);
             }
             else if(responseStatusCode===404){
                 throw new ServiceError("Ürün bulunamadı.",404,true);

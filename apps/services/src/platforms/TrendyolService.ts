@@ -1,6 +1,6 @@
 import { ScraperDataType } from "@repo/types";
 import { ServiceError } from "@repo/errors";
-import { fetchTrendyolHtmlViaPlaywright } from "./trendyol/FetchTrendyolHtmlViaPlaywright";
+import { fetchTrendyolHtmlViaPlaywright } from "./trendyol/FetchTrendyolHtml";
 import { extractProductData } from "./trendyol/ExtractProductData";
 import { extractTrendyolProductCode } from "./trendyol/ExtractTrendyolProductCode";
 

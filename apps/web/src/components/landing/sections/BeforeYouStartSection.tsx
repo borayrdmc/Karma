@@ -18,6 +18,10 @@ const QUESTIONS=[
         question:"Ürün indirime girdiğinde bildirim alacak mıyım?",
         answer:"İndirim bildirimleri geliştirme aşamasında. Şimdilik fiyat değişimlerini panelindeki grafikten takip edebilirsin.",
     },
+    {
+        question:"Mobil uygulamadan kopyalanan linkler uygun mudur?",
+        answer:"Şimdilik ty.gl veya hb.biz gibi mobil uygulama linkleri desteklenmiyor. Tarayıcıdan adres çubuğundaki linki kopyalayarak ürün ekleyebilirsin."
+    }
 ];
 
 export function BeforeYouStartSection(){
