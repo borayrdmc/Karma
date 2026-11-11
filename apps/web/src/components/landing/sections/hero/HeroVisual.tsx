@@ -7,10 +7,10 @@ export function HeroVisual(){
 
     return(
         <Image
-            src="/landing/dashboard-hero.webp"
-            alt="Karma paneli: altı ürünün güncel fiyatları ile indirim, zam ve sahte indirim şüphesi rozetleri."
+            src="/landing/dashboard-hero-new.webp"
+            alt="Karma paneli: altı ürünün güncel fiyatları ile indirim ve zam rozetleri."
             width={2880}
-            height={1170}
+            height={1304}
             priority
             sizes="(min-width: 1280px) 1232px, 100vw"
             className="h-auto w-full rounded-xl shadow-[0_0_50px_-12px_rgba(16,185,129,0.12)] ring-1 ring-zinc-800/80"
