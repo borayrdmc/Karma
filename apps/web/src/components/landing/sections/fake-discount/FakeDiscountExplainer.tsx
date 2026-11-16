@@ -27,16 +27,16 @@ export function FakeDiscountExplainer(){
                     <figure className="flex flex-col gap-3">
                         <div className="overflow-hidden rounded-2xl shadow-[0_0_50px_-12px_rgba(16,185,129,0.12)]">
                             <Image
-                                src="/landing/detail-chart.webp"
-                                alt="HP Victus fiyat geçmişi: 14 Ekim'de 45.466 TL, 29 Ekim 13:00'te 55.999 TL zirve, ardından 50.000 TL'ye düşüş."
+                                src="/landing/detail-chart-new.webp"
+                                alt="iPhone 15 128 GB Mavi fiyat geçmişi: 12 Kasım'da 54.999 TL dip, aynı gün 61.979 TL zirve, ardından 16 Kasım'da 57.420,82 TL'ye düşüş."
                                 width={1536}
-                                height={1168}
+                                height={1128}
                                 sizes="(min-width: 1024px) 600px, 100vw"
                                 className="h-auto w-full"
                             />
                         </div>
                         <figcaption className="text-sm text-zinc-400">
-                            Gerçek takip verisi · Ekran görüntüsü, 2 Kasım 2026
+                            Gerçek takip verisi · Ekran görüntüsü, 16 Kasım 2026
                         </figcaption>
                     </figure>
 

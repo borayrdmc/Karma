@@ -9,14 +9,13 @@ import { EASE_OUT, EASE_TIME } from "../../Motion";
 
 gsap.registerPlugin(useGSAP,ScrollTrigger,DrawSVGPlugin);
 
-// Çizginin uzunluğu boyunca noktaların yeri (0–1): düz taban 80, çıkış ~190, iniş ~154 birim.
+// Çizginin uzunluğu boyunca noktaların yeri (0–1): düz taban 80, çıkış ~190, iniş ~139 birim.
 // Çizim doğrusal olduğu için her nokta, çizgi ona vardığı anda belirir.
 const LINE_DURATION=1.2;
-const POINT_AT=[0,0.64,1];
+const POINT_AT=[0,0.66,1];
 
-// Soldaki ekran görüntüsündeki HP Victus'un gerçek kayıtları: 23 Ekim taban 49.448,85 → 29 Ekim zirve 55.999 → 30 Ekim 50.000 TL.
-// Rakamlar gerçek, çizim ölçekli değil: ölçekli çizimde 551 TL'lik fark yaklaşık 9 px kalıyordu, okunsun diye 30 px'e
-// büyütüldü (taban y=200, 50.000 TL y=170, zirve y=53). Alt yazı bunu açıkça söyler.
+// Soldaki ekran görüntüsündeki iPhone 15 128 GB Mavi'nin gerçek kayıtları: 12 Kasım dip 54.999 → 12 Kasım zirve 61.979 → 16 Kasım 57.420,82 TL.
+// Çizim dikeyde gerçek ölçeklidir (taban y=200, zirve y=53, 57.421 TL y=149; +2.422 TL fark 51 px).
 // Zaman ekseni sıkıştırılmıştır. Çıkış ve iniş yaklaşık 50° eğimle çizilir; dik çizgiler bıçak gibi duruyordu.
 // Çizim görünür halde render edilir; animasyon yalnızca JS çalışınca ve hareket azaltılmamışsa uygulanır.
 export function FakeDiscountSchema(){
@@ -48,37 +47,37 @@ export function FakeDiscountSchema(){
     return(
         <div ref={scope} className="rounded-xl border border-zinc-800/80 bg-[#09090b]/60 p-4 sm:p-5">
             <svg viewBox="0 0 440 250" className="h-auto w-full" role="img" aria-labelledby="schema-title schema-desc">
-                <title id="schema-title">HP Victus fiyat hareketi</title>
-                <desc id="schema-desc">23 Ekim&apos;de 49.449 TL olan fiyat 29 Ekim&apos;de 55.999 TL&apos;ye zamlanıyor, 30 Ekim&apos;de 5.999 TL &quot;indirimle&quot; 50.000 TL&apos;ye iniyor. Son fiyat zamdan önceki fiyatın hâlâ 551 TL üzerinde.</desc>
+                <title id="schema-title">iPhone 15 128 GB Mavi fiyat hareketi</title>
+                <desc id="schema-desc">12 Kasım&apos;da 54.999 TL olan fiyat aynı gün 61.979 TL&apos;ye zamlanıyor, ardından 4.558 TL &quot;indirimle&quot; 16 Kasım&apos;da 57.421 TL&apos;ye iniyor. Son fiyat zamdan önceki fiyatın hâlâ 2.422 TL üzerinde.</desc>
 
                 <line x1="30" y1="200" x2="352" y2="200" stroke="#3f3f46" strokeWidth="1.5" strokeDasharray="5 5"/>
 
-                <path data-schema-line d="M30 200 L110 200 L230 53 L330 170" fill="none" stroke="#10b981" strokeWidth="3" strokeLinejoin="round" strokeLinecap="round"/>
+                <path data-schema-line d="M30 200 L110 200 L230 53 L330 149" fill="none" stroke="#10b981" strokeWidth="3" strokeLinejoin="round" strokeLinecap="round"/>
 
                 <g data-schema-point>
                     <circle cx="30" cy="200" r="5" fill="#a1a1aa" stroke="#16171a" strokeWidth="2"/>
-                    <text x="30" y="224" fontSize="14" fill="#d4d4d8">49.449 TL</text>
-                    <text x="30" y="240" fontSize="12" fill="#a1a1aa">taban · 23 Ekim</text>
+                    <text x="30" y="224" fontSize="14" fill="#d4d4d8">54.999 TL</text>
+                    <text x="30" y="240" fontSize="12" fill="#a1a1aa">taban · 12 Kasım</text>
                 </g>
                 <g data-schema-point>
                     <circle cx="230" cy="53" r="5" fill="#fb7185" stroke="#16171a" strokeWidth="2"/>
-                    <text x="230" y="20" fontSize="12" fill="#a1a1aa" textAnchor="middle">29 Ekim</text>
-                    <text x="230" y="36" fontSize="14" fill="#fb7185" textAnchor="middle">55.999 TL · zam</text>
+                    <text x="230" y="20" fontSize="12" fill="#a1a1aa" textAnchor="middle">12 Kasım</text>
+                    <text x="230" y="36" fontSize="14" fill="#fb7185" textAnchor="middle">61.979 TL · zam</text>
                 </g>
                 <g data-schema-point>
-                    <circle cx="330" cy="170" r="5" fill="#34d399" stroke="#16171a" strokeWidth="2"/>
-                    <text x="338" y="112" fontSize="12" fill="#a1a1aa">30 Ekim</text>
-                    <text x="338" y="128" fontSize="14" fill="#34d399">50.000 TL</text>
-                    <text x="338" y="144" fontSize="12" fill="#a1a1aa">5.999 TL &quot;indirim&quot;</text>
+                    <circle cx="330" cy="149" r="5" fill="#34d399" stroke="#16171a" strokeWidth="2"/>
+                    <text x="338" y="91" fontSize="12" fill="#a1a1aa">16 Kasım</text>
+                    <text x="338" y="107" fontSize="14" fill="#34d399">57.421 TL</text>
+                    <text x="338" y="123" fontSize="12" fill="#a1a1aa">4.558 TL &quot;indirim&quot;</text>
                 </g>
 
                 <g data-schema-gap>
-                    <path d="M340 200 H352 M346 200 V170 M340 170 H352" fill="none" stroke="#fbbf24" strokeWidth="2"/>
-                    <text x="358" y="190" fontSize="14" fontWeight="600" fill="#fbbf24">+551 TL</text>
+                    <path d="M340 200 H352 M346 200 V149 M340 149 H352" fill="none" stroke="#fbbf24" strokeWidth="2"/>
+                    <text x="358" y="179" fontSize="14" fontWeight="600" fill="#fbbf24">+2.422 TL</text>
                 </g>
             </svg>
 
-            <p className="mt-3 text-xs text-zinc-400">Resimdeki ürünün gerçek kayıtları · Farkın görülmesi için büyütülmüştür.</p>
+            <p className="mt-3 text-xs text-zinc-400">Resimdeki ürünün gerçek fiyat kayıtları.</p>
         </div>
     );
 }
