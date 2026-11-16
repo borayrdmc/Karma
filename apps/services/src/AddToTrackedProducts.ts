@@ -5,6 +5,7 @@ import { scrapeProductData } from "./ScrapeProductData";
 import { removeUrlParameters } from "./platforms/RemoveUrlParameters";
 import { extractPlatformFromUrl } from "./platforms/ExtractPlatformFromUrl";
 import { extractProductCodeFromUrl } from "./platforms/ExtractProductCodeFromUrl";
+import { resolveLinkFormat } from "./platforms/ResolveLinkFormat";
 
 const TRACKED_PRODUCT_LIMIT=24;
 
@@ -16,7 +17,8 @@ export async function addToTrackedProducts(rawProductUrl:string,userId:string,cu
         throw new ServiceError(`En fazla ${TRACKED_PRODUCT_LIMIT} ürün takip edebilirsiniz.`, 403);
     }
 
-    const {cleanUrl}=removeUrlParameters(rawProductUrl);
+    const resolvedProductUrl=await resolveLinkFormat(rawProductUrl);
+    const {cleanUrl}=removeUrlParameters(resolvedProductUrl);
 
     const productPlatform=extractPlatformFromUrl(cleanUrl)
     const productCode=await extractProductCodeFromUrl(cleanUrl);
