@@ -4,7 +4,7 @@
 
 # Karma
 
-### İndirim gerçek mi, yoksa önce bindirim sonra indirim mi?
+### İndirim gerçek mi, yoksa öncesinde zam mı yapıldı?
 
 **Trendyol ve Hepsiburada ürünlerini tek bir panelden takip edin; fiyat geçmişini görün, sahte indirimleri yakalayın.**
 
@@ -44,8 +44,8 @@ Türkiye'deki e-ticaret kampanyalarında sık görülen bir durum var: Ürünün
 
 **Karma** tam olarak bu işi yapıyor:
 
-1. 🔗 Ürün linkini yapıştırın (Trendyol veya Hepsiburada).
-2. ⏱️ Karma fiyatı **her 4 saatte bir** arka planda otomatik kontrol eder.
+1. 🔗 Ürün linkini yapıştırın (Trendyol veya Hepsiburada — masaüstü ya da `ty.gl` / `app.hb.biz` mobil paylaşım linkleri).
+2. ⏱️ Karma fiyatı ve stok durumunu **her 4 saatte bir** arka planda otomatik kontrol eder.
 3. 📈 Fiyat geçmişi grafikle gösterilir; dip ve zirve noktaları işaretlenir.
 4. 🧠 **Price Insight** motoru, indirimin **gerçek mi sahte mi** olduğunu söyler.
 
@@ -57,7 +57,7 @@ Türkiye'deki e-ticaret kampanyalarında sık görülen bir durum var: Ürünün
   <tr>
     <td width="50%" valign="top">
       <h3>🔗 Tek Tıkla Ürün Takibi</h3>
-      <p>Linki yapıştırın, isterseniz <em>"Anneme alacağım kahve makinesi"</em> gibi kendinize özel bir isim verin. Platform ve ürün kodu URL'den otomatik çıkarılır.</p>
+      <p>Masaüstü veya mobil uygulama paylaşım linkini (<code>ty.gl</code>, <code>app.hb.biz</code>) yapıştırın, isterseniz <em>"Anneme alacağım kahve makinesi"</em> gibi kendinize özel bir isim verin. Platform ve ürün kodu URL'den otomatik çıkarılır.</p>
       <img src="apps/web/public/landing/add-product.webp" alt="Ürün Ekleme" width="100%" />
     </td>
     <td width="50%" valign="top">
@@ -71,9 +71,10 @@ Türkiye'deki e-ticaret kampanyalarında sık görülen bir durum var: Ürünün
 | | Özellik | Açıklama |
 |:-:|---|---|
 | 🛒 | **Platformlar Arası Ortak Liste** | Trendyol ve Hepsiburada ürünleri tek panelde; platforma göre filtreleme |
+| 📱 | **Mobil Kısa Link Desteği** | `ty.gl` ve `app.hb.biz` mobil uygulama paylaşım linklerini otomatik çözümleme |
 | 🧠 | **Sahte İndirim Tespiti** | 30 günlük hareketli pencereyle gerçek ve sahte indirim ayrımı |
-| 🏷️ | **İndirim / Zam Rozetleri** | Her kartta son fiyat değişimi (₺) ve ne kadar önce değiştiği |
-| ⏰ | **Otomatik Güncelleme** | BullMQ cron job'ları ile 4 saatte bir arka planda fiyat kontrolü |
+| 🏷️ | **İndirim / Zam ve Stok Takibi** | Her kartta son fiyat değişimi (₺), ne kadar önce değiştiği ve anlık stok durumu |
+| ⏰ | **Otomatik Güncelleme** | BullMQ cron job'ları ile 4 saatte bir arka planda fiyat ve stok kontrolü |
 | 🔐 | **Güvenli Hesap Sistemi** | Better Auth ile e-posta/şifre girişi, oturum yönetimi ve e-postayla şifre sıfırlama |
 | 🎨 | **Özenli Arayüz** | Koyu tema, GSAP animasyonları, boş/hata/404 durumları için özel illüstrasyonlar |
 
@@ -109,14 +110,14 @@ flowchart LR
 | Durum | Anlamı |
 |---|---|
 | ✅ `real_discount` | Fiyat, zirveden önceki dip seviyesinin **altına** indi. Gerçek bir fırsat. |
-| ⚠️ `fake_discount` | Fiyat zirveden düştü ama hâlâ **zirve öncesi dibin üzerinde**. Önce bindirim, sonra indirim. |
+| ⚠️ `fake_discount` | Fiyat zirveden düştü ama hâlâ **zirve öncesi dibin üzerinde**. Önce zam, sonra indirim. |
 | 📈 `price_increase` | Fiyat yükseldi; dip noktaya göre artış tutarı ve yüzdesi hesaplanır. |
 | ➖ `no_change` | Fiyat sabit ya da değişim %1 eşiğinin altında. |
 | ⏳ `insufficient_data` | Analiz için en az 2 fiyat kaydı gerekir. |
 
 ---
 
-## 🏗️ Sistem Mimarisi
+## 🏗 Sistem Mimarisi
 
 Karma, sorumlulukları birbirinden ayrılmış bir **pnpm + Turborepo monorepo** olarak tasarlandı. Kullanıcıya dönük web katmanı ile kazıma (scraping) yapan worker sunucusu **tamamen ayrı süreçlerde** çalışır. Worker dış dünyaya kapalıdır ve sadece web uygulamasının BFF katmanı üzerinden erişilebilir.
 
@@ -143,8 +144,8 @@ flowchart LR
     BFF -->|"x-internal-api-key<br/>x-user-id"| API
     API --> SCR
     Q --> SCR
-    SCR -->|"İç API (JSON)"| HB["Hepsiburada"]
-    SCR -->|"Fetch → Patchright"| TY["Trendyol"]
+    SCR -->|"HTML Stream + İç API"| HB["Hepsiburada"]
+    SCR -->|"Patchright (Stealth)"| TY["Trendyol"]
 
     BA --> DB[("PostgreSQL<br/>Drizzle ORM")]
     API --> DB
@@ -161,7 +162,7 @@ Karma/
 │   └── services/           # Fastify 5: REST API, Scraper'lar, BullMQ Queue/Worker
 └── packages/
     ├── db/                 # Drizzle şemaları (Auth + Product), migration'lar, modüler sorgular
-    ├── errors/             # ServiceError + isFatalError (retry sınıflandırması)
+    ├── errors/             # Merkezi ServiceError sınıfı (statusCode + isFatal bayrağı)
     ├── types/              # Uçtan uca paylaşılan TypeScript tipleri
     ├── validations/        # Ortak Zod şemaları
     ├── utils/              # Platform bağımsız yardımcılar
@@ -179,17 +180,18 @@ sequenceDiagram
     participant D as PostgreSQL
     participant P as Trendyol / Hepsiburada
 
-    C->>W: POST /api/products { productUrl }
-    W->>W: Session doğrula + Zod ile URL doğrula
+    C->>W: POST /api/products { productUrl, customName }
+    W->>W: Session doğrula + Zod ile doğrula
     W->>S: POST /api/products (x-internal-api-key, x-user-id)
-    S->>S: URL'den platform + ürün kodu çıkar
+    S->>S: Mobil kısa linkse (ty.gl / app.hb.biz) masaüstü URL'ye çözümle
+    S->>S: Takip parametrelerini temizle + platform ve ürün kodunu çıkar
     S->>D: Ürün zaten kayıtlı mı?
     alt Ürün kayıtlı
         D-->>S: productId
-        Note over S,P: Scraping atlanır, kaynak tasarrufu
+        Note over S,P: Scraping atlanır, hız ve kaynak tasarrufu
     else Yeni ürün
-        S->>P: Ürün verisini kazı
-        P-->>S: Ad + en ucuz fiyat
+        S->>P: Ürün verisini kazı (ad, görsel, stok, en ucuz fiyat)
+        P-->>S: ScraperData
         S->>D: Ürünü ve ilk fiyatı kaydet
     end
     S->>D: Kullanıcıyı ürüne bağla (409 on conflict)
@@ -201,31 +203,35 @@ sequenceDiagram
 
 ## 🔬 Mühendislik Detayları
 
-### 🕷️ Hibrit Kazıma ve WAF Atlatma
+### 🕷️ Kazıma Mimarisi, WAF Atlatma ve Mobil Link Çözümleme
 
-| Platform | Strateji |
+| Bileşen | Strateji |
 |---|---|
-| **Hepsiburada** | Dokümante edilmemiş, public iç listing API'si (`api/v1/product/listings/<code>`) üzerinden structured JSON. Tüm satıcılar arasından **en ucuz listing** seçilir. `-p-` ve `-pm-` (merchant) URL formatlarının ikisi de desteklenir. |
-| **Trendyol** | **İki aşamalı fallback:** Önce hafif Node `fetch` + gerçekçi Chrome header'ları denenir. WAF/Captcha'ya takılırsa `patchright` (stealth Playwright fork'u) ile gerçek Chromium'a geçilir. İki yöntem de başarısız olursa hatalar `AggregateError` olarak toplanır. |
+| **Hepsiburada** | İlk eklemede HTML akışından ürün adı, görseli ve ürün kodu alınır; fiyat için dokümante edilmemiş iç listing API'si (`api/v1/product/listings/<code>`) sorgulanarak tüm satıcılar arasından **en ucuz listing** seçilir. Hem standart (`-p-`) hem de pazar yeri (`-pm-`) linkleri desteklenir: URL'deki kod `HBCV`/`HBV` ile başlıyorsa doğrudan kullanılır; üst ürün koduysa HTML içindeki `<meta name="page_value">` etiketinden varyant koduna düşülür (fallback). 4 saatlik rutin fiyat güncellemelerinde ise HTML hiç çekilmez; kayıtlı ürün koduyla doğrudan JSON API'ye gidilir. |
+| **Trendyol** | WAF ve bot korumasını aşmak için doğrudan **`patchright`** (otomasyon izlerini gizleyen stealth Playwright/Chromium fork'u; `--headless=new`, `tr-TR` yerel ayarları ve `Sec-Fetch-*` başlıkları) kullanılır. Sayfa kaynağındaki `window["__envoy__SHARED_PROPS"]` nesnesi ayrıştırılarak ürün bilgileri, stok durumu ve kazanan satıcının (`winnerVariant`) fiyatı çıkarılır. |
+| **Mobil Kısa Linkler (`resolveLinkFormat`)** | Mobil uygulamalardan paylaşılan `ty.gl` (Trendyol) ve `app.hb.biz` (Hepsiburada) kısa linkleri doğrudan desteklenir. SSRF ve açık yönlendirme (open redirect) risklerine karşı yönlendirmeler otomatik takip edilmez; `redirect: "manual"` ile adım adım (en fazla 5 hop) izlenir ve her ara durak izin verilen domain listesine (`ty.gl`, `app.hb.biz`, `*.adj.st` Adjust deep-link servisi) karşı doğrulanır. Hedef platform (`trendyol.com` / `hepsiburada.com`) yakalandığı anda `response.body?.cancel()` ile sayfa gövdesi indirilmeden soket kapatılır ve URL parametreleri temizlenir. |
 
-Tüm istekler, Türkiye havuzundan **otomatik IP rotasyonlu residential proxy** üzerinden geçer (`undici` `ProxyAgent` ve Patchright proxy konfigürasyonu).
+Tüm kazıma istekleri, Türkiye havuzundan **otomatik IP rotasyonlu residential proxy** üzerinden geçer (`undici` `ProxyAgent` ve Patchright proxy yapılandırması).
 
-### ⚡ Bant Genişliği Optimizasyonları
+### ⚡ Hız ve Bant Genişliği Optimizasyonları
 
-Residential proxy trafiği GB başına ücretlendirildiği için her istekten gereksiz byte'ları atmak doğrudan maliyeti düşürüyor:
+İndirilen veri boyutunu küçültmek ve gereksiz alt kaynakları engellemek iki kritik kazanım sağlar: **İstekler çok daha kısa sürede yanıt aldığı için kazıma (scraping) süreci ciddi ölçüde hızlanır** ve GB başına ücretlendirilen residential proxy trafiğinden büyük tasarruf edilir:
 
-| Optimizasyon | Teknik | Önce → Sonra | Tasarruf |
+| Optimizasyon | Teknik | Boyut | Kazanım |
 |---|---|---|:-:|
-| **Stream Early-Cutoff** (Hepsiburada) | `response.body.getReader()` ile akış dinlenir; gereken veri `<head>` içinde yakalandığı anda `reader.cancel()` ile soket kapatılır | 1.036 KB → 127 KB | **%88** |
-| **Document-Only Intercept** (Trendyol) | `page.route('**/*')` ile sadece ana HTML dokümanına izin verilir; resim, CSS, font ve script istekleri `abort()` edilir | ~8 MB → ~200 KB | **%97** |
+| **Stream Early-Cutoff** (Hepsiburada) | Sayfanın tamamını indirmek yerine `response.body.getReader()` ile HTTP akışı dinlenir; `<head>` içindeki `utagData` yakalandığı anda `reader.cancel()` ile soket kapatılır. Kalan ~900 KB'lık gövde beklenmediği için yanıt süresi kısalır. | 1.036 KB → 127 KB | **%88** daha az veri ve daha hızlı yanıt |
+| **Document-Only Intercept** (Trendyol) | Patchright üzerinde `page.route('**/*')` ile sadece ana `document` (HTML) isteğine izin verilir; resim, CSS, font, medya ve harici script istekleri anında `abort()` edilir ve yalnızca `domcontentloaded` beklenir. Tarayıcının ~8 MB'lık yan kaynağı indirip işlemesi beklenmediği için kazıma süresi saniyeler mertebesinde kısalır. | ~8 MB → ~200 KB | **%97** daha az veri ve çok daha hızlı tarama |
 
-### 🔁 Dayanıklı Arka Plan İşleri (Redis + BullMQ)
+### 🔁 Dayanıklı Arka Plan İşleri ve Hata Yönetimi (Redis + BullMQ)
 
 - **Producer/Consumer mimarisi:** Scheduler 4 saatte bir tüm takip edilen ürünler için **ayrı ayrı job'lar** oluşturur (`addBulk`), böylece tek bir üründeki hata diğerlerini etkilemez.
 - **Rate limiting:** Worker `concurrency: 1` ve `2 saniyede 1 istek` limitiyle çalışır; hedef sitelere yük bindirmez.
-- **Jitter'lı exponential backoff:** Geçici ağ hataları artan ve rastgeleleştirilmiş aralıklarla yeniden denenir.
-- **Akıllı hata sınıflandırması (`isFatalError`):** `429`, `403`, *"invalid product code"*, *"no listings were found"* gibi kalıcı hatalar `UnrecoverableError`'a çevrilir ve **boşuna yeniden denenmez**.
-- **Delta-only yazım:** Yeni fiyat son bilinen fiyattan farklı değilse veritabanına kayıt atılmaz.
+- **Merkezi `ServiceError` ve `isFatal` sınıflandırması:** Repo genelinde tüm hatalar `@repo/errors` paketindeki `ServiceError(message, statusCode, isFatal)` sınıfıyla standartlaştırılmıştır. Worker bir hatayla karşılaştığında `error.isFatal` bayrağına bakar; `true` ise BullMQ `UnrecoverableError` fırlatarak işi anında sonlandırır, `false` ise **jitter'lı exponential backoff** ile yeniden dener:
+  - **`429 Too Many Requests` → Tekrar denenir (`isFatal: false`):** Genellikle o anki proxy rotasyonundan denk gelen IP'nin itibarının (reputation) düşük olmasından kaynaklanır. Bir sonraki denemede yeni bir residential IP ile istek başarılı olur.
+  - **`403 Forbidden` → Tekrar denenmez (`isFatal: true`):** Geçici bir ağ sorunundan ziyade scraper yapılandırmasında, başlıklarda veya tarayıcı parmak izinde bir hata olduğunun belirtisidir; boşuna döngüye sokulmaz.
+  - **`404 Not Found` / Sayfa Kaldırılmış → Tekrar denenmez (`isFatal: true`):** Ürün sayfası e-ticaret sitesinden tamamen kaldırılmışsa veya sayfa veri şeması bozulmuşsa iş kalıcı hata olarak sonlandırılır.
+- **Stok takibi (`inStock`):** Bir ürünün stoğu bittiğinde (Hepsiburada'da aktif satıcı/listing kalmaması veya Trendyol'da `winnerVariant` bulunamaması) bu durum **hata olarak kabul edilmez**. Ürünün veritabanındaki `inStock` durumu `false` olarak güncellenir ve sonraki 4 saatlik periyotlarda kontrol edilmeye devam edilir; böylece stoğu tükenen bir ürünün tekrar stoğa girdiği an yakalanır.
+- **Delta-only yazım:** Yeni fiyat son bilinen fiyattan farklı değilse veritabanına gereksiz kayıt atılmaz.
 - **Çöp toplama:** Her Pazar 03:00'te, hiçbir kullanıcının takip etmediği ürünler temizlenir.
 
 ### 🔐 Güvenlik
@@ -273,7 +279,7 @@ flowchart LR
 
 ---
 
-## 🛠️ Yerel Kurulum
+## 🛠 Yerel Kurulum
 
 ### Gereksinimler
 
@@ -339,11 +345,12 @@ pnpm format         # Prettier ile formatla
 
 ---
 
-## 🗺️ Yol Haritası
+## 🗺 Yol Haritası
 
 - [x] Trendyol ve Hepsiburada desteği
+- [x] Mobil kısa link (`ty.gl` ve `app.hb.biz`) çözümleme
 - [x] Price Insight: sahte indirim tespiti
-- [x] Otomatik fiyat güncelleme (BullMQ)
+- [x] Otomatik fiyat ve stok güncelleme (BullMQ)
 - [x] Better Auth ile kullanıcı sistemi ve şifre sıfırlama
 - [x] CI-gated production deployment
 - [ ] Hedef fiyat alarmları (e-posta / push bildirimi)
