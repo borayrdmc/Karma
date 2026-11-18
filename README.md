@@ -285,14 +285,31 @@ flowchart LR
 
 ## 🛠 Yerel Kurulum
 
-### Gereksinimler
+### 🐳 Seçenek 1: Docker Compose ile Tek Komutla (Önerilen)
+
+Bilgisayarınızda Node.js, PostgreSQL veya Redis kurulu olmasına gerek kalmadan tüm mimariyi (Next.js, Fastify, Worker, PostgreSQL ve Redis) tek komutla izole bir ağda ayağa kaldırabilirsiniz:
+
+```bash
+# Repoyu klonlayın ve başlatın
+git clone https://github.com/borayrdmc/Karma.git
+cd Karma
+docker compose up --build
+```
+
+Konteynerler hazır olduğunda **http://localhost:3000** adresinden doğrudan kullanmaya başlayabilirsiniz.
+
+---
+
+### 💻 Seçenek 2: Manuel Geliştirme Kurulumu
+
+#### Gereksinimler
 
 - **Node.js** ≥ 22
 - **pnpm** 9
 - **PostgreSQL** (yerel veya Supabase/Neon)
 - **Redis** (örn. Docker ile)
 
-### Adımlar
+#### Adımlar
 
 ```bash
 # 1. Repoyu klonla

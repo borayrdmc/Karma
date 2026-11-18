@@ -1,0 +1,92 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: karma-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: karma_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./packages/db/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d karma_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - karma-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: karma-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - karma-network
+
+  services:
+    build:
+      context: .
+      dockerfile: ./apps/services/Dockerfile
+    container_name: karma-services
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      HOST: "0.0.0.0"
+      DATABASE_URL: "postgresql://postgres:postgrespassword@postgres:5432/karma_db"
+      REDIS_URL: "redis://redis:6379"
+      INTERNAL_API_KEY: "karma-local-internal-secret-key-change-in-prod"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - karma-network
+
+  web:
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    container_name: karma-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOSTNAME: "0.0.0.0"
+      DATABASE_URL: "postgresql://postgres:postgrespassword@postgres:5432/karma_db"
+      SERVICES_URL: "http://services:3001"
+      INTERNAL_API_KEY: "karma-local-internal-secret-key-change-in-prod"
+      BETTER_AUTH_SECRET: "karma-better-auth-secret-at-least-32-chars-long"
+      BETTER_AUTH_URL: "http://localhost:3000"
+      NEXT_PUBLIC_BETTER_AUTH_URL: "http://localhost:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      services:
+        condition: service_started
+    networks:
+      - karma-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  karma-network:
+    driver: bridge
