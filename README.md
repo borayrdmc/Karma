@@ -32,7 +32,7 @@
 
 <br />
 
-<img src="apps/web/public/landing/dashboard-hero-new.webp" alt="Karma Dashboard" width="100%" />
+<img src="apps/web/public/landing/product-tracking-demo.webp" alt="Karma Canlı Ürün Takip Demosu" width="100%" />
 
 </div>
 
@@ -48,6 +48,10 @@ Türkiye'deki e-ticaret kampanyalarında sık görülen bir durum var: Ürünün
 2. ⏱️ Karma fiyatı ve stok durumunu **her 4 saatte bir** arka planda otomatik kontrol eder.
 3. 📈 Fiyat geçmişi grafikle gösterilir; dip ve zirve noktaları işaretlenir.
 4. 🧠 **Price Insight** motoru, indirimin **gerçek mi sahte mi** olduğunu söyler.
+
+<br />
+
+<img src="apps/web/public/landing/dashboard-hero-new.webp" alt="Karma Dashboard Paneli" width="100%" />
 
 ---
 
