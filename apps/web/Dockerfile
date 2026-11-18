@@ -7,9 +7,8 @@ FROM base AS builder
 RUN apk update
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-RUN npm install -g turbo
 COPY . .
-RUN turbo prune web --docker
+RUN npx --yes turbo@2.10.7 prune web --docker
 
 FROM base AS installer
 RUN apk update
@@ -17,7 +16,6 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # First install dependencies (leverages layer caching)
-COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 RUN pnpm install --frozen-lockfile
