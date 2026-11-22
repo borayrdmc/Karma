@@ -1,22 +1,26 @@
+<p align="center">
+  <strong>🇬🇧 English</strong> &nbsp;|&nbsp; <a href="./README.tr.md">🇹🇷 Türkçe</a>
+</p>
+
 <div align="center">
 
 <img src="apps/web/src/app/icon.svg" alt="Karma Logo" width="96" height="96" />
 
 # Karma
 
-### İndirim gerçek mi, yoksa öncesinde zam mı yapıldı?
+### Is that discount real, or was the price inflated first?
 
-**Trendyol ve Hepsiburada ürünlerini tek bir panelden takip edin; fiyat geçmişini görün, sahte indirimleri yakalayın.**
+**Track Trendyol and Hepsiburada products in a single dashboard; visualize price history and catch fake discounts.**
 
-<a href="https://karmatakip.com"><strong>🌐 Canlı Demo: karmatakip.com</strong></a>
+<a href="https://karmatakip.com"><strong>🌐 Live Demo: karmatakip.com</strong></a>
 &nbsp;·&nbsp;
-<a href="#-özellikler">Özellikler</a>
+<a href="#-features">Features</a>
 &nbsp;·&nbsp;
-<a href="#-sistem-mimarisi">Mimari</a>
+<a href="#-system-architecture">Architecture</a>
 &nbsp;·&nbsp;
-<a href="#-mühendislik-detayları">Mühendislik</a>
+<a href="#-engineering-details">Engineering</a>
 &nbsp;·&nbsp;
-<a href="#-yerel-kurulum">Kurulum</a>
+<a href="#-local-setup">Setup</a>
 
 <br />
 
@@ -32,102 +36,102 @@
 
 <br />
 
-<img src="apps/web/public/landing/product-tracking-demo.webp" alt="Karma Canlı Ürün Takip Demosu" width="100%" />
+<img src="apps/web/public/landing/product-tracking-demo.webp" alt="Karma Live Product Tracking Demo" width="100%" />
 
 </div>
 
 ---
 
-## 💡 Neden Karma?
+## 💡 Why Karma?
 
-Türkiye'deki e-ticaret kampanyalarında sık görülen bir durum var: Ürünün fiyatı kampanyadan birkaç gün önce **yükseltiliyor**, sonra "%30 indirim" etiketiyle **eski fiyatına ya da biraz altına** geri çekiliyor. Bu indirimlerin gerçek olup olmadığını anlamak için ürünün fiyat geçmişini bilmek gerekiyor.
+A common pattern during Turkish e-commerce sales: a product's price is **inflated** a few days before a campaign, then dropped back to **its original price (or slightly below)** under a "30% OFF" badge. Telling genuine discounts apart from artificial ones requires seeing the product's actual price history.
 
-**Karma** tam olarak bu işi yapıyor:
+**Karma** solves this end-to-end:
 
-1. 🔗 Ürün linkini yapıştırın (Trendyol veya Hepsiburada — masaüstü ya da `ty.gl` / `app.hb.biz` mobil paylaşım linkleri).
-2. ⏱️ Karma fiyatı ve stok durumunu **her 4 saatte bir** arka planda otomatik kontrol eder.
-3. 📈 Fiyat geçmişi grafikle gösterilir; dip ve zirve noktaları işaretlenir.
-4. 🧠 **Price Insight** motoru, indirimin **gerçek mi sahte mi** olduğunu söyler.
+1. 🔗 Paste any product URL (Trendyol or Hepsiburada — desktop links or `ty.gl` / `app.hb.biz` mobile share links).
+2. ⏱️ Karma automatically checks price and stock availability **every 4 hours** in the background.
+3. 📈 Interactive charts plot historical price trends, highlighting lowest and peak points.
+4. 🧠 The **Price Insight** engine flags whether a discount is **genuine or artificial**.
 
 <br />
 
-<img src="apps/web/public/landing/dashboard-hero-new.webp" alt="Karma Dashboard Paneli" width="100%" />
+<img src="apps/web/public/landing/dashboard-hero-new.webp" alt="Karma Dashboard" width="100%" />
 
 ---
 
-## ✨ Özellikler
+## ✨ Features
 
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>🔗 Tek Tıkla Ürün Takibi</h3>
-      <p>Masaüstü veya mobil uygulama paylaşım linkini (<code>ty.gl</code>, <code>app.hb.biz</code>) yapıştırın, isterseniz <em>"Anneme alacağım kahve makinesi"</em> gibi kendinize özel bir isim verin. Platform ve ürün kodu URL'den otomatik çıkarılır.</p>
-      <img src="apps/web/public/landing/add-product.webp" alt="Ürün Ekleme" width="100%" />
+      <h3>🔗 One-Click Product Tracking</h3>
+      <p>Paste a desktop or mobile share link (<code>ty.gl</code>, <code>app.hb.biz</code>) and optionally assign a custom label like <em>"Coffee machine for mom"</em>. The platform and product code are extracted automatically.</p>
+      <img src="apps/web/public/landing/add-product.webp" alt="Add Product" width="100%" />
     </td>
     <td width="50%" valign="top">
-      <h3>📈 Fiyat Geçmişi ve Analiz</h3>
-      <p>Her ürün için güncel fiyat, en düşük (dip) ve en yüksek (zirve) değerler ile etkileşimli fiyat değişim grafiği.</p>
-      <img src="apps/web/public/landing/detail-chart-new.webp" alt="Fiyat Değişim Grafiği" width="100%" />
+      <h3>📈 Price History & Analytics</h3>
+      <p>View current price, all-time low, peak price, and an interactive Recharts price-history graph for every tracked item.</p>
+      <img src="apps/web/public/landing/detail-chart-new.webp" alt="Price History Chart" width="100%" />
     </td>
   </tr>
 </table>
 
-| | Özellik | Açıklama |
+| | Feature | Description |
 |:-:|---|---|
-| 🛒 | **Platformlar Arası Ortak Liste** | Trendyol ve Hepsiburada ürünleri tek panelde; platforma göre filtreleme |
-| 📱 | **Mobil Kısa Link Desteği** | `ty.gl` ve `app.hb.biz` mobil uygulama paylaşım linklerini otomatik çözümleme |
-| 🧠 | **Sahte İndirim Tespiti** | 30 günlük hareketli pencereyle gerçek ve sahte indirim ayrımı |
-| 🏷️ | **İndirim / Zam ve Stok Takibi** | Her kartta son fiyat değişimi (₺), ne kadar önce değiştiği ve anlık stok durumu |
-| ⏰ | **Otomatik Güncelleme** | BullMQ cron job'ları ile 4 saatte bir arka planda fiyat ve stok kontrolü |
-| 🔐 | **Güvenli Hesap Sistemi** | Better Auth ile e-posta/şifre girişi, oturum yönetimi ve e-postayla şifre sıfırlama |
-| 🎨 | **Özenli Arayüz** | Koyu tema, GSAP animasyonları, boş/hata/404 durumları için özel illüstrasyonlar |
+| 🛒 | **Cross-Platform Watchlist** | Track Trendyol and Hepsiburada products in one unified dashboard with platform filtering |
+| 📱 | **Mobile Short-Link Resolution** | Automatically resolves `ty.gl` and `app.hb.biz` mobile app share links |
+| 🧠 | **Fake-Discount Detection** | 30-day rolling-window algorithm distinguishing real discounts from raise-then-discount hikes |
+| 🏷️ | **Price Delta & Stock Tracking** | Displays latest price change (₺), time since last change, and real-time stock status |
+| ⏰ | **Automated Background Updates** | BullMQ scheduled jobs refreshing prices and stock status every 4 hours |
+| 🔐 | **Secure Authentication** | Session-based auth with Better Auth (email/password sign-in and email password reset) |
+| 🎨 | **Polished UI** | Dark theme, GSAP animations, and custom illustrations for empty, error, and 404 states |
 
 <div align="center">
-  <img src="apps/web/public/empty-state.webp" alt="Boş Durum" height="120" />
+  <img src="apps/web/public/empty-state.webp" alt="Empty State" height="120" />
   &nbsp;&nbsp;&nbsp;
-  <img src="apps/web/public/error-state.webp" alt="Hata Durumu" height="120" />
+  <img src="apps/web/public/error-state.webp" alt="Error State" height="120" />
   &nbsp;&nbsp;&nbsp;
   <img src="apps/web/public/not-found.webp" alt="404" height="120" />
   <br />
-  <sub>Boş durum, hata ve 404 sayfaları için özel illüstrasyonlar</sub>
+  <sub>Custom illustrations for empty, error, and 404 states</sub>
 </div>
 
 ---
 
-## 🧠 Price Insight: Sahte İndirim Tespit Motoru
+## 🧠 Price Insight: Fake-Discount Detection Engine
 
-Projenin temel algoritması. Son **30 günlük** fiyat hareketine ve pencereden önceki son referans fiyata bakarak bir indirimin gerçekten "indirim" olup olmadığına karar verir. %1'in altındaki dalgalanmalar gürültü olarak değerlendirilir.
+The core analytics engine of the platform. It evaluates the **30-day rolling window** (anchored by the latest pre-window baseline price) to determine whether a price drop is genuine. Fluctuations under 1% are filtered out as noise, and brief (<24h) temporary spikes returning to baseline are ignored.
 
 ```mermaid
 flowchart LR
-    A["Fiyat Geçmişi"] --> B{"2'den az kayıt?"}
-    B -- Evet --> C["insufficient_data"]
-    B -- Hayır --> D{"Değişim %1'den az mı?"}
-    D -- Evet --> E["no_change"]
-    D -- Hayır --> F{"Son fiyat yükseldi mi?"}
-    F -- Evet --> G["price_increase"]
-    F -- Hayır --> H{"Zirve öncesi dibin altında mı?"}
-    H -- Evet --> I["✅ real_discount"]
-    H -- Hayır --> J["⚠️ fake_discount"]
+    A["Price History"] --> B{"Fewer than 2 records?"}
+    B -- Yes --> C["insufficient_data"]
+    B -- No --> D{"Change under 1%?"}
+    D -- Yes --> E["no_change"]
+    D -- No --> F{"Latest price increased?"}
+    F -- Yes --> G["price_increase"]
+    F -- No --> H{"Below pre-peak baseline?"}
+    H -- Yes --> I["✅ real_discount"]
+    H -- No --> J["⚠️ fake_discount"]
 ```
 
-| Durum | Anlamı |
+| Status | Meaning |
 |---|---|
-| ✅ `real_discount` | Fiyat, zirveden önceki dip seviyesinin **altına** indi. Gerçek bir fırsat. |
-| ⚠️ `fake_discount` | Fiyat zirveden düştü ama hâlâ **zirve öncesi dibin üzerinde**. Önce zam, sonra indirim. |
-| 📈 `price_increase` | Fiyat yükseldi; dip noktaya göre artış tutarı ve yüzdesi hesaplanır. |
-| ➖ `no_change` | Fiyat sabit ya da değişim %1 eşiğinin altında. |
-| ⏳ `insufficient_data` | Analiz için en az 2 fiyat kaydı gerekir. |
+| ✅ `real_discount` | Price dropped **below** the pre-peak baseline. A genuine deal. |
+| ⚠️ `fake_discount` | Price dropped from a recent peak but remains **above the pre-peak baseline** (raise-then-discount). |
+| 📈 `price_increase` | Price rose; calculates net increase amount and percentage from the baseline. |
+| ➖ `no_change` | Price is unchanged or within the 1% noise threshold. |
+| ⏳ `insufficient_data` | At least 2 price records are required for analysis. |
 
 ---
 
-## 🏗 Sistem Mimarisi
+## 🏗 System Architecture
 
-Karma, sorumlulukları birbirinden ayrılmış bir **pnpm + Turborepo monorepo** olarak tasarlandı. Kullanıcıya dönük web katmanı ile kazıma (scraping) yapan worker sunucusu **tamamen ayrı süreçlerde** çalışır. Worker dış dünyaya kapalıdır ve sadece web uygulamasının BFF katmanı üzerinden erişilebilir.
+Karma is architected as a decoupled **pnpm + Turborepo monorepo**. The user-facing web application and the scraping worker server run in **completely isolated processes**. The worker service is unreachable from the public internet and only accepts requests from the Next.js BFF layer over the private Docker network.
 
 ```mermaid
 flowchart LR
-    U["👤 Kullanıcı"] -->|HTTPS| W
+    U["👤 User"] -->|HTTPS| W
 
     subgraph WEB["apps/web · Next.js 16"]
         W["App Router UI<br/>React 19 + Tailwind v4"]
@@ -136,9 +140,9 @@ flowchart LR
         PI["Price Insight Engine"]
     end
 
-    subgraph SVC["apps/services · Fastify 5 (iç ağ)"]
+    subgraph SVC["apps/services · Fastify 5 (internal network)"]
         API["REST API<br/>internalAuth + Rate Limit"]
-        SCR["Scraper Orkestratörü"]
+        SCR["Scraper Orchestrator"]
         Q["BullMQ Worker<br/>+ Scheduler"]
     end
 
@@ -148,7 +152,7 @@ flowchart LR
     BFF -->|"x-internal-api-key<br/>x-user-id"| API
     API --> SCR
     Q --> SCR
-    SCR -->|"HTML Stream + İç API"| HB["Hepsiburada"]
+    SCR -->|"HTML Stream + Internal API"| HB["Hepsiburada"]
     SCR -->|"Patchright (Stealth)"| TY["Trendyol"]
 
     BA --> DB[("PostgreSQL<br/>Drizzle ORM")]
@@ -157,96 +161,96 @@ flowchart LR
     Q <--> R[("Redis")]
 ```
 
-### 📦 Monorepo Yapısı
+### 📦 Monorepo Layout
 
 ```
 Karma/
 ├── apps/
 │   ├── web/                # Next.js 16: UI, Better Auth, BFF Proxy, Price Insight
-│   └── services/           # Fastify 5: REST API, Scraper'lar, BullMQ Queue/Worker
+│   └── services/           # Fastify 5: REST API, Scrapers, BullMQ Queue/Worker
 └── packages/
-    ├── db/                 # Drizzle şemaları (Auth + Product), migration'lar, modüler sorgular
-    ├── errors/             # Merkezi ServiceError sınıfı (statusCode + isFatal bayrağı)
-    ├── types/              # Uçtan uca paylaşılan TypeScript tipleri
-    ├── validations/        # Ortak Zod şemaları
-    ├── utils/              # Platform bağımsız yardımcılar
-    ├── eslint-config/      # Paylaşılan ESLint preset'leri
-    └── typescript-config/  # Paylaşılan tsconfig preset'leri
+    ├── db/                 # Drizzle schemas (Auth + Product), migrations, modular queries
+    ├── errors/             # Centralized ServiceError class (statusCode + isFatal flag)
+    ├── types/              # End-to-end shared TypeScript types
+    ├── validations/        # Shared Zod schemas
+    ├── utils/              # Platform-agnostic utilities
+    ├── eslint-config/      # Shared ESLint presets
+    └── typescript-config/  # Shared tsconfig presets
 ```
 
-### 🔄 Ürün Ekleme Akışı (Smart Tracking)
+### 🔄 Product Tracking Flow (Smart Deduplication)
 
 ```mermaid
 sequenceDiagram
-    participant C as Tarayıcı
+    participant C as Browser
     participant W as Next.js BFF
     participant S as Fastify Services
     participant D as PostgreSQL
     participant P as Trendyol / Hepsiburada
 
     C->>W: POST /api/products { productUrl, customName }
-    W->>W: Session doğrula + Zod ile doğrula
+    W->>W: Verify session + validate with Zod
     W->>S: POST /api/products (x-internal-api-key, x-user-id)
-    S->>S: Mobil kısa linkse (ty.gl / app.hb.biz) masaüstü URL'ye çözümle
-    S->>S: Takip parametrelerini temizle + platform ve ürün kodunu çıkar
-    S->>D: Ürün zaten kayıtlı mı?
-    alt Ürün kayıtlı
+    S->>S: Resolve mobile short link (ty.gl / app.hb.biz) to desktop URL
+    S->>S: Strip tracking params + extract platform & product code
+    S->>D: Does product already exist?
+    alt Already tracked
         D-->>S: productId
-        Note over S,P: Scraping atlanır, hız ve kaynak tasarrufu
-    else Yeni ürün
-        S->>P: Ürün verisini kazı (ad, görsel, stok, en ucuz fiyat)
+        Note over S,P: Scraping skipped, saving latency & proxy quota
+    else New product
+        S->>P: Scrape product metadata (title, image, stock, lowest price)
         P-->>S: ScraperData
-        S->>D: Ürünü ve ilk fiyatı kaydet
+        S->>D: Insert product & initial price record
     end
-    S->>D: Kullanıcıyı ürüne bağla (409 on conflict)
+    S->>D: Link user to product (409 on conflict)
     S-->>W: 201 { TrackedProductItem }
-    W-->>C: Dashboard güncellenir
+    W-->>C: Dashboard updates
 ```
 
 ---
 
-## 🔬 Mühendislik Detayları
+## 🔬 Engineering Details
 
-### 🕷️ Kazıma Mimarisi, WAF Atlatma ve Mobil Link Çözümleme
+### 🕷️ Scraping Pipeline, WAF Bypass & Mobile Link Resolution
 
-| Bileşen | Strateji |
+| Component | Strategy |
 |---|---|
-| **Hepsiburada** | İlk eklemede HTML akışından ürün adı, görseli ve ürün kodu alınır; fiyat için dokümante edilmemiş iç listing API'si (`api/v1/product/listings/<code>`) sorgulanarak tüm satıcılar arasından **en ucuz listing** seçilir. Hem standart (`-p-`) hem de pazar yeri (`-pm-`) linkleri desteklenir: URL'deki kod `HBCV`/`HBV` ile başlıyorsa doğrudan kullanılır; üst ürün koduysa HTML içindeki `<meta name="page_value">` etiketinden varyant koduna düşülür (fallback). 4 saatlik rutin fiyat güncellemelerinde ise HTML hiç çekilmez; kayıtlı ürün koduyla doğrudan JSON API'ye gidilir. |
-| **Trendyol** | WAF ve bot korumasını aşmak için doğrudan **`patchright`** (otomasyon izlerini gizleyen stealth Playwright/Chromium fork'u; `--headless=new`, `tr-TR` yerel ayarları ve `Sec-Fetch-*` başlıkları) kullanılır. Sayfa kaynağındaki `window["__envoy__SHARED_PROPS"]` nesnesi ayrıştırılarak ürün bilgileri, stok durumu ve kazanan satıcının (`winnerVariant`) fiyatı çıkarılır. |
-| **Mobil Kısa Linkler (`resolveLinkFormat`)** | Mobil uygulamalardan paylaşılan `ty.gl` (Trendyol) ve `app.hb.biz` (Hepsiburada) kısa linkleri doğrudan desteklenir. SSRF ve açık yönlendirme (open redirect) risklerine karşı yönlendirmeler otomatik takip edilmez; `redirect: "manual"` ile adım adım (en fazla 5 hop) izlenir ve her ara durak izin verilen domain listesine (`ty.gl`, `app.hb.biz`, `*.adj.st` Adjust deep-link servisi) karşı doğrulanır. Hedef platform (`trendyol.com` / `hepsiburada.com`) yakalandığı anda `response.body?.cancel()` ile sayfa gövdesi indirilmeden soket kapatılır ve URL parametreleri temizlenir. |
+| **Hepsiburada** | On initial tracking, extracts product title, image, and code from the HTML stream, then queries the undocumented internal listings API (`api/v1/product/listings/<code>`) to select the **cheapest seller listing**. Supports both standard (`-p-`) and marketplace (`-pm-`) URLs: codes starting with `HBCV`/`HBV` are used directly, while parent product codes fall back to `<meta name="page_value">` in the HTML. Scheduled 4-hour updates skip HTML completely and hit the JSON API directly. |
+| **Trendyol** | Uses **`patchright`** (a stealth Playwright/Chromium fork that hides automation fingerprints, configured with `--headless=new`, `tr-TR` locale, and `Sec-Fetch-*` headers) to bypass WAF/bot protection. Parses `window["__envoy__SHARED_PROPS"]` from the HTML source to extract product metadata, stock availability, and the `winnerVariant` selling price. |
+| **Mobile Short Links (`resolveLinkFormat`)** | Supports `ty.gl` (Trendyol) and `app.hb.biz` (Hepsiburada) share links safely. To prevent SSRF and open-redirect vulnerabilities, redirects are never followed blindly: `redirect: "manual"` steps through up to 5 hops, validating every intermediate host against an allowlist (`ty.gl`, `app.hb.biz`, `*.adj.st`). As soon as the target platform (`trendyol.com` / `hepsiburada.com`) is reached, `response.body?.cancel()` closes the socket without downloading the body and strips query parameters. |
 
-Tüm kazıma istekleri, Türkiye havuzundan **otomatik IP rotasyonlu residential proxy** üzerinden geçer (`undici` `ProxyAgent` ve Patchright proxy yapılandırması).
+All outbound scraping requests route through a Turkish **auto-rotating residential proxy pool** (`undici` `ProxyAgent` and Patchright proxy configuration).
 
-### ⚡ Hız ve Bant Genişliği Optimizasyonları
+### ⚡ Speed & Bandwidth Optimizations
 
-İndirilen veri boyutunu küçültmek ve gereksiz alt kaynakları engellemek iki kritik kazanım sağlar: **İstekler çok daha kısa sürede yanıt aldığı için kazıma (scraping) süreci ciddi ölçüde hızlanır** ve GB başına ücretlendirilen residential proxy trafiğinden büyük tasarruf edilir:
+Minimizing transferred bytes and blocking unnecessary subresources delivers two major wins: **significantly faster scraper response times** and dramatic savings on per-GB residential proxy traffic:
 
-| Optimizasyon | Teknik | Boyut | Kazanım |
+| Optimization | Technique | Payload | Impact |
 |---|---|---|:-:|
-| **Stream Early-Cutoff** (Hepsiburada) | Sayfanın tamamını indirmek yerine `response.body.getReader()` ile HTTP akışı dinlenir; `<head>` içindeki `utagData` yakalandığı anda `reader.cancel()` ile soket kapatılır. Kalan ~900 KB'lık gövde beklenmediği için yanıt süresi kısalır. | 1.036 KB → 127 KB | **%88** daha az veri ve daha hızlı yanıt |
-| **Document-Only Intercept** (Trendyol) | Patchright üzerinde `page.route('**/*')` ile sadece ana `document` (HTML) isteğine izin verilir; resim, CSS, font, medya ve harici script istekleri anında `abort()` edilir ve yalnızca `domcontentloaded` beklenir. Tarayıcının ~8 MB'lık yan kaynağı indirip işlemesi beklenmediği için kazıma süresi saniyeler mertebesinde kısalır. | ~8 MB → ~200 KB | **%97** daha az veri ve çok daha hızlı tarama |
+| **Stream Early-Cutoff** (Hepsiburada) | Streams the HTTP response via `response.body.getReader()` instead of buffering the full page; cancels the socket (`reader.cancel()`) the moment `<head>` / `utagData` is parsed, skipping the remaining ~900 KB body. | 1,036 KB → 127 KB | **88%** less data & faster responses |
+| **Document-Only Intercept** (Trendyol) | Uses Patchright `page.route('**/*')` to allow only the main `document` request, immediately calling `abort()` on images, CSS, fonts, media, and external scripts while waiting only for `domcontentloaded`. | ~8 MB → ~200 KB | **97%** less data & much faster scraping |
 
-### 🔁 Dayanıklı Arka Plan İşleri ve Hata Yönetimi (Redis + BullMQ)
+### 🔁 Fault-Tolerant Background Jobs & Error Handling (Redis + BullMQ)
 
-- **Producer/Consumer mimarisi:** Scheduler 4 saatte bir tüm takip edilen ürünler için **ayrı ayrı job'lar** oluşturur (`addBulk`), böylece tek bir üründeki hata diğerlerini etkilemez.
-- **Rate limiting:** Worker `concurrency: 1` ve `2 saniyede 1 istek` limitiyle çalışır; hedef sitelere yük bindirmez.
-- **Merkezi `ServiceError` ve `isFatal` sınıflandırması:** Repo genelinde tüm hatalar `@repo/errors` paketindeki `ServiceError(message, statusCode, isFatal)` sınıfıyla standartlaştırılmıştır. Worker bir hatayla karşılaştığında `error.isFatal` bayrağına bakar; `true` ise BullMQ `UnrecoverableError` fırlatarak işi anında sonlandırır, `false` ise **jitter'lı exponential backoff** ile yeniden dener:
-  - **`429 Too Many Requests` → Tekrar denenir (`isFatal: false`):** Genellikle o anki proxy rotasyonundan denk gelen IP'nin itibarının (reputation) düşük olmasından kaynaklanır. Bir sonraki denemede yeni bir residential IP ile istek başarılı olur.
-  - **`403 Forbidden` → Tekrar denenmez (`isFatal: true`):** Geçici bir ağ sorunundan ziyade scraper yapılandırmasında, başlıklarda veya tarayıcı parmak izinde bir hata olduğunun belirtisidir; boşuna döngüye sokulmaz.
-  - **`404 Not Found` / Sayfa Kaldırılmış → Tekrar denenmez (`isFatal: true`):** Ürün sayfası e-ticaret sitesinden tamamen kaldırılmışsa veya sayfa veri şeması bozulmuşsa iş kalıcı hata olarak sonlandırılır.
-- **Stok takibi (`inStock`):** Bir ürünün stoğu bittiğinde (Hepsiburada'da aktif satıcı/listing kalmaması veya Trendyol'da `winnerVariant` bulunamaması) bu durum **hata olarak kabul edilmez**. Ürünün veritabanındaki `inStock` durumu `false` olarak güncellenir ve sonraki 4 saatlik periyotlarda kontrol edilmeye devam edilir; böylece stoğu tükenen bir ürünün tekrar stoğa girdiği an yakalanır.
-- **Delta-only yazım:** Yeni fiyat son bilinen fiyattan farklı değilse veritabanına gereksiz kayıt atılmaz.
-- **Çöp toplama:** Her Pazar 03:00'te, hiçbir kullanıcının takip etmediği ürünler temizlenir.
+- **Producer/Consumer architecture:** Every 4 hours, the scheduler enqueues **isolated per-product jobs** via `addBulk`, so a single failing product never blocks the rest of the batch.
+- **Rate limiting:** Worker runs at `concurrency: 1` with a `1 req / 2s` rate limiter to avoid hammering target platforms.
+- **Centralized `ServiceError` & `isFatal` classification:** Errors across the monorepo are standardized with `ServiceError(message, statusCode, isFatal)` in `@repo/errors`. When a job fails, the worker inspects `error.isFatal`: fatal errors immediately throw BullMQ's `UnrecoverableError`, while transient errors retry with **exponential backoff + jitter**:
+  - **`429 Too Many Requests` → Retried (`isFatal: false`):** Typically caused by a low-reputation rotated proxy IP; subsequent retries succeed on a fresh residential IP.
+  - **`403 Forbidden` → Not retried (`isFatal: true`):** Indicates a scraper header/fingerprint issue rather than transient network flakiness; stops immediately instead of wasting quota.
+  - **`404 Not Found` / Removed Listing → Not retried (`isFatal: true`):** Terminates immediately when a product page no longer exists or its schema changed.
+- **Stock tracking (`inStock`):** Out-of-stock states (no active Hepsiburada listings or missing Trendyol `winnerVariant`) are **not treated as errors**. The product's `inStock` flag is set to `false` and continues to be checked every 4 hours so restocks are detected automatically.
+- **Delta-only writes:** New price records are inserted only when the price actually changes from the last stored value.
+- **Automated garbage collection:** Every Sunday at 03:00, products no longer tracked by any user are purged from PostgreSQL.
 
-### 🔐 Güvenlik
+### 🔐 Security
 
-- **BFF (Backend-for-Frontend) deseni:** Tarayıcı worker sunucusuyla hiçbir zaman doğrudan konuşmaz. Kullanıcı kimliği istemciden değil, sunucu tarafındaki **session'dan** alınır.
-- **Gizli servis:** Fastify sunucusu dış dünyaya kapalıdır ve sadece Docker iç ağı üzerinden, `x-internal-api-key` başlığını doğrulayan `internalAuth` plugin'iyle erişilebilir.
-- **Katmanlı doğrulama:** Next.js middleware ile route koruması, Zod ile girdi doğrulaması ve `@fastify/rate-limit` ile istek sınırlama.
-- **Merkezi hata yönetimi:** Tüm katmanlarda tek tip `ServiceError` ve Fastify `setErrorHandler`; iç hata detayları istemciye sızdırılmaz.
-- **Veritabanı bütünlüğü:** `(platform, productCode)` ve `(userId, productId)` unique kısıtları, cascade silme ve `(productId, checkedAt)` bileşik indeksi.
+- **BFF (Backend-for-Frontend) pattern:** The browser never communicates with the worker service directly. User identity is derived strictly from the server-side **session**, never trusted from client payloads.
+- **Network-isolated backend:** The Fastify service is inaccessible from the public internet and only accepts internal Docker network calls authenticated by the `internalAuth` plugin (`x-internal-api-key`).
+- **Layered validation:** Route protection via Next.js middleware, request validation via Zod, and rate limiting via `@fastify/rate-limit`.
+- **Centralized error handling:** Unified `ServiceError` and Fastify `setErrorHandler` prevent internal stack traces from leaking to clients.
+- **Database integrity:** Composite unique constraints on `(platform, productCode)` and `(userId, productId)`, cascading deletes, and a composite index on `(productId, checkedAt)`.
 
-### 🚀 CI/CD ve Canlı Ortam
+### 🚀 CI/CD & Production Infrastructure
 
 ```mermaid
 flowchart LR
@@ -256,137 +260,137 @@ flowchart LR
     D --> E["build"]
     E -->|"✅ success()"| F["Coolify Webhook"]
     F --> G["Hetzner ARM64<br/>Docker"]
-    E -->|"❌ fail"| H["Deploy durur"]
+    E -->|"❌ fail"| H["Deploy halted"]
 ```
 
-- **CI-gated deployment:** Coolify `Manual deployments only` modundadır. Sadece tip kontrolü, lint ve build adımları **yeşil** yandığında webhook tetiklenir; hatalı kod canlıya çıkmaz.
-- **Altyapı:** Hetzner CAX11 (ARM64) üzerinde Coolify v4 ile Docker container'ları, Traefik + Let's Encrypt SSL, Cloudflare DNS, Supabase PostgreSQL.
-- **Gözlemlenebilirlik:** Sentry (client, server ve edge runtime'ları; release health), Better Stack ile 7/24 uptime izleme, Dependabot ile bağımlılık güvenlik taraması.
+- **CI-gated deployment:** Coolify runs in `Manual deployments only` mode. Deployment webhooks fire **only** when type-checking, linting, and production builds all pass in GitHub Actions — broken code never reaches production.
+- **Infrastructure:** Docker containers orchestrated with Coolify v4 on a Hetzner CAX11 (ARM64) VPS, Traefik + Let's Encrypt SSL, Cloudflare DNS, and Supabase PostgreSQL.
+- **Observability:** Sentry (client, server, and edge runtimes; release health), 24/7 uptime monitoring via UptimeRobot, and automated CVE scanning via GitHub Dependabot.
 
 ---
 
-## 🧰 Teknoloji Yığını
+## 🧰 Tech Stack
 
-| Katman | Teknolojiler |
+| Layer | Technologies |
 |---|---|
-| **Dil** | TypeScript (uçtan uca tip güvenliği) |
+| **Language** | TypeScript (end-to-end type safety) |
 | **Frontend** | Next.js 16 (App Router, Server Components, Route Handlers), React 19, Tailwind CSS v4, shadcn/ui, Radix UI, Recharts, GSAP |
-| **Kimlik Doğrulama** | Better Auth (Drizzle adapter), Resend (şifre sıfırlama e-postası) |
+| **Authentication** | Better Auth (Drizzle adapter), Resend (password reset emails) |
 | **Backend** | Fastify 5, fastify-plugin, @fastify/rate-limit |
-| **Veritabanı** | PostgreSQL, Drizzle ORM, drizzle-kit |
-| **Kuyruk** | Redis, BullMQ, ioredis |
-| **Kazıma** | Patchright (stealth Playwright), undici, residential proxy |
-| **Doğrulama** | Zod |
+| **Database** | PostgreSQL, Drizzle ORM, drizzle-kit |
+| **Queue** | Redis, BullMQ, ioredis |
+| **Scraping** | Patchright (stealth Playwright), undici, residential proxy |
+| **Validation** | Zod |
 | **Monorepo** | pnpm workspaces, Turborepo |
 | **DevOps** | GitHub Actions, Docker, Coolify, Hetzner, Cloudflare |
-| **İzleme** | Sentry, Better Stack, Dependabot |
+| **Monitoring** | Sentry, UptimeRobot, Dependabot |
 
 ---
 
-## 🛠 Yerel Kurulum
+## 🛠 Local Setup
 
-### 🐳 Seçenek 1: Docker Compose ile Tek Komutla (Önerilen)
+### 🐳 Option 1: One-Command Docker Compose (Recommended)
 
-Bilgisayarınızda Node.js, PostgreSQL veya Redis kurulu olmasına gerek kalmadan tüm mimariyi (Next.js, Fastify, Worker, PostgreSQL ve Redis) tek komutla izole bir ağda ayağa kaldırabilirsiniz:
+Spin up the entire stack (Next.js, Fastify, Worker, PostgreSQL, and Redis) on an isolated network without installing Node.js, PostgreSQL, or Redis locally:
 
 ```bash
-# Repoyu klonlayın ve başlatın
+# Clone and start
 git clone https://github.com/borayrdmc/Karma.git
 cd Karma
 docker compose up --build
 ```
 
-Konteynerler hazır olduğunda **http://localhost:3000** adresinden doğrudan kullanmaya başlayabilirsiniz.
+Once containers are ready, open **http://localhost:3000**.
 
 ---
 
-### 💻 Seçenek 2: Manuel Geliştirme Kurulumu
+### 💻 Option 2: Manual Development Setup
 
-#### Gereksinimler
+#### Prerequisites
 
 - **Node.js** ≥ 22
 - **pnpm** 9
-- **PostgreSQL** (yerel veya Supabase/Neon)
-- **Redis** (örn. Docker ile)
+- **PostgreSQL** (local or Supabase/Neon)
+- **Redis** (e.g. via Docker)
 
-#### Adımlar
+#### Steps
 
 ```bash
-# 1. Repoyu klonla
+# 1. Clone the repository
 git clone https://github.com/borayrdmc/Karma.git
 cd Karma
 
-# 2. Bağımlılıkları yükle
+# 2. Install dependencies
 pnpm install
 
-# 3. Ortam değişkenlerini ayarla
+# 3. Configure environment variables
 cp apps/web/.env.example apps/web/.env
 cp apps/services/.env.example apps/services/.env
 cp packages/db/.env.example packages/db/.env
 
-# 4. Redis'i başlat
+# 4. Start Redis
 docker run -d --name karma-redis -p 6379:6379 redis:7-alpine
 
-# 5. Veritabanı migration'larını çalıştır
+# 5. Run database migrations
 pnpm --filter @repo/db db:migrate
 
-# 6. Patchright için Chromium'u kur
+# 6. Install Chromium for Patchright
 pnpm --filter services exec patchright install chromium
 
-# 7. Tüm uygulamaları geliştirme modunda başlat
+# 7. Start all apps in development mode
 pnpm dev
 ```
 
-| Uygulama | Adres |
+| App | URL |
 |---|---|
 | Web (Next.js) | http://localhost:3000 |
 | Services (Fastify) | http://localhost:3001 |
 
-### Önemli Ortam Değişkenleri
+### Key Environment Variables
 
-| Değişken | Konum | Açıklama |
+| Variable | Location | Description |
 |---|---|---|
-| `DATABASE_URL` | web, services, db | PostgreSQL bağlantı adresi |
-| `INTERNAL_API_KEY` | web, services | Web ve services arasındaki ortak gizli anahtar (**iki tarafta aynı olmalı**) |
-| `BETTER_AUTH_SECRET` | web | Oturum imzalama anahtarı (`openssl rand -base64 32`) |
-| `SERVICES_URL` | web | Fastify sunucusunun adresi |
-| `REDIS_URL` | services | BullMQ için Redis bağlantısı |
-| `PROXY_URL` | services | *(Opsiyonel)* Residential proxy adresi |
-| `RESEND_API_KEY` | web | *(Opsiyonel)* Şifre sıfırlama e-postaları |
-| `NEXT_PUBLIC_SENTRY_DSN` | web | *(Opsiyonel)* Sentry hata takibi |
+| `DATABASE_URL` | web, services, db | PostgreSQL connection string |
+| `INTERNAL_API_KEY` | web, services | Shared secret between web and services (**must match on both**) |
+| `BETTER_AUTH_SECRET` | web | Session signing secret (`openssl rand -base64 32`) |
+| `SERVICES_URL` | web | Fastify server URL |
+| `REDIS_URL` | services | Redis connection URL for BullMQ |
+| `PROXY_URL` | services | *(Optional)* Residential proxy URL |
+| `RESEND_API_KEY` | web | *(Optional)* Password reset emails |
+| `NEXT_PUBLIC_SENTRY_DSN` | web | *(Optional)* Sentry error tracking |
 
-### Faydalı Komutlar
+### Useful Commands
 
 ```bash
-pnpm build          # Tüm paketleri derle (Turborepo cache ile)
-pnpm lint           # ESLint denetimi
-pnpm check-types    # Monorepo genelinde TypeScript tip kontrolü
-pnpm format         # Prettier ile formatla
+pnpm build          # Build all packages (with Turborepo cache)
+pnpm lint           # Run ESLint checks
+pnpm check-types    # TypeScript type-checking across the monorepo
+pnpm format         # Format with Prettier
 ```
 
 ---
 
-## 🗺 Yol Haritası
+## 🗺 Roadmap
 
-- [x] Trendyol ve Hepsiburada desteği
-- [x] Mobil kısa link (`ty.gl` ve `app.hb.biz`) çözümleme
-- [x] Price Insight: sahte indirim tespiti
-- [x] Otomatik fiyat ve stok güncelleme (BullMQ)
-- [x] Better Auth ile kullanıcı sistemi ve şifre sıfırlama
+- [x] Trendyol and Hepsiburada support
+- [x] Mobile short-link (`ty.gl` & `app.hb.biz`) resolution
+- [x] Price Insight: fake-discount detection
+- [x] Automated price & stock updates (BullMQ)
+- [x] Better Auth user system & password reset
 - [x] CI-gated production deployment
-- [ ] Hedef fiyat alarmları (e-posta / push bildirimi)
-- [ ] Amazon ve N11 desteği
-- [ ] Aynı ürünün platformlar arası fiyat karşılaştırması
-- [ ] Tarayıcı eklentisi ile tek tıkla takip
+- [ ] Target price alerts (email / push notifications)
+- [ ] Amazon & N11 support
+- [ ] Cross-platform comparison for the same product
+- [ ] Browser extension for one-click tracking
 
 ---
 
 <div align="center">
 
-**[karmatakip.com](https://karmatakip.com)** üzerinden canlı olarak deneyebilirsiniz.
+Try it live at **[karmatakip.com](https://karmatakip.com)**.
 
-[@borayrdmc](https://github.com/borayrdmc) tarafından geliştirildi.
+Built by [@borayrdmc](https://github.com/borayrdmc).
 
-<sub>Bu projeyi beğendiyseniz ⭐ vermeyi unutmayın!</sub>
+<sub>If you like this project, consider giving it a ⭐!</sub>
 
 </div>
