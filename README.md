@@ -257,13 +257,14 @@ flowchart LR
     A["git push main"] --> B["GitHub Actions"]
     B --> C["check-types"]
     C --> D["lint"]
-    D --> E["build"]
+    D --> T["test (Vitest)"]
+    T --> E["build"]
     E -->|"✅ success()"| F["Coolify Webhook"]
     F --> G["Hetzner ARM64<br/>Docker"]
     E -->|"❌ fail"| H["Deploy halted"]
 ```
 
-- **CI-gated deployment:** Coolify runs in `Manual deployments only` mode. Deployment webhooks fire **only** when type-checking, linting, and production builds all pass in GitHub Actions — broken code never reaches production.
+- **CI-gated deployment:** Coolify runs in `Manual deployments only` mode. Deployment webhooks fire **only** when type-checking, linting, 35 automated Vitest unit tests, and production builds all pass in GitHub Actions — broken code never reaches production.
 - **Infrastructure:** Docker containers orchestrated with Coolify v4 on a Hetzner CAX11 (ARM64) VPS, Traefik + Let's Encrypt SSL, Cloudflare DNS, and Supabase PostgreSQL.
 - **Observability:** Sentry (client, server, and edge runtimes; release health), 24/7 uptime monitoring via UptimeRobot, and automated CVE scanning via GitHub Dependabot.
 
@@ -281,6 +282,7 @@ flowchart LR
 | **Queue** | Redis, BullMQ, ioredis |
 | **Scraping** | Patchright (stealth Playwright), undici, residential proxy |
 | **Validation** | Zod |
+| **Testing** | Vitest (35 unit tests covering Price Insight edge cases) |
 | **Monorepo** | pnpm workspaces, Turborepo |
 | **DevOps** | GitHub Actions, Docker, Coolify, Hetzner, Cloudflare |
 | **Monitoring** | Sentry, UptimeRobot, Dependabot |
@@ -363,6 +365,7 @@ pnpm dev
 
 ```bash
 pnpm build          # Build all packages (with Turborepo cache)
+pnpm test           # Run Vitest unit test suite
 pnpm lint           # Run ESLint checks
 pnpm check-types    # TypeScript type-checking across the monorepo
 pnpm format         # Format with Prettier

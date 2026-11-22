@@ -257,13 +257,14 @@ flowchart LR
     A["git push main"] --> B["GitHub Actions"]
     B --> C["check-types"]
     C --> D["lint"]
-    D --> E["build"]
+    D --> T["test (Vitest)"]
+    T --> E["build"]
     E -->|"✅ success()"| F["Coolify Webhook"]
     F --> G["Hetzner ARM64<br/>Docker"]
     E -->|"❌ fail"| H["Deploy durur"]
 ```
 
-- **CI-gated deployment:** Coolify `Manual deployments only` modundadır. Sadece tip kontrolü, lint ve build adımları **yeşil** yandığında webhook tetiklenir; hatalı kod canlıya çıkmaz.
+- **CI-gated deployment:** Coolify `Manual deployments only` modundadır. Sadece tip kontrolü, lint, 35 otomatik Vitest birim testi ve build adımları **yeşil** yandığında webhook tetiklenir; hatalı kod canlıya çıkmaz.
 - **Altyapı:** Hetzner CAX11 (ARM64) üzerinde Coolify v4 ile Docker container'ları, Traefik + Let's Encrypt SSL, Cloudflare DNS, Supabase PostgreSQL.
 - **Gözlemlenebilirlik:** Sentry (client, server ve edge runtime'ları; release health), UptimeRobot ile 7/24 uptime izleme, Dependabot ile bağımlılık güvenlik taraması.
 
@@ -281,6 +282,7 @@ flowchart LR
 | **Kuyruk** | Redis, BullMQ, ioredis |
 | **Kazıma** | Patchright (stealth Playwright), undici, residential proxy |
 | **Doğrulama** | Zod |
+| **Test** | Vitest (Price Insight kenar durumlarını kapsayan 35 birim testi) |
 | **Monorepo** | pnpm workspaces, Turborepo |
 | **DevOps** | GitHub Actions, Docker, Coolify, Hetzner, Cloudflare |
 | **İzleme** | Sentry, UptimeRobot, Dependabot |
@@ -363,6 +365,7 @@ pnpm dev
 
 ```bash
 pnpm build          # Tüm paketleri derle (Turborepo cache ile)
+pnpm test           # Vitest birim test paketini çalıştır
 pnpm lint           # ESLint denetimi
 pnpm check-types    # Monorepo genelinde TypeScript tip kontrolü
 pnpm format         # Prettier ile formatla
