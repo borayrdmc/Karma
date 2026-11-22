@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   verify:
-    name: Lint, Typecheck & Build
+    name: Lint, Typecheck, Test & Build
     runs-on: ubuntu-latest
 
     steps:
@@ -37,6 +37,9 @@ jobs:
 
       - name: Run Lint
         run: pnpm run lint
+
+      - name: Run Unit Tests
+        run: pnpm run test
 
       - name: Run Build
         env:
