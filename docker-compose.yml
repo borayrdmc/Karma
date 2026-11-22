@@ -11,12 +11,25 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./packages/db/migrations:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d karma_db"]
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - karma-network
+
+  migrate:
+    build:
+      context: .
+      dockerfile: ./packages/db/Dockerfile
+    container_name: karma-migrate
+    restart: "no"
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgrespassword@postgres:5432/karma_db"
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       - karma-network
 
@@ -49,9 +62,16 @@ services:
       DATABASE_URL: "postgresql://postgres:postgrespassword@postgres:5432/karma_db"
       REDIS_URL: "redis://redis:6379"
       INTERNAL_API_KEY: "karma-local-internal-secret-key-change-in-prod"
+      PROXY_URL: "${PROXY_URL:-}"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3001/health').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
     depends_on:
-      postgres:
-        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
       redis:
         condition: service_healthy
     networks:
@@ -76,10 +96,10 @@ services:
       BETTER_AUTH_URL: "http://localhost:3000"
       NEXT_PUBLIC_BETTER_AUTH_URL: "http://localhost:3000"
     depends_on:
-      postgres:
-        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
       services:
-        condition: service_started
+        condition: service_healthy
     networks:
       - karma-network
 
